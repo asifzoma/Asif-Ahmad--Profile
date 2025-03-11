@@ -1,0 +1,55 @@
+// Variable Colors
+$black: #000;
+$white: #fff;
+$primary-color: #1e2337;
+$secondary-color: #694e4e;
+$background-color: #d2d2d0;
+$border-color: #e0e0e0;
+
+// Box Styling
+%box-styling {
+    text-align: center;
+    padding: 50px;
+    background-color: $primary-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    color: $background-color;
+}
+
+// Box Styling text left not center
+%box-styling-text-left {
+    text-align: left;
+    padding: 50px;
+    background-color: $primary-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    color: $background-color;
+}
+
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+// Font Family
+$font-family--primary: 'Noto Sans', sans-serif;
+$font-family--secondary: 'Work Sans', sans-serif;
+$font-family--tertiary: 'Poppins', sans-serif;
+
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px; 
+$breakpoint-lg: 992px;  
+$breakpoint-xl: 1200px; 
+
+// Sidebar Width
+$sidebar-width: 180px;
+
+// Hamburger Menu
+$hamburger-menu-width: 40px;
+$hamburger-menu-height: 30px;
+$hamburger-menu-padding: 0;
+$hamburger-menu-border: none;
+$hamburger-menu-background: none;
+

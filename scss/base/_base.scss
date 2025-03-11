@@ -1,0 +1,51 @@
+// #variables
+@import 'variables';
+
+// base
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    font-family: $font-family--primary;
+    
+    
+}
+
+// Typography defaults
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    
+}
+
+ul, ol {
+    list-style: none;
+}
+// Medium Devices (768px and up)
+@media (min-width: 768px) {
+    body {
+        font-size: 1rem; 
+    }
+}
+
+
+
+// Large Devices (992px and up)
+@media (min-width: 992px) {
+    p {
+        line-height: 1.6;
+    }
+}
+
