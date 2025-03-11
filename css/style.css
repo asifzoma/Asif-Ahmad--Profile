@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 #contact, .banner {
@@ -103,7 +104,7 @@ ul, ol {
   font-size: 24px;
 }
 .sidebar-container .sidebar-header h3 a:hover {
-  color: #694e4e;
+  color: #95252f;
 }
 .sidebar-container .sidebar-menu ul {
   list-style: none;
@@ -118,7 +119,7 @@ ul, ol {
   font-size: 18px;
 }
 .sidebar-container .sidebar-menu ul li a:hover {
-  color: #694e4e;
+  color: #95252f;
 }
 .sidebar-container .sidebar-social {
   display: flex;
@@ -130,7 +131,7 @@ ul, ol {
   transition: color 0.3s ease;
 }
 .sidebar-container .sidebar-social a:hover {
-  color: #694e4e;
+  color: #95252f;
 }
 
 .hero-text {
@@ -148,7 +149,7 @@ ul, ol {
   margin-bottom: 0.5rem;
 }
 .hero-text:hover {
-  color: #694e4e;
+  color: #95252f;
 }
 
 .main-container {
@@ -213,7 +214,7 @@ ul, ol {
   margin-top: 10px;
 }
 .portfolio-container .project-card p {
-  color: #694e4e;
+  color: #95252f;
 }
 
 .contact {
@@ -253,32 +254,67 @@ ul, ol {
 }
 
 .hamburger-menu {
-  display: block;
-  position: relative;
+  position: absolute;
   top: 15px;
   left: 15px;
-  background: #1e2337;
-  border: none;
-  width: 40px;
-  height: 30px;
-  cursor: pointer;
-  z-index: 1001;
+  width: 30px;
+  height: 35px;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
   padding: 0;
 }
+
+/* Hamburger Bars */
 .hamburger-menu span {
   display: block;
-  width: 100%;
+  width: 35px;
   height: 4px;
-  background-color: #d2d2d0;
-  transition: all 0.3s ease;
-}
-.hamburger-menu:hover {
-  background-color: #ebebea;
+  background-color: #1e2337;
+  transition: all 0.3s ease-in-out;
+  border-radius: 2px;
 }
 
+/* Hover Effect */
+.hamburger-menu:hover span {
+  background-color: #95252f;
+}
+
+/* Active State - Turns into "X" */
+.hamburger-menu.active span:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+/* 🔹 Fix spacing for smaller screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    width: 30px;
+    height: 40px;
+  }
+  .hamburger-menu span {
+    height: 5px;
+    margin: 4px 0;
+  }
+  .hamburger-menu.active span:nth-child(1) {
+    transform: translateY(12px) rotate(45deg);
+  }
+  .hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-12px) rotate(-45deg);
+  }
+}
 @media (max-width: 768px) {
   .hamburger-menu {
     display: block;
