@@ -135,10 +135,10 @@ ul, ol {
 }
 
 .hero-text {
-  background-color: #e9ebea;
+  opacity: 0.9;
   padding: 0.3rem;
   text-align: center;
-  border-radius: 50px;
+  border-radius: 10px;
 }
 .hero-text h1, .hero-text p {
   color: #1e2337;
