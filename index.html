@@ -9,6 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .typed-text-class {
+            color: #007bff; /* Or any color you prefer */
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
 </head>
 
 <body>  
@@ -48,7 +55,7 @@
                 <header class="header">
                     <div class="hero-text">
                         <h1>Asif Ahmad</h1>
-                        <p>Full Stack Web Developer</p>
+                        <span id="typed"></span>
                     </div>
                 </header>
             </div>
@@ -97,6 +104,21 @@
             </div>
         </div>
     </div>
-    <script src="bower_components/jquery-typing/dist/jquery.typing.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        var typed = new Typed('#typed', {
+            strings: ['Full Stack Web Developer', 'JavaScript Developer', 'PHP Developer', 'SQL Developer', 'HTML Developer', 'CSS Developer'],
+            typeSpeed: 50,
+            backSpeed: 50,
+            loop: true,
+            cursorChar: '|',
+            className: 'typed-text-class',
+            preStringTyped: (arrayPos, self) => {
+                document.querySelector('#typed').style.opacity = '10';
+                document.querySelector('#typed').style.visibility = 'visible';
+                document.querySelector('#typed').style.color = '#95252f';
+            }
+        });
+    </script>
 </body>
 </html>
