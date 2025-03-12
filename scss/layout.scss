@@ -1,0 +1,108 @@
+// Prevent horizontal scrolling site-wide
+
+// Base HTML and body constraints
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+// Global box-sizing to prevent padding issues
+* {
+  box-sizing: border-box;
+}
+
+// Main layout containers
+.page-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+// Container layouts
+.main-container {
+  width: calc(100% - #{$sidebar-width});
+  margin-left: $sidebar-width;
+  overflow-x: hidden;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+// Sidebar layout
+.sidebar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $sidebar-width;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+  
+  @media (max-width: 768px) {
+    left: -$sidebar-width;
+  }
+}
+
+// Content sections
+section {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Image containers
+.image-container {
+  max-width: 100%;
+  overflow: hidden;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Portfolio grid
+.portfolio-container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  
+  .project-card {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+}
+
+// Header and footer
+header, 
+.footer {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Contact form
+.contact {
+  form {
+    max-width: 100%;
+    
+    input, 
+    textarea,
+    button {
+      max-width: 100%;
+    }
+  }
+}
+
+// Banner section
+.banner {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+} 

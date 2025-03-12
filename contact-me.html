@@ -21,17 +21,17 @@
         </button>
 
         <!-- Sidebar Container -->
-        <div class="sidebar-container">
+        <nav id="navigator"class="sidebar-container">
             <div class="sidebar-header">
                 <h3><a href="index.html">AZA</a></h3>
             </div>
             <div class="sidebar-menu">
                 <ul>
-                    <li><a href="about-me.html">About Me</a></li>
-                    <li><a href="index.html">My Portfolio</a></li>
-                    <li><a href="code-examples.html">Code Examples</a></li>
-                    <li><a href="SCS-scheme.html">SCS Scheme</a></li>
-                    <li><a href="contact-me.html">Contact Me</a></li>
+                    <li class = "nav-tab"><a href="about-me.html">About Me</a></li>
+                    <li class = "nav-tab"><a href="#portfolio">My Portfolio</a></li>
+                    <li class = "nav-tab"><a href="code-examples.html">Code Examples</a></li>
+                    <li class = "nav-tab"><a href="scs-scheme.html">SCS Scheme</a></li>
+                    <li class = "nav-tab"><a href="#contact">Contact Me</a></li>
                 </ul>
             </div>
             <div class="sidebar-social">
@@ -39,7 +39,7 @@
                 <a href="https://www.linkedin.com/in/asifzahmad/"><i class="fab fa-linkedin"></i></a>
                 <a href="https://discord.com/users/AsifZahmad"><i class="fab fa-discord"></i></a>
             </div>
-        </div>
+        </nav>
 
         <!-- Main Content -->
         <div class="main-container">
@@ -76,5 +76,127 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        // Wrap everything in a try-catch to prevent errors from stopping execution
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Only initialize Typed.js if the element exists
+                const typedElement = document.getElementById('typed');
+                if (typedElement) {
+                    var typed = new Typed('#typed', {
+                        strings: ['Full Stack Web Developer', 'JavaScript Developer', 'PHP Developer', 'SQL Developer', 'HTML Developer', 'CSS Developer'],
+                        typeSpeed: 50,
+                        backSpeed: 50,
+                        loop: true,
+                        cursorChar: '|',
+                        className: 'typed-text-class',
+                        preStringTyped: (arrayPos, self) => {
+                            typedElement.style.opacity = '10';
+                            typedElement.style.visibility = 'visible';
+                            typedElement.style.color = '#95252f';
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Typed.js error:", e);
+                // Continue execution even if Typed.js fails
+            }
+            
+            try {
+                // Sidebar functionality
+                const btn = document.querySelector('.hamburger-menu');
+                const sidebar = document.querySelector('.sidebar-container');
+                
+                // Check if overlay exists, create it if not
+                let overlay = document.querySelector('.overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.className = 'overlay';
+                    document.querySelector('.page-wrapper').prepend(overlay);
+                }
+                
+                // Hamburger menu click handler
+                if (btn) {
+                    btn.addEventListener('click', function() {
+                        sidebar.classList.toggle('active');
+                        btn.classList.toggle('active');
+                        overlay.classList.toggle('active');
+                        
+                        if (sidebar.classList.contains('active')) {
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+                
+                // Overlay click handler
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('active');
+                    btn.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+                
+                // Navigation active state handling
+                const menuItems = document.querySelectorAll('.sidebar-menu li');
+                const currentPath = window.location.pathname;
+                const pageName = currentPath.split('/').pop() || 'index.html';
+                
+                // Set active class based on current page
+                menuItems.forEach(item => {
+                    const link = item.querySelector('a');
+                    if (link) {
+                        const href = link.getAttribute('href');
+                        if (href === pageName || 
+                            (pageName === '' && href === 'index.html') ||
+                            (pageName === 'index.html' && href === 'index.html')) {
+                            item.classList.add('active');
+                        }
+                    }
+                });
+                
+                // Click handler for menu items
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const link = this.querySelector('a');
+                        const href = link.getAttribute('href');
+                        
+                        // If not a hash link to same page
+                        if (!href.startsWith('#')) {
+                            localStorage.setItem('activeSidebarLink', href);
+                        } else {
+                            // If hash link, update active state
+                            menuItems.forEach(i => i.classList.remove('active'));
+                            this.classList.add('active');
+                        }
+                        
+                        // Close mobile menu when clicking a link
+                        if (window.innerWidth <= 768) {
+                            sidebar.classList.remove('active');
+                            btn.classList.remove('active');
+                            overlay.classList.remove('active');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                });
+                
+                // Check for previously stored active link
+                const storedLink = localStorage.getItem('activeSidebarLink');
+                if (storedLink && storedLink === pageName) {
+                    menuItems.forEach(item => {
+                        const link = item.querySelector('a');
+                        if (link && link.getAttribute('href') === storedLink) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Sidebar functionality error:", e);
+            }
+        });
+    </script>
 </body>
 </html>

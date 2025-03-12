@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 #contact, .banner {
@@ -48,9 +47,6 @@
 }
 
 html, body {
-  overflow-x: hidden;
-  width: 100%;
-  position: relative;
   height: 100%;
 }
 
@@ -86,13 +82,15 @@ ul, ol {
   display: flex;
   min-height: 100vh;
   background-color: #d2d2d0;
+  overflow-x: hidden;
+  position: relative;
 }
 
 .sidebar-container {
-  width: 180px;
+  width: 15vw;
   height: 100vh;
-  background-color: #d2d2d0;
-  color: #1e2337;
+  background-color: #1e2337;
+  color: #d2d2d0;
   position: fixed;
   top: 0;
   left: 0;
@@ -100,9 +98,11 @@ ul, ol {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  z-index: 1000;
+  transition: transform 0.3s ease-out;
 }
 .sidebar-container .sidebar-header h3 a {
-  color: #1e2337;
+  color: #d2d2d0;
   text-decoration: none;
   font-size: 24px;
 }
@@ -115,11 +115,39 @@ ul, ol {
 }
 .sidebar-container .sidebar-menu ul li {
   margin: 15px 0;
+  padding-bottom: 3px;
+  position: relative;
+}
+.sidebar-container .sidebar-menu ul li.active a {
+  color: #95252f;
+}
+.sidebar-container .sidebar-menu ul li.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #95252f;
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
+.sidebar-container .sidebar-menu ul li::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #95252f;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 .sidebar-container .sidebar-menu ul li a {
-  color: #1e2337;
+  color: #d2d2d0;
   text-decoration: none;
   font-size: 18px;
+  display: block; /* Make entire area clickable */
 }
 .sidebar-container .sidebar-menu ul li a:hover {
   color: #95252f;
@@ -135,6 +163,23 @@ ul, ol {
 }
 .sidebar-container .sidebar-social a:hover {
   color: #95252f;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.overlay.active {
+  opacity: 0.7;
+  visibility: visible;
 }
 
 .hero-text {
@@ -156,17 +201,16 @@ ul, ol {
 }
 
 .main-container {
-  margin-left: 180px;
+  margin-left: 15vw;
   flex: 1;
-  padding: 2rem;
+  padding: 20px;
   background-color: #d2d2d0;
   border-radius: 50px;
-  box-sizing: border-box;
-  width: 100%;
+  transition: margin-left 0.3s ease-out;
 }
 
 .image-container {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: url("../img/Web-Dev-Asif-Background2.webp");
   background-size: cover;
@@ -176,10 +220,11 @@ ul, ol {
   justify-content: center;
   text-align: center;
   color: #95252f;
-  font-size: 2rem;
+  font-size: 1.5rem;
   border-radius: 50px;
   margin-bottom: 20px;
   margin-left: 20px;
+  max-width: 100%;
 }
 
 .banner h1 {
@@ -196,6 +241,7 @@ ul, ol {
   gap: 20px;
   flex-wrap: wrap;
   margin-left: 20px;
+  max-width: 100%;
 }
 .portfolio-container .project-card {
   flex: 1 1 calc(25% - 20px);
@@ -259,11 +305,11 @@ ul, ol {
 }
 
 .hamburger-menu {
-  position: absolute;
+  position: fixed;
   top: 15px;
   left: 15px;
   width: 40px;
-  height: 35px; /* Increased height for better spacing */
+  height: 35px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -280,9 +326,24 @@ ul, ol {
   display: block;
   width: 35px;
   height: 4px;
-  background-color: black;
+  background-color: #95252f;
   transition: all 0.3s ease-in-out;
   border-radius: 2px;
+}
+
+/* Active state for hamburger (X shape) */
+.hamburger-menu.active {
+  left: calc(30vw - 25px); /* Position at the right edge of the sidebar */
+  top: 20px; /* Keep it at the top of the sidebar */
+}
+.hamburger-menu.active span:nth-child(1) {
+  transform: translateY(12px) rotate(45deg);
+}
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger-menu.active span:nth-child(3) {
+  transform: translateY(-12px) rotate(-45deg);
 }
 
 /* Hover Effect */
@@ -290,49 +351,37 @@ ul, ol {
   background-color: #95252f;
 }
 
-/* Active State - Transforms into "X" */
-.hamburger-menu.active span:nth-child(1) {
-  transform: translateY(11px) rotate(45deg);
-}
-
-.hamburger-menu.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-menu.active span:nth-child(3) {
-  transform: translateY(-11px) rotate(-45deg);
-}
-
-/* 🔹 Fix spacing for smaller screens */
+/* Media Queries */
 @media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
   .hamburger-menu {
     width: 45px;
     height: 40px;
+    display: block;
+    transition: left 0.3s ease-out; /* Match the sidebar transition timing */
   }
   .hamburger-menu span {
-    height: 5px; /* Slightly thicker for visibility */
-    margin: 4px 0; /* Adds spacing between lines */
-  }
-  .hamburger-menu.active span:nth-child(1) {
-    transform: translateY(12px) rotate(45deg);
-  }
-  .hamburger-menu.active span:nth-child(3) {
-    transform: translateY(-12px) rotate(-45deg);
-  }
-}
-@media (max-width: 768px) {
-  .hamburger-menu {
-    display: block;
+    height: 5px;
+    margin: 4px 0;
   }
   .hero-text {
     transition: transform 0.3s ease;
-    transform: scale(0.4);
+    transform: scale(0.33);
   }
   .sidebar-container {
-    display: none;
+    transform: translateX(-100%);
+    width: 30vw;
+    display: block !important;
+  }
+  .sidebar-container.active {
+    transform: translateX(0);
+    opacity: 0.7;
   }
   .main-container {
     margin-left: 0;
+    width: 100%;
   }
   .portfolio-container {
     flex-direction: column;
@@ -340,27 +389,21 @@ ul, ol {
   .project-card {
     flex: 1 1 100%;
   }
+  .image-container {
+    width: calc(100% - 40px);
+    margin-left: 0;
+  }
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .hamburger-menu {
     display: none;
   }
   .hero-text {
     transition: transform 0.3s ease;
-    transform: scale(0.7);
+    transform: scale(0.65);
   }
-}
-
-/* Responsive padding for different viewports */
-@media screen and (max-width: 768px) {
-  .main-container {
-    padding: 1.5rem;  /* Slightly smaller padding on mobile */
+  .sidebar-container {
+    transform: translateX(0);
+    width: 15vw;
   }
-}
-
-@media screen and (max-width: 480px) {
-  .main-container {
-    padding: 1rem;  /* Even smaller padding on very small devices */
-  }
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */
