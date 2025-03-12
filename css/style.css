@@ -257,8 +257,8 @@ ul, ol {
   position: absolute;
   top: 15px;
   left: 15px;
-  width: 30px;
-  height: 35px;
+  width: 40px;
+  height: 35px; /* Increased height for better spacing */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -275,7 +275,7 @@ ul, ol {
   display: block;
   width: 35px;
   height: 4px;
-  background-color: #1e2337;
+  background-color: black;
   transition: all 0.3s ease-in-out;
   border-radius: 2px;
 }
@@ -298,6 +298,23 @@ ul, ol {
   transform: translateY(-11px) rotate(-45deg);
 }
 
+/* 🔹 Fix spacing for smaller screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    width: 45px; /* Slightly larger for better touch interaction */
+    height: 40px; /* More height for spacing */
+  }
+  .hamburger-menu span {
+    height: 5px; /* Slightly thicker for visibility */
+    margin: 4px 0; /* Adds spacing between lines */
+  }
+  .hamburger-menu.active span:nth-child(1) {
+    transform: translateY(12px) rotate(45deg);
+  }
+  .hamburger-menu.active span:nth-child(3) {
+    transform: translateY(-12px) rotate(-45deg);
+  }
+}
 /* 🔹 Fix spacing for smaller screens */
 @media (max-width: 768px) {
   .hamburger-menu {
