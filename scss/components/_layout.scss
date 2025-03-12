@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: $background-color;
+    color: $secondary-color;
     font-size: 2rem;
     border-radius: 50px;
     margin-bottom: 20px;
@@ -235,39 +235,6 @@
     color: $primary-color;
 }
 
-// Hamburger Menu (Hidden by Default)
-// .hamburger-menu {
-//     display: block;
-//     position: absolute;
-//     top: 15px;
-//     left: 15px;
-//     background: $background-color;
-//     border: none;
-//     width: 40px;
-//     height: 30px;
-//     cursor: pointer;
-//     z-index: 1001;
-//     flex-direction: column;
-//     justify-content: space-between;
-//     align-items: center;
-//     padding: 0;
-
-//     span {
-//         display: block;
-//         width: 100%;
-//         height: 4px;
-//         background-color: $primary-color;
-//         transition: all 0.3s ease;
-//     }
-//     &:hover {
-//         background-color: lighten($background-color, 10%);
-//     }
-
-        
-//     }
-
-
-
 
 //Trying to make the hamburger menu work
 
@@ -300,25 +267,27 @@
 
 /* Hover Effect */
 .hamburger-menu:hover span {
-    background-color: #95252f;
+    background-color: $secondary-color;
 }
 
-/* Active State - Turns into "X" */
+/* Active State - Transforms into "X" */
 .hamburger-menu.active span:nth-child(1) {
     transform: translateY(11px) rotate(45deg);
 }
+
 .hamburger-menu.active span:nth-child(2) {
     opacity: 0;
 }
+
 .hamburger-menu.active span:nth-child(3) {
     transform: translateY(-11px) rotate(-45deg);
 }
 
-/* 🔹 Fix spacing for smaller screens */
+/* Spacing for smaller screens */
 @media (max-width: 768px) {
     .hamburger-menu {
-        width: 45px; /* Slightly larger for better touch interaction */
-        height: 40px; /* More height for spacing */
+        width: 45px; 
+        height: 40px; 
     }
 
     .hamburger-menu span {
@@ -336,35 +305,6 @@
 }
 
 
-/* 🔹 Fix spacing for smaller screens */
-@media (max-width: 768px) {
-    .hamburger-menu {
-        width: 30px; 
-        height: 40px; 
-    }
-
-    .hamburger-menu span {
-        height: 5px; 
-        margin: 4px 0; 
-    }
-
-    .hamburger-menu.active span:nth-child(1) {
-        transform: translateY(12px) rotate(45deg);
-    }
-
-    .hamburger-menu.active span:nth-child(3) {
-        transform: translateY(-12px) rotate(-45deg);
-    }
-}
-
-
-
-
-
-
-// Responsive Styles
-@media (max-width: 768px) {
-
 
     .hamburger-menu {
         display: block; // Show only on smaller screens
@@ -377,7 +317,7 @@
 
 
     .sidebar-container {
-        display: none; // Hide sidebar on small screens
+        display: none;// Hide sidebar on small screens
     }
 
     .main-container {

@@ -48,6 +48,9 @@
 }
 
 html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
   height: 100%;
 }
 
@@ -155,9 +158,11 @@ ul, ol {
 .main-container {
   margin-left: 180px;
   flex: 1;
-  padding: 20px;
+  padding: 2rem;
   background-color: #d2d2d0;
   border-radius: 50px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .image-container {
@@ -170,7 +175,7 @@ ul, ol {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #d2d2d0;
+  color: #95252f;
   font-size: 2rem;
   border-radius: 50px;
   margin-bottom: 20px;
@@ -285,7 +290,7 @@ ul, ol {
   background-color: #95252f;
 }
 
-/* Active State - Turns into "X" */
+/* Active State - Transforms into "X" */
 .hamburger-menu.active span:nth-child(1) {
   transform: translateY(11px) rotate(45deg);
 }
@@ -301,29 +306,12 @@ ul, ol {
 /* 🔹 Fix spacing for smaller screens */
 @media (max-width: 768px) {
   .hamburger-menu {
-    width: 45px; /* Slightly larger for better touch interaction */
-    height: 40px; /* More height for spacing */
+    width: 45px;
+    height: 40px;
   }
   .hamburger-menu span {
     height: 5px; /* Slightly thicker for visibility */
     margin: 4px 0; /* Adds spacing between lines */
-  }
-  .hamburger-menu.active span:nth-child(1) {
-    transform: translateY(12px) rotate(45deg);
-  }
-  .hamburger-menu.active span:nth-child(3) {
-    transform: translateY(-12px) rotate(-45deg);
-  }
-}
-/* 🔹 Fix spacing for smaller screens */
-@media (max-width: 768px) {
-  .hamburger-menu {
-    width: 30px;
-    height: 40px;
-  }
-  .hamburger-menu span {
-    height: 5px;
-    margin: 4px 0;
   }
   .hamburger-menu.active span:nth-child(1) {
     transform: translateY(12px) rotate(45deg);
@@ -361,4 +349,18 @@ ul, ol {
     transition: transform 0.3s ease;
     transform: scale(0.7);
   }
-}/*# sourceMappingURL=style.css.map */
+}
+
+/* Responsive padding for different viewports */
+@media screen and (max-width: 768px) {
+  .main-container {
+    padding: 1.5rem;  /* Slightly smaller padding on mobile */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-container {
+    padding: 1rem;  /* Even smaller padding on very small devices */
+  }
+}
+/*# sourceMappingURL=style.css.map */

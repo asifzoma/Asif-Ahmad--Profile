@@ -9,6 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .typed-text-class {
+            color: $secondary-color; /* Or any color you prefer */
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+    </style>
 </head>
 
 <body>  
@@ -40,7 +47,8 @@
                 <a href="https://discord.com/users/AsifZahmad"><i class="fab fa-discord"></i></a>
             </div>
         </div>
-
+        <!-- Overlay on slide out -->
+        <div class="overlay"></div>
         <!-- Main Content -->
         <div class="main-container">
             <!-- Header Section with Hero Image -->
@@ -107,9 +115,8 @@
             cursorChar: '|',
             className: 'typed-text-class',
             preStringTyped: (arrayPos, self) => {
-                document.querySelector('#typed').style.opacity = '10';
+                document.querySelector('#typed').style.opacity = '1';
                 document.querySelector('#typed').style.visibility = 'visible';
-                document.querySelector('#typed').style.color = '#95252f';
             }
         });
 
