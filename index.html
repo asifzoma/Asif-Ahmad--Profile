@@ -84,10 +84,10 @@
             <!-- Contact Form -->
             <section id="contact" class="contact">
                 <h2>Contact Me</h2>
-                <form>
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <textarea placeholder="Your Message" required></textarea>
+                <form id="contact-form">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
                     <button type="submit">Send</button>
                 </form>
             </section>
@@ -99,6 +99,8 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <!-- jQuery Validation Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script>
         // Wrap everything in a try-catch to prevent errors from stopping execution
         document.addEventListener('DOMContentLoaded', function() {
@@ -218,6 +220,53 @@
                 console.error("Sidebar functionality error:", e);
             }
         });
+
+        // Contact form validation
+        $(document).ready(function() {
+    $("#contact-form").validate({
+        // Improved accessibility
+        errorElement: "span",
+        
+        // Define validation rules
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            message: {
+                required: true,
+                minlength: 10
+            }
+        },
+        
+        // Custom error messages
+        messages: {
+            name: {
+                required: "Please enter your name",
+                minlength: "Your name must consist of at least 2 characters"
+            },
+            email: {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address"
+            },
+            message: {
+                required: "Please enter a message",
+                minlength: "Your message must be at least 10 characters long"
+            }
+        },
+        
+        // Submit handler
+        submitHandler: function(form) {
+            alert("Thank you for your message! I will get back to you soon.");
+            form.reset();
+            return false; // Prevent actual form submission
+        }
+    });
+});
     </script>
 </body>
 </html>

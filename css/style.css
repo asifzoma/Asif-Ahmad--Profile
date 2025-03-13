@@ -284,6 +284,20 @@ ul, ol {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.contact form .error {
+  color: #d2d2d0;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+.contact form input.error,
+.contact form textarea.error {
+  border: 2px solid #95252f;
+}
+.contact form input.valid,
+.contact form textarea.valid {
+  border: 1px solid #4CAF50;
+}
 .contact form button {
   background-color: #e9ebea;
   color: #1e2337;

@@ -263,6 +263,26 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+
+        }
+ // Error message styling
+            .error {
+                color: $background-color; 
+                font-size: 12px;
+                margin-top: 5px;
+                display: block;
+                                           
+                // Invalid field styling
+            }
+            input.error, 
+            textarea.error {
+                border: 2px solid $secondary-color;
+            }
+            
+             // Valid field styling
+        input.valid, 
+        textarea.valid {
+            border: 1px solid #4CAF50;
         }
 
         button {
@@ -280,6 +300,7 @@
         }
     }
 }
+
 
 // Footer
 .footer {
