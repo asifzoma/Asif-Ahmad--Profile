@@ -197,17 +197,17 @@
     
     100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba($primary-colors, 0);
+        box-shadow: 0 0 0 0 rgba($secondary-color, 0);
     }
 }
 // Base styling for all pulse points
 .pulse-point {
-    position: relative;
+    position: absolute;
     width: 20px;
     height: 20px;
     border-radius: 50%;
     background-color: $secondary-color;
-    box-shadow: 0 0 0 rgba($primary-color, 0.4);
+    box-shadow: 0 0 0 rgba($secondary-color, 0.4);
     cursor: pointer;
     animation: pulse 2s infinite;
     
@@ -236,23 +236,47 @@
        
     }
 }
-// Position each pulse point individually wide viewport
-#point1 {
-    top: 47%;
-    left: 79%;
+
+// DESKTOP POSITIONS - Move these AFTER the media query
+@media (min-width: 769px) {
+    #point1 {
+        top: 47%;
+        left: 79%;
+    }
+    #point2 {
+        top: 53%;
+        left: 78%;
+    }
+    #point3 {
+        top: 59%;
+        left: 77%;
+    }
+    #point4 {
+        top: 65%;
+        left: 75%;
+    }
 }
-#point2 {
-    top: 53%;
-    left: 78%;
+
+// MOBILE POSITIONS
+@media (max-width: 768px) {
+    #point1 {
+        top: 80%;
+        left: 25%;
+    }
+    #point2 {
+        top: 80%;
+        left: 35%;
+    }
+    #point3 {
+        top: 80%; 
+        left: 45%;
+    }
+    #point4 {
+        top: 80%;
+        left: 55%;
+    }
 }
-#point3 {
-    top: 59%;
-    left: 77%;
-}
-#point4 {
-    top: 65%;
-    left: 65%;
-}
+
 // Make sure the image container has proper positioning context
 .image-container {
     // ... existing styles ...
@@ -537,24 +561,6 @@
            
         }
     }
-
-// Position each pulse poin
-#point1 {
-    top: 89%;
-    left: 25%;
-}
-#point2 {
-    top: 80%;
-    left: 35%;
-}
-#point3 {
-    top: 580%;
-    left: 45%;
-}
-#point4 {
-    top: 80%;
-    left: 55%;
-}
 
     .main-container {
         margin-left: 07vw;
