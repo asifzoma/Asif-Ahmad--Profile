@@ -182,6 +182,84 @@
     max-width: 100%; // Prevent overflow
 }
 
+// Pulse Points
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba($secondary-color, 0.7);
+    }
+    
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 15px rgba($secondary-color, 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba($primary-colors, 0);
+    }
+}
+// Base styling for all pulse points
+.pulse-point {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: $secondary-color;
+    box-shadow: 0 0 0 rgba($primary-color, 0.4);
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    
+    // Tooltip styling
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        background-color: rgba($background-color, 0.4);
+        color: $primary-color;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 18px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events:visibleStroke ;
+        left: 30px; // Position tooltip to the right of the point
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    // Show tooltip on hover
+    &:hover::after {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+       
+    }
+}
+// Position each pulse point individually wide viewport
+#point1 {
+    top: 47%;
+    left: 79%;
+}
+#point2 {
+    top: 53%;
+    left: 78%;
+}
+#point3 {
+    top: 59%;
+    left: 77%;
+}
+#point4 {
+    top: 65%;
+    left: 65%;
+}
+// Make sure the image container has proper positioning context
+.image-container {
+    // ... existing styles ...
+    position: absolute; // Add this to support absolute positioning of pulse points
+}
+
+
 // Banner Section
 .banner {
     @extend %box-styling;
@@ -406,6 +484,77 @@
         transform: translateX(0); // Slide in when active
         opacity: 0.7; // Add opacity when active
     }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba($secondary-color, 0.7);
+        }
+        
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 15px rgba($secondary-color, 0);
+        }
+        
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba($primary-colors, 0);
+        }
+    }
+    // Base styling for all pulse points
+    .pulse-point {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: $secondary-color;
+        box-shadow: 0 0 0 rgba($primary-color, 0.4);
+        cursor: pointer;
+        animation: pulse 2s infinite;
+        
+        // Tooltip styling
+        &::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background-color: rgba($background-color, 0.4);
+            color: $primary-color;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events:visibleStroke ;
+            left: 30px; // Position tooltip to the right of the point
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        // Show tooltip on hover
+        &:hover::after {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+           
+        }
+    }
+
+// Position each pulse poin
+#point1 {
+    top: 89%;
+    left: 25%;
+}
+#point2 {
+    top: 80%;
+    left: 35%;
+}
+#point3 {
+    top: 580%;
+    left: 45%;
+}
+#point4 {
+    top: 80%;
+    left: 55%;
+}
 
     .main-container {
         margin-left: 07vw;
