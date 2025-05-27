@@ -1,3 +1,6 @@
+// Import variables
+@import 'base/variables';
+
 // Prevent horizontal scrolling site-wide
 
 // Base HTML and body constraints
@@ -21,16 +24,14 @@ html, body {
   position: relative;
 }
 
-// Container layouts
+// Main Content (Pushes next to sidebar)
 .main-container {
-  width: calc(100% - #{$sidebar-width});
-  margin-right: $sidebar-width;
-  overflow-x: hidden;
-  
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-left: 0;
-  }
+    margin-left: 15vw;
+    flex: 1;
+    padding: 20px;
+    background-color: $background-color;
+    border-radius: 50px;
+    transition: margin-left 0.3s ease-out;
 }
 
 // Sidebar layout
@@ -38,14 +39,48 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-  width: $sidebar-width;
+  width: 15vw;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1000;
+  transition: transform 0.3s ease-out;
+}
+
+// Hamburger Menu
+.hamburger-menu {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 40px;
+  height: 35px;
+  z-index: 1001;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
   
-  @media (max-width: 768px) {
-    left: -$sidebar-width;
+  span {
+    display: block;
+    width: 35px;
+    height: 4px;
+    background-color: $primary-color;
+    margin: 6px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  
+  &.active {
+    span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
   }
 }
 
@@ -71,10 +106,13 @@ section {
 .portfolio-container {
   display: flex;
   flex-wrap: wrap;
+  gap: 20px;
   max-width: 100%;
+  padding: 0 20px;
   
   .project-card {
-    flex: 1 1 auto;
+    flex: 1 1 calc(25% - 20px);
+    min-width: 250px;
     max-width: 100%;
   }
 }
@@ -105,4 +143,49 @@ header,
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+}
+
+// Media Queries
+@media (max-width: 800px) {
+  .main-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .sidebar-container {
+    transform: translateX(-100%);
+    width: 30vw;
+    
+    &.active {
+      transform: translateX(0);
+    }
+  }
+  
+  .hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .portfolio-container {
+    flex-direction: column;
+    padding: 0 10px;
+    
+    .project-card {
+      flex: 1 1 100%;
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+  
+  .snippets-container {
+    flex-direction: column;
+    
+    .snippet-card {
+      flex: 1 1 100%;
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
 } 
