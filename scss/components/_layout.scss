@@ -17,7 +17,7 @@
     width: 15vw;
     height: 100vh;
     background-color: $primary-color;
-    color: $background-color;
+    color: $light-text;
     position: fixed;
     top: 0;
     left: 0;
@@ -26,68 +26,73 @@
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
-    transition: transform 0.3s ease-out; // Add smooth transition for slide effect
+    transition: transform 0.3s ease-out;
 
-    .sidebar-header h3 a {
-        color: $background-color;
-        text-decoration: none;
-        font-size: 24px;
-
-        &:hover {
-            color: $secondary-color;
+    .sidebar-header {
+        h3 {
+            a {
+                color: $light-text;
+                text-decoration: none;
+                font-size: 24px;
+                
+                &:hover {
+                    color: $accent-color;
+                }
+            }
         }
     }
 
-    .sidebar-menu ul {
-        list-style: none;
-        padding: 0;
+    .sidebar-menu {
+        ul {
+            list-style: none;
+            padding: 0;
 
-        li {
-            margin: 15px 0;
-            padding-bottom: 3px;
-            position: relative;
-            
-            // Underline for active state
-            &.active {
-                a {
-                    color: $secondary-color;   
-                    font-weight: bold;
+            li {
+                margin: 15px 0;
+                padding-bottom: 3px;
+                position: relative;
+
+                &.active {
+                    a {
+                        color: $accent-color;
+                        font-weight: bold;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background-color: $light-text;
+                        transform: scaleX(1);
+                        transition: transform 0.3s ease;
+                    }
                 }
-                
+
                 &::after {
-                    content: '';
+                    content: "";
                     position: absolute;
                     bottom: 0;
                     left: 0;
                     width: 100%;
                     height: 2px;
-                    background-color: $background-color;
-                    transform: scaleX(1);
+                    background-color: $light-text;
+                    transform: scaleX(0);
                     transition: transform 0.3s ease;
                 }
-            }
-            
-            // Default state of the underline (hidden)
-            &::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                background-color: $background-color;
-                transform: scaleX(0);
-                transition: transform 0.3s ease;
-            }
 
-            a {
-                color: $background-color;
-                text-decoration: none;
-                font-size: 18px;
-                display: block; /* Make entire area clickable */
-            
-                &:hover {
-                    color: $secondary-color;
+                a {
+                    color: $light-text;
+                    text-decoration: none;
+                    font-size: 18px;
+                    display: block;
+                    transition: color 0.3s ease;
+
+                    &:hover {
+                        color: $accent-color;
+                    }
                 }
             }
         }
@@ -98,12 +103,12 @@
         gap: 10px;
 
         a {
-            color: $primary-color;
+            color: $light-text;
             font-size: 20px;
             transition: color 0.3s ease;
 
             &:hover {
-                color: $secondary-color;
+                color: $accent-color;
             }
         }
     }
@@ -440,6 +445,17 @@
     .sidebar-container {
         transform: translateX(0); // Always visible on desktop
         width: 15vw;
+    }
+}
+
+@media (max-width: 792px) {
+    .sidebar-container {
+        transform: translateX(-100%);
+        width: 30vw;
+
+        &.active {
+            transform: translateX(0);
+        }
     }
 }
 
