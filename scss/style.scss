@@ -1,12 +1,48 @@
 // Import variables
-@import 'base/_variables.scss';
+@import 'base/variables';
 
 // Import base
-@import 'base/_base.scss';
+@import 'base/base';
 
 // Import components
-@import 'components/_layout.scss';
+@import 'components/layout';
 @import 'components/_code-snippets.scss';
+
+// Global styles using variables
+#contact, .banner {
+  text-align: center;
+  padding: 50px;
+  background-color: $primary-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  color: $light-grey;
+}
+
+.about-me, .snippet, .SCS-scheme {
+  text-align: left;
+  padding: 50px;
+  background-color: $primary-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  color: $light-grey;
+}
+
+.sidebar-container {
+  background-color: $primary-color;
+  color: $light-grey;
+}
+
+.project-modal .modal-content {
+  background-color: $primary-color;
+  color: $light-grey;
+}
+
+.view-code-btn {
+  background-color: $primary-color;
+  color: $light-grey;
+}
 
 
 

@@ -5,18 +5,17 @@
     h2 {
         text-align: center;
         margin-bottom: 2rem;
-        color: $text-color;
+        color: $light-text;
         position: relative;
         padding: 10px 40px 10px 20px;
         transition: all 0.3s ease;
         background-color: $primary-color;
-        color: $light-text;
         border-radius: 8px;
         display: inline-block;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         &:hover {
-            color: $accent-color;
+            color: $light-text;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
@@ -50,7 +49,7 @@
 
 .snippet-card {
     flex: 1 1 calc(25% - 20px);
-    background-color: $light-bg;
+    background-color: $background-color;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -62,7 +61,7 @@
     &:hover {
         transform: scale(1.03);
         transition: transform 0.3s ease;
-        background-color: darken($light-bg, 5%);
+        background-color: darken($background-color, 5%);
     }
 
     h3 {
@@ -71,7 +70,7 @@
     }
 
     p {
-        color: $accent-color;
+        color: $primary-color;
         margin-bottom: 15px;
     }
 

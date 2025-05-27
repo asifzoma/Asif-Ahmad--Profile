@@ -1,10 +1,14 @@
 // Variable Colors
 $black: #000;
 $white: #fff;
-$primary-color: #1e2337;
-$secondary-color: #95252f;
-$background-color: #d2d2d0;
+$primary-color: #5793b3;  // Main color for the site
+$secondary-color: #95252f;  // Accent color
+$background-color: #d2d2d0;  // Light background color
+$light-text: #ffffff;  // Text color for dark backgrounds
+$text-color: #333333;  // Text color for light backgrounds
 $border-color: #e0e0e0;
+$light-grey: #d2d2d0;
+$accent-red: #95252f;
 
 // Box Styling
 %box-styling {
@@ -14,7 +18,7 @@ $border-color: #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 2px;
-    color: $background-color;
+    color: $light-text;
 }
 
 // Box Styling text left not center
@@ -25,7 +29,7 @@ $border-color: #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 2px;
-    color: $background-color;
+    color: $light-text;
 }
 
 // Google Fonts
