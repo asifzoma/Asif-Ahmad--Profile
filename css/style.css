@@ -255,7 +255,7 @@ ul, ol {
   flex: 1 1 calc(25% - 20px);
   background-color: #d2d2d0;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   margin: 8px;
@@ -399,56 +399,70 @@ ul, ol {
 }
 
 /* Media Queries */
-@media (max-width: 768px) {
+@media (max-width: 792px) {
   html, body {
     overflow-x: hidden;
   }
+
   .hamburger-menu {
+    display: flex;
     width: 45px;
     height: 40px;
-    display: block;
-    transition: left 0.3s ease-out; /* Match the sidebar transition timing */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    transition: left 0.3s ease-out;
   }
+
   .hamburger-menu span {
     height: 5px;
     margin: 4px 0;
   }
-  .hero-text {
-    transition: transform 0.3s ease;
-    transform: scale(0.33);
+
+  .hamburger-menu.active {
+    left: calc(30vw - 25px);
   }
+
   .sidebar-container {
     transform: translateX(-100%);
     width: 30vw;
-    display: block !important;
+    transition: transform 0.3s ease-out;
   }
+
   .sidebar-container.active {
     transform: translateX(0);
-    opacity: 0.7;
   }
-  .main-container {
-    margin-left: 7vw;
-    width: 100%;
-  }
-  .portfolio-container {
+
+  .portfolio-container, .snippets-container {
     flex-direction: column;
-  }
-  .project-card {
-    flex: 1 1 100%;
-  }
-  .image-container {
-    width: calc(100% - 40px);
+    align-items: center;
     margin-left: 0;
   }
+
+  .project-card, .snippet-card {
+    flex: 1 1 100%;
+    width: 95vw;
+    margin: 10px 0;
+  }
+
+  .main-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .image-container {
+    width: 95vw;
+    margin: 0 auto;
+  }
 }
-@media (min-width: 769px) {
+
+@media (min-width: 793px) {
   .hamburger-menu {
     display: none;
   }
-  .hero-text {
-    transition: transform 0.3s ease;
-    transform: scale(0.65);
-  }
+
   .sidebar-container {
     transform: translateX(0);
     width: 15vw;
@@ -505,6 +519,13 @@ ul, ol {
 /* Code Snippets Section */
 .code-snippets {
     padding: 20px;
+    text-align: center;
+}
+
+.code-snippets h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #1e2337;
 }
 
 .snippets-container {
@@ -521,7 +542,7 @@ ul, ol {
     flex: 1 1 calc(25% - 20px);
     background-color: #d2d2d0;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin: 8px;
@@ -592,11 +613,6 @@ ul, ol {
   line-height: 1.6;
 }
 
-@media (max-width: 768px) {
-    .snippets-container {
-        flex-direction: column;
-    }
-    .snippet-card {
-        flex: 1 1 100%;
-    }
-}/*# sourceMappingURL=style.css.map */
+.snippet-card .hover-prompt {
+  display: none !important;
+}
