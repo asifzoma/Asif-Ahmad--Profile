@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
   const modalCodeDesc = document.getElementById('modal-code-desc');
+  const modalCodeContainer = document.getElementById('modal-code-container');
   const modalClose = document.querySelector('.modal-close');
 
   // Add a container for the modal link if it doesn't exist
@@ -39,10 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle code snippets differently
     if (card.classList.contains('snippet-card')) {
+      modalCodeContainer.style.display = 'block';
       modalDesc.textContent = desc;
       modalCodeDesc.textContent = card.querySelector('p').textContent;
       modalCodeDesc.style.display = 'block';
     } else {
+      modalCodeContainer.style.display = 'none';
       modalDesc.textContent = desc;
       modalCodeDesc.style.display = 'none';
     }
