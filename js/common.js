@@ -11,14 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
   // Code snippets accordion
   const snippetsHeading = document.querySelector('.code-snippets h2');
   const snippetsContainer = document.querySelector('.snippets-container');
-  const sidebarCodeLink = document.querySelector('.nav-tab a[href*="code-examples"]');
+  const sidebarCodeLink = document.querySelector('.nav-tab a[href="#code-snippets"]');
   
-  function toggleSnippets() {
+  function toggleSnippets(shouldOpen = true) {
     if (snippetsContainer) {
-      const isVisible = snippetsContainer.style.display === 'flex';
-      snippetsContainer.style.display = isVisible ? 'none' : 'flex';
+      snippetsContainer.style.display = shouldOpen ? 'flex' : 'none';
       if (snippetsHeading) {
-        snippetsHeading.classList.toggle('active');
+        snippetsHeading.classList.toggle('active', shouldOpen);
       }
     }
   }
@@ -27,18 +26,18 @@ document.addEventListener('DOMContentLoaded', function() {
     snippetsContainer.style.display = 'none';
     snippetsHeading.style.cursor = 'pointer';
     
-    snippetsHeading.addEventListener('click', toggleSnippets);
+    snippetsHeading.addEventListener('click', () => toggleSnippets(snippetsContainer.style.display !== 'flex'));
   }
 
   // Handle sidebar menu click
   if (sidebarCodeLink) {
     sidebarCodeLink.addEventListener('click', function(e) {
       e.preventDefault();
-      toggleSnippets();
-      // Scroll to the code snippets section
       const codeSection = document.querySelector('.code-snippets');
       if (codeSection) {
         codeSection.scrollIntoView({ behavior: 'smooth' });
+        // Open the accordion after scrolling
+        setTimeout(() => toggleSnippets(true), 500);
       }
     });
   }
