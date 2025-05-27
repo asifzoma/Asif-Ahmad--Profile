@@ -1,0 +1,140 @@
+.code-snippets {
+    padding: 20px;
+    text-align: center;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $text-color;
+        position: relative;
+        padding: 10px 40px 10px 20px;
+        transition: all 0.3s ease;
+        background-color: $primary-color;
+        color: $light-text;
+        border-radius: 8px;
+        display: inline-block;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+            color: $accent-color;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        &::after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        &.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+    }
+}
+
+.snippets-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-left: 20px;
+    max-width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.snippet-card {
+    flex: 1 1 calc(25% - 20px);
+    background-color: $light-bg;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 8px;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.03);
+        transition: transform 0.3s ease;
+        background-color: darken($light-bg, 5%);
+    }
+
+    h3 {
+        margin-top: 10px;
+        color: $text-color;
+    }
+
+    p {
+        color: $accent-color;
+        margin-bottom: 15px;
+    }
+
+    .hover-prompt {
+        display: none !important;
+    }
+}
+
+.view-code-btn {
+    background-color: $primary-color;
+    color: $light-text;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: $accent-color;
+    }
+}
+
+#modal-code-container {
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    background-color: $light-bg;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+#modal-desc {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre;
+    text-align: left;
+    padding: 15px;
+    margin: 0;
+    color: $text-color;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#modal-code-desc {
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    background-color: lighten($light-bg, 2%);
+    border-radius: 4px;
+    margin-top: 10px;
+    color: $text-color;
+    line-height: 1.6;
+}
+
+@media (max-width: 792px) {
+    .snippets-container {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+    }
+
+    .snippet-card {
+        flex: 1 1 100%;
+        width: 95vw;
+        margin: 10px 0;
+    }
+} 
