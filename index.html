@@ -85,6 +85,58 @@
                 </div>
             </section>
 
+            <!-- Code Snippets Section -->
+            <section class="code-snippets">
+                <h2 id="code-snippets">Code Snippets</h2>
+                <div class="snippets-container">
+                    <div class="snippet-card" data-full-desc="// Example of a modern JavaScript function using arrow syntax and async/await
+const fetchData = async (url) => {
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error;
+    }
+};">
+                        <h3>Modern JavaScript Fetch</h3>
+                        <p>Async/await pattern for data fetching...</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="hover-prompt">Click to expand</div>
+                    </div>
+                    <div class="snippet-card" data-full-desc="// SCSS Mixin for responsive design
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == phone {
+        @media (max-width: 600px) { @content; }
+    }
+    @if $breakpoint == tablet {
+        @media (max-width: 900px) { @content; }
+    }
+    @if $breakpoint == desktop {
+        @media (min-width: 901px) { @content; }
+    }
+}">
+                        <h3>SCSS Responsive Mixin</h3>
+                        <p>Media query mixin for responsive design...</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="hover-prompt">Click to expand</div>
+                    </div>
+                    <div class="snippet-card" data-full-desc="// CSS Grid Layout Example
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}">
+                        <h3>CSS Grid Layout</h3>
+                        <p>Responsive grid system using CSS Grid...</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="hover-prompt">Click to expand</div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Contact Form -->
             <section id="contact" class="contact">
                 <h2>Contact Me</h2>
@@ -108,6 +160,7 @@
         <img id="modal-img" src="" alt="Project Image">
         <h3 id="modal-title"></h3>
         <p id="modal-desc"></p>
+        <p id="modal-code-desc"></p>
       </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

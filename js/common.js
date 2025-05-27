@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const modalImg = document.getElementById('modal-img');
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
+  const modalCodeDesc = document.getElementById('modal-code-desc');
   const modalClose = document.querySelector('.modal-close');
 
   // Add a container for the modal link if it doesn't exist
@@ -17,34 +18,53 @@ document.addEventListener('DOMContentLoaded', function() {
     modalDesc.parentNode.appendChild(modalLink);
   }
 
-  // Add click listeners to all project cards
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', function() {
-      // Get info from card
-      const img = card.querySelector('img');
-      const title = card.querySelector('h3');
-      // Use data-full-desc if present, otherwise fallback to <p>
-      const desc = card.getAttribute('data-full-desc') || (card.querySelector('p') ? card.querySelector('p').textContent : 'Short project description goes here.');
-      const btn = card.querySelector('.btn');
+  // Function to handle card clicks
+  function handleCardClick(card) {
+    // Get info from card
+    const img = card.querySelector('img');
+    const title = card.querySelector('h3');
+    const desc = card.getAttribute('data-full-desc') || (card.querySelector('p') ? card.querySelector('p').textContent : '');
+    const btn = card.querySelector('.btn');
 
-      // Populate modal
-      modalImg.src = img ? img.src : '';
-      modalImg.alt = img ? img.alt : '';
-      modalTitle.textContent = title ? title.textContent : '';
+    // Populate modal
+    if (img) {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modalImg.style.display = 'block';
+    } else {
+      modalImg.style.display = 'none';
+    }
+    
+    modalTitle.textContent = title ? title.textContent : '';
+    
+    // Handle code snippets differently
+    if (card.classList.contains('snippet-card')) {
       modalDesc.textContent = desc;
+      modalCodeDesc.textContent = card.querySelector('p').textContent;
+      modalCodeDesc.style.display = 'block';
+    } else {
+      modalDesc.textContent = desc;
+      modalCodeDesc.style.display = 'none';
+    }
 
-      // Show link if present
-      if (btn) {
-        modalLink.href = btn.href;
-        modalLink.textContent = btn.textContent;
-        modalLink.target = btn.target || '_blank';
-        modalLink.style.display = 'inline-block';
-      } else {
-        modalLink.style.display = 'none';
-      }
+    // Show link if present (only for project cards)
+    if (btn) {
+      modalLink.href = btn.href;
+      modalLink.textContent = btn.textContent;
+      modalLink.target = btn.target || '_blank';
+      modalLink.style.display = 'inline-block';
+    } else {
+      modalLink.style.display = 'none';
+    }
 
-      // Show modal
-      modal.style.display = 'flex';
+    // Show modal
+    modal.style.display = 'flex';
+  }
+
+  // Add click listeners to all project cards
+  document.querySelectorAll('.project-card, .snippet-card').forEach(card => {
+    card.addEventListener('click', function() {
+      handleCardClick(this);
     });
   });
 
