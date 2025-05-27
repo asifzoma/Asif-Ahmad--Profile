@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', function() {
       modalDesc.textContent = desc;
       modalCodeDesc.textContent = card.querySelector('p').textContent;
       modalCodeDesc.style.display = 'block';
+      
+      // Ensure code container is visible and scrollable
+      modalCodeContainer.style.maxHeight = '60vh';
+      modalCodeContainer.style.overflowY = 'auto';
     } else {
       modalCodeContainer.style.display = 'none';
       modalDesc.textContent = desc;
