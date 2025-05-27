@@ -8,6 +8,41 @@ document.addEventListener('DOMContentLoaded', function() {
   const modalCodeContainer = document.getElementById('modal-code-container');
   const modalClose = document.querySelector('.modal-close');
 
+  // Code snippets accordion
+  const snippetsHeading = document.querySelector('.code-snippets h2');
+  const snippetsContainer = document.querySelector('.snippets-container');
+  const sidebarCodeLink = document.querySelector('.nav-tab a[href*="code-examples"]');
+  
+  function toggleSnippets() {
+    if (snippetsContainer) {
+      const isVisible = snippetsContainer.style.display === 'flex';
+      snippetsContainer.style.display = isVisible ? 'none' : 'flex';
+      if (snippetsHeading) {
+        snippetsHeading.classList.toggle('active');
+      }
+    }
+  }
+  
+  if (snippetsHeading && snippetsContainer) {
+    snippetsContainer.style.display = 'none';
+    snippetsHeading.style.cursor = 'pointer';
+    
+    snippetsHeading.addEventListener('click', toggleSnippets);
+  }
+
+  // Handle sidebar menu click
+  if (sidebarCodeLink) {
+    sidebarCodeLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      toggleSnippets();
+      // Scroll to the code snippets section
+      const codeSection = document.querySelector('.code-snippets');
+      if (codeSection) {
+        codeSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   // Add a container for the modal link if it doesn't exist
   let modalLink = document.getElementById('modal-link');
   if (!modalLink) {
