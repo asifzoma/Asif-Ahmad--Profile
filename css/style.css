@@ -846,3 +846,54 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 .code-modal .modal-content .modal-close:hover {
   color: #95252f;
 }
+
+.about-accordion {
+  margin: 2rem 0;
+  width: 100%;
+  padding: 0;
+}
+
+.about-accordion .accordion-btn {
+  width: 100%;
+  padding: 1.5rem;
+  background-color: #d2d2d0;
+  color: #020a19;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.about-accordion .accordion-btn i {
+  transition: transform 0.3s ease;
+  margin-left: 0.5rem;
+  color: #020a19;
+}
+
+.about-accordion .accordion-btn:hover {
+  background-color: #b9b9b6;
+}
+
+.about-accordion .accordion-btn.active i {
+  transform: rotate(180deg);
+}
+
+.about-accordion .accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background-color: #020a19;
+  color: #d2d2d0;
+  text-align: center;
+}
+
+.about-accordion .accordion-content p {
+  padding: 1.5rem;
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

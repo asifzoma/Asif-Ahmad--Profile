@@ -175,4 +175,43 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         });
     }
+
+    // Accordion functionality
+    const accordionBtn = document.querySelector('.accordion-btn');
+    const accordionContent = document.querySelector('.accordion-content');
+
+    if (accordionBtn && accordionContent) {
+        // Function to open accordion
+        function openAccordion() {
+            accordionBtn.classList.add('active');
+            accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+        }
+
+        // Function to close accordion
+        function closeAccordion() {
+            accordionBtn.classList.remove('active');
+            accordionContent.style.maxHeight = "0";
+        }
+
+        // Toggle accordion on click
+        accordionBtn.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeAccordion();
+            } else {
+                openAccordion();
+            }
+        });
+
+        // Check if we should open the accordion based on hash
+        if (window.location.hash === '#about-accordion') {
+            openAccordion();
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', function() {
+            if (window.location.hash === '#about-accordion') {
+                openAccordion();
+            }
+        });
+    }
 }); 
