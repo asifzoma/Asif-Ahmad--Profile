@@ -380,7 +380,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     width: 100%;
     margin: 2rem 0;
     padding: 20px 50px;
-    background-color: $primary-color;
+    background-color: $secondary-color;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -451,7 +451,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         padding: 50px;
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-        max-width: 700px;
+        max-width: 10000px;
         width: 100%;
         text-align: center;
         margin: 0 auto;
@@ -485,6 +485,37 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             margin-bottom: 0.5rem;
         }
     }
+}
+
+#contact, .contact {
+    background-color: $secondary-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    color: $primary-color;
+    text-align: center;
+    padding: 50px;
+
+    h2 {
+        color: #fff;
+    }
+}
+
+.contact form button[type="submit"] {
+    background-color: $background-color;
+    color: $primary-color;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s;
+}
+
+.contact form button[type="submit"]:hover {
+    background-color: darken($background-color, 10%);
+    color: $primary-color;
 }
 
 

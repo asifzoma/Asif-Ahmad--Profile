@@ -397,7 +397,9 @@
     }
 
     .image-container {
-        transform: scale(1.5); // Zoom in by 50%
+        margin-bottom: 20px;
+        z-index: -50;
+        transform: scale(1); // Zoom in by 50%
         transform-origin: center center;
         overflow: hidden;
     }

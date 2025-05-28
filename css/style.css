@@ -429,7 +429,9 @@ ul, ol {
     transform: scale(0.33);
   }
   .image-container {
-    transform: scale(1.5);
+    margin-bottom: 20px;
+    z-index: -50;
+    transform: scale(1);
     transform-origin: center center;
     overflow: hidden;
   }
@@ -600,7 +602,6 @@ ul, ol {
 
 @media (max-width: 792px) {
   .snippets-container {
-    flex-direction: column;
     align-items: center;
     margin-left: 0;
   }
@@ -979,7 +980,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   width: 100%;
   margin: 2rem 0;
   padding: 20px 50px;
-  background-color: #020a19;
+  background-color: #95252f;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -1049,7 +1050,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   padding: 50px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  max-width: 700px;
+  max-width: 10000px;
   width: 100%;
   text-align: center;
   margin: 0 auto;
@@ -1086,4 +1087,35 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
 .scion-scheme-section .scion-card li {
   margin-bottom: 0.5rem;
+}
+
+#contact, .contact {
+  background-color: #95252f;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 2px;
+  color: #020a19;
+  text-align: center;
+  padding: 50px;
+}
+
+#contact h2, .contact h2 {
+  color: #fff;
+}
+
+.contact form button[type="submit"] {
+  background-color: #d2d2d0;
+  color: #020a19;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s, color 0.3s;
+}
+
+.contact form button[type="submit"]:hover {
+  background-color: #b9b9b6;
+  color: #020a19;
 }
