@@ -847,17 +847,18 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   color: #95252f;
 }
 
-.about-accordion {
+#about-accordion {
   margin: 2rem 0;
   width: 100%;
-  padding: 0;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.about-accordion .accordion-btn {
+#about-accordion .accordion-btn {
   width: 100%;
   padding: 1.5rem;
-  background-color: #d2d2d0;
-  color: #020a19;
+  background-color: black;
+  color: #d2d2d0;
   border: none;
   cursor: pointer;
   display: flex;
@@ -865,35 +866,85 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   justify-content: center;
   gap: 1rem;
   font-size: 1.2rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.about-accordion .accordion-btn i {
+#about-accordion .accordion-btn i {
   transition: transform 0.3s ease;
   margin-left: 0.5rem;
-  color: #020a19;
+  color: #d2d2d0;
 }
 
-.about-accordion .accordion-btn:hover {
-  background-color: #b9b9b6;
+#about-accordion .accordion-btn:hover {
+  background-color: #020a19;
+  color: #d2d2d0;
 }
 
-.about-accordion .accordion-btn.active i {
+#about-accordion .accordion-btn.active {
+  background-color: #020a19;
+}
+
+#about-accordion .accordion-btn.active i {
   transform: rotate(180deg);
 }
 
-.about-accordion .accordion-content {
+#about-accordion .accordion-content {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  background-color: #020a19;
+  background-color: black;
   color: #d2d2d0;
   text-align: center;
 }
 
-.about-accordion .accordion-content p {
+#about-accordion .accordion-content p {
   padding: 1.5rem;
   margin: 0;
   font-size: 1.1rem;
   line-height: 1.6;
+}
+
+.project-card, .snippet-card {
+  background-color: black;
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: #d2d2d0;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.project-card h3, .snippet-card h3 {
+  color: #d2d2d0;
+  margin-bottom: 1rem;
+}
+
+.project-card p, .snippet-card p {
+  color: #d2d2d0;
+  margin-bottom: 1.5rem;
+}
+
+.project-card .btn, .project-card .view-code-btn, .snippet-card .btn, .snippet-card .view-code-btn {
+  background-color: #d2d2d0;
+  color: #020a19;
+  border: none;
+  border-radius: 4px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.project-card .btn:hover, .project-card .view-code-btn:hover, .snippet-card .btn:hover, .snippet-card .view-code-btn:hover {
+  background-color: #b9b9b6;
+  color: #020a19;
+}
+
+.project-card:hover, .snippet-card:hover {
+  background-color: #020a19;
+}
+
+.project-card:hover h3, .project-card:hover p, .snippet-card:hover h3, .snippet-card:hover p {
+  color: #d2d2d0;
 }

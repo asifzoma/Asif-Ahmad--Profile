@@ -248,16 +248,17 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 }
 
 // Accordion Styles
-.about-accordion {
+#about-accordion {
     margin: 2rem 0;
     width: 100%;
-    padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
 
     .accordion-btn {
         width: 100%;
         padding: 1.5rem;
-        background-color: $light-grey;
-        color: $primary-color;
+        background-color: darken($primary-color, 15%);
+        color: $light-grey;
         border: none;
         cursor: pointer;
         display: flex;
@@ -265,19 +266,22 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         justify-content: center;
         gap: 1rem;
         font-size: 1.2rem;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
 
         i {
             transition: transform 0.3s ease;
             margin-left: 0.5rem;
-            color: $primary-color;
+            color: $light-grey;
         }
 
         &:hover {
-            background-color: darken($light-grey, 10%);
+            background-color: $primary-color;
+            color: $light-grey;
         }
 
         &.active {
+            background-color: $primary-color;
+            
             i {
                 transform: rotate(180deg);
             }
@@ -288,7 +292,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
-        background-color: $primary-color;
+        background-color: darken($primary-color, 15%);
         color: $light-grey;
         text-align: center;
 
@@ -297,6 +301,51 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             margin: 0;
             font-size: 1.1rem;
             line-height: 1.6;
+        }
+    }
+}
+
+.project-card, .snippet-card {
+    background-color: darken($primary-color, 15%);
+    border-radius: 8px;
+    padding: 1.5rem;
+    color: $light-grey;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    h3 {
+        color: $light-grey;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        color: $light-grey;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn, .view-code-btn {
+        background-color: $light-grey;
+        color: $primary-color;
+        border: none;
+        border-radius: 4px;
+        padding: 0.8rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+
+        &:hover {
+            background-color: darken($light-grey, 10%);
+            color: $primary-color;
+        }
+    }
+
+    &:hover {
+        background-color: $primary-color;
+        
+        h3, p {
+            color: $light-grey;
         }
     }
 }
