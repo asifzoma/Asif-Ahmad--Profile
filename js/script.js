@@ -1,9 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Remove any existing modals on page load
-    const existingModal = document.querySelector('.project-modal');
-    if (existingModal) {
-        document.body.removeChild(existingModal);
-    }
+    // Create project modal structure once
+    const projectModal = document.createElement('div');
+    projectModal.className = 'project-modal';
+    projectModal.style.display = 'none';
+    
+    const projectModalContent = document.createElement('div');
+    projectModalContent.className = 'modal-content';
+    
+    const projectCloseBtn = document.createElement('button');
+    projectCloseBtn.className = 'modal-close';
+    projectCloseBtn.innerHTML = '&times;';
+    
+    projectModalContent.appendChild(projectCloseBtn);
+    projectModal.appendChild(projectModalContent);
+    document.body.appendChild(projectModal);
+
+    // Create code snippet modal structure once
+    const codeModal = document.createElement('div');
+    codeModal.className = 'code-modal';
+    codeModal.style.display = 'none';
+    
+    const codeModalContent = document.createElement('div');
+    codeModalContent.className = 'modal-content';
+    
+    const codeCloseBtn = document.createElement('button');
+    codeCloseBtn.className = 'modal-close';
+    codeCloseBtn.innerHTML = '&times;';
+    
+    codeModalContent.appendChild(codeCloseBtn);
+    codeModal.appendChild(codeModalContent);
+    document.body.appendChild(codeModal);
 
     // Portfolio card expansion functionality
     const projectCards = document.querySelectorAll('.project-card');
@@ -20,57 +46,133 @@ document.addEventListener('DOMContentLoaded', function() {
             const image = this.querySelector('img').src;
             const liveSiteUrl = this.querySelector('.btn')?.href;
             
-            // Create modal container
-            const modal = document.createElement('div');
-            modal.className = 'project-modal';
-            
-            // Create modal content
-            const modalContent = document.createElement('div');
-            modalContent.className = 'modal-content';
-            
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'modal-close';
-            closeBtn.innerHTML = '&times;';
-            closeBtn.onclick = function() {
-                document.body.removeChild(modal);
-            };
-            
-            // Create modal content structure
-            modalContent.innerHTML = `
+            // Update project modal content
+            projectModalContent.innerHTML = `
+                <button class="modal-close">&times;</button>
                 <img src="${image}" alt="${title}">
                 <h3>${title}</h3>
                 <p>${fullDesc}</p>
                 ${liveSiteUrl ? `<a href="${liveSiteUrl}" class="btn" target="_blank">View Live Site</a>` : ''}
             `;
             
-            // Add close button to modal content
-            modalContent.appendChild(closeBtn);
+            // Show project modal with animation
+            projectModal.style.display = 'flex';
+            setTimeout(() => {
+                projectModal.classList.add('active');
+                projectModalContent.classList.add('active');
+            }, 10);
             
-            // Add modal content to modal container
-            modal.appendChild(modalContent);
-            
-            // Add modal to body
-            document.body.appendChild(modal);
-            
-            // Add click event to close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    document.body.removeChild(modal);
-                }
-            });
+            document.body.style.overflow = 'hidden';
         });
+    });
+
+    // Code snippet expansion functionality
+    const snippetCards = document.querySelectorAll('.snippet-card');
+    
+    snippetCards.forEach(card => {
+        // Remove click event from the card itself
+        card.style.cursor = 'default';
+        
+        // Add click event to the View Code button
+        const viewCodeBtn = card.querySelector('.view-code-btn');
+        if (viewCodeBtn) {
+            viewCodeBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent card click event
+                
+                const fullDesc = card.getAttribute('data-full-desc');
+                const title = card.querySelector('h3').textContent;
+                const description = card.querySelector('p').textContent;
+                
+                // Get the detailed explanation from the data attribute
+                const detailedExplanation = card.getAttribute('data-detailed-explanation') || 
+                    `This code snippet demonstrates ${description.toLowerCase()}. The implementation includes proper error handling, security measures, and follows best practices for maintainable and scalable code.`;
+                
+                // Update code modal content
+                codeModalContent.innerHTML = `
+                    <button class="modal-close">&times;</button>
+                    <h3>${title}</h3>
+                    <p class="code-description">${description}</p>
+                    <pre><code>${fullDesc}</code></pre>
+                    <div class="code-explanation">
+                        <h4>Code Explanation</h4>
+                        <p>${detailedExplanation}</p>
+                    </div>
+                `;
+                
+                // Show code modal with animation
+                codeModal.style.display = 'flex';
+                setTimeout(() => {
+                    codeModal.classList.add('active');
+                    codeModalContent.classList.add('active');
+                }, 10);
+                
+                document.body.style.overflow = 'hidden';
+            });
+        }
+    });
+
+    // Close project modal
+    projectModal.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-close') || e.target === projectModal) {
+            projectModal.classList.remove('active');
+            projectModalContent.classList.remove('active');
+            
+            setTimeout(() => {
+                projectModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    });
+
+    // Close code modal
+    codeModal.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-close') || e.target === codeModal) {
+            codeModal.classList.remove('active');
+            codeModalContent.classList.remove('active');
+            
+            setTimeout(() => {
+                codeModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    });
+
+    // Close modals on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (projectModal.style.display === 'flex') {
+                projectModal.classList.remove('active');
+                projectModalContent.classList.remove('active');
+                setTimeout(() => {
+                    projectModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+            if (codeModal.style.display === 'flex') {
+                codeModal.classList.remove('active');
+                codeModalContent.classList.remove('active');
+                setTimeout(() => {
+                    codeModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
     });
 
     // Prevent portfolio expansion when clicking sidebar navigation
     const portfolioNavLink = document.querySelector('a[href="index.html#portfolio"]');
     if (portfolioNavLink) {
-        portfolioNavLink.addEventListener('click', function(e) {
-            // Remove any existing modals
-            const existingModal = document.querySelector('.project-modal');
-            if (existingModal) {
-                document.body.removeChild(existingModal);
-            }
+        portfolioNavLink.addEventListener('click', function() {
+            projectModal.classList.remove('active');
+            projectModalContent.classList.remove('active');
+            codeModal.classList.remove('active');
+            codeModalContent.classList.remove('active');
+            
+            setTimeout(() => {
+                projectModal.style.display = 'none';
+                codeModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
         });
     }
 }); 
