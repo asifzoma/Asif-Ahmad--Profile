@@ -376,6 +376,64 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     }
 }
 
+#code-snippets {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 0 50px;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $primary-color;
+    }
+
+    .snippets-container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .snippet-card {
+        .view-code-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background-color: $light-grey;
+            color: $primary-color;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            i {
+                transition: transform 0.3s ease;
+                margin-left: 0.5rem;
+                color: $primary-color;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            &:hover {
+                background-color: darken($light-grey, 10%);
+                color: $primary-color;
+            }
+
+            &.active {
+                background-color: darken($light-grey, 5%);
+                
+                i {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+}
+
 
 
 
