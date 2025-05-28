@@ -956,7 +956,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
 .banner {
   text-align: center;
-  padding: 50px;
+  padding: 5px;
   background-color: #020a19;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -978,7 +978,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 #code-snippets {
   width: 100%;
   margin: 2rem 0;
-  padding: 0 50px;
+  padding: 20px 50px;
   background-color: #020a19;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -992,11 +992,11 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 }
 
 #code-snippets .snippets-container {
-  width: 100%;
+  width: 90%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 0 0 2rem 0;
+  padding: 1rem;
 }
 
 #code-snippets .snippet-card .view-code-btn {
@@ -1034,4 +1034,56 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
 #code-snippets .snippet-card .view-code-btn.active i {
   transform: rotate(180deg);
+}
+
+.scion-scheme-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.scion-scheme-section .scion-card {
+  background-color: #d2d2d0;
+  color: #020a19;
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  max-width: 700px;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.scion-scheme-section .scion-card h2 {
+  color: #020a19;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.scion-scheme-section .scion-card h3 {
+  color: #020a19;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.scion-scheme-section .scion-card p {
+  color: #020a19;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 auto 1rem auto;
+}
+
+.scion-scheme-section .scion-card ul {
+  color: #020a19;
+  font-size: 1.05rem;
+  margin: 1.5rem auto 0 auto;
+  padding-left: 0;
+  list-style: disc inside;
+  text-align: left;
+  display: inline-block;
+}
+
+.scion-scheme-section .scion-card li {
+  margin-bottom: 0.5rem;
 }
