@@ -259,6 +259,56 @@
     @extend %box-styling-text-left;
 }
 
+.about-accordion {
+  background: $background-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin: 24px 0;
+  overflow: hidden;
+}
+
+.accordion-btn {
+  width: 100%;
+  background: $primary-color;
+  color: $light-text;
+  border: none;
+  outline: none;
+  padding: 18px 24px;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion-btn.active, .accordion-btn:hover {
+  background: darken($primary-color, 8%);
+}
+
+.accordion-btn i {
+  margin-left: 12px;
+  transition: transform 0.3s;
+}
+
+.accordion-btn.active i {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  background: $light-background;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  padding: 0 24px;
+}
+
+.accordion-btn.active + .accordion-content {
+  padding: 18px 24px;
+}
+
 // Contact Section
 #contact {
     @extend %box-styling;

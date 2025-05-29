@@ -202,16 +202,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Check if we should open the accordion based on hash
+        // Sidebar About Me and AZA buttons always open accordion and scroll
+        document.querySelectorAll('a[href="#about-accordion"]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                setTimeout(function() {
+                    openAccordion();
+                    document.getElementById('about-accordion').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 10);
+            });
+        });
+
+        // Open accordion on initial load if hash is present
         if (window.location.hash === '#about-accordion') {
             openAccordion();
         }
-
-        // Listen for hash changes
-        window.addEventListener('hashchange', function() {
-            if (window.location.hash === '#about-accordion') {
-                openAccordion();
-            }
-        });
     }
 }); 
