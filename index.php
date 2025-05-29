@@ -83,4 +83,3 @@
     <script src="js/common.js"></script>
 </body>
 </html>
-<?php include 'footer.php'; ?>

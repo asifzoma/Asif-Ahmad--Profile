@@ -49,10 +49,10 @@
 
 html, body {
   height: 100%;
-}
-
-body {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   font-family: "Noto Sans", sans-serif;
 }
 
@@ -82,7 +82,9 @@ ul, ol {
 }
 
 .page-wrapper {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: #d2d2d0;
   overflow-x: hidden;
@@ -227,8 +229,8 @@ ul, ol {
 }
 
 .main-container {
-  margin-left: 15vw;
   flex: 1;
+  margin-left: 15vw;
   padding: 20px;
   background-color: #d2d2d0;
   border-radius: 50px;
@@ -357,6 +359,8 @@ ul, ol {
   padding: 20px;
   background-color: #d2d2d0;
   color: #020a19;
+  margin-top: auto;
+  width: 100%;
 }
 
 .hamburger-menu {
