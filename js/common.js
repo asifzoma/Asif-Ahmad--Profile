@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Optional: Close modal on Escape key
+  // Close modal on Escape key
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.style.display === 'flex') modal.style.display = 'none';
   });
