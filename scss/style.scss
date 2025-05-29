@@ -253,7 +253,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     margin: 2rem 0;
     padding: 0 50px;
 
-    .accordion-btn {
+    .about-accordion-btn {
         width: 100%;
         padding: 1.5rem;
         background-color: $light-grey;
@@ -289,7 +289,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         }
     }
 
-    .accordion-content {
+    .about-accordion-content {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
