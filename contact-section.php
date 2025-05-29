@@ -1,7 +1,7 @@
             <!-- Contact Form -->
             <section id="contact" class="contact">
                 <h2>Contact Me</h2>
-                <form id="contact-form">
+                <form id="contact-form" action="contact_submit.php" method="post">
                     <input type="text" name="name" placeholder="Your Name" required>
                     <input type="email" name="email" placeholder="Your Email" required>
                     <textarea name="message" placeholder="Your Message" required></textarea>
