@@ -138,8 +138,36 @@ $(document).ready(function() {
             }
         },
         submitHandler: function(form) {
-            alert("Thank you for your message! I will get back to you soon.");
-            form.submit();
+            $.ajax({
+                url: 'contact_submit.php',
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function(response) {
+                    let msgBox = document.getElementById('submission-success');
+                    if (!msgBox) {
+                        msgBox = document.createElement('div');
+                        msgBox.id = 'submission-success';
+                        msgBox.innerHTML = '<strong>Thank you for your message! I will get back to you soon.</strong>';
+                        document.body.appendChild(msgBox);
+                    } else {
+                        msgBox.innerHTML = '<strong>Thank you for your message! I will get back to you soon.</strong>';
+                    }
+                    // Use a slower transition
+                    msgBox.style.transition = 'opacity 1.2s';
+                    msgBox.classList.add('active');
+                    setTimeout(() => {
+                        msgBox.classList.remove('active');
+                        setTimeout(() => {
+                            if (msgBox.parentNode) msgBox.parentNode.removeChild(msgBox);
+                        }, 1200);
+                    }, 3500);
+                    form.reset();
+                },
+                error: function() {
+                    alert('There was an error submitting the form. Please try again.');
+                }
+            });
+            return false;
         }
     });
 }); 
