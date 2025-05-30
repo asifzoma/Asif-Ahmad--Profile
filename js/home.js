@@ -139,8 +139,7 @@ $(document).ready(function() {
         },
         submitHandler: function(form) {
             alert("Thank you for your message! I will get back to you soon.");
-            form.reset();
-            return false;
+            form.submit();
         }
     });
 }); 
