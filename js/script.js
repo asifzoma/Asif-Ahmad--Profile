@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Always hide modals on page load (safety)
+    const existingProjectModal = document.querySelector('.project-modal');
+    if (existingProjectModal) {
+        existingProjectModal.style.display = 'none';
+        existingProjectModal.classList.remove('active');
+    }
+    const existingCodeModal = document.querySelector('.code-modal');
+    if (existingCodeModal) {
+        existingCodeModal.style.display = 'none';
+        existingCodeModal.classList.remove('active');
+    }
+
     // Create project modal structure once
     const projectModal = document.createElement('div');
     projectModal.className = 'project-modal';
@@ -114,13 +126,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Close project modal
     projectModal.addEventListener('click', function(e) {
         if (e.target.classList.contains('modal-close') || e.target === projectModal) {
+            console.log('Closing project modal'); // Debug log
             projectModal.classList.remove('active');
             projectModalContent.classList.remove('active');
-            
             setTimeout(() => {
                 projectModal.style.display = 'none';
                 document.body.style.overflow = '';
-            }, 300);
+                // Extra safety: remove any lingering active class
+                projectModal.classList.remove('active');
+                projectModalContent.classList.remove('active');
+            }, 350);
         }
     });
 
