@@ -1,0 +1,17 @@
+{
+    "name": "user/profile",
+    "autoload": {
+        "psr-4": {
+            "User\\Profile\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Asif Ahmad",
+            "email": "asif.zoma.ahmad@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
