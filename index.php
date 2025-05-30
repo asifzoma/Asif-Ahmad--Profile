@@ -81,5 +81,17 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="js/home.js"></script>
     <script src="js/common.js"></script>
+
+    <!-- Project/Snippet Modal -->
+    <div id="project-modal" class="modal" style="display:none;">
+      <span class="modal-close">&times;</span>
+      <img id="modal-img" src="" alt="" style="display:none;">
+      <h2 id="modal-title"></h2>
+      <div id="modal-desc"></div>
+      <div id="modal-code-container" style="display:none;">
+        <pre id="modal-code-desc"></pre>
+      </div>
+      <!-- The modal-link <a> will be injected by JS if needed -->
+    </div>
 </body>
 </html>
