@@ -80,9 +80,6 @@
     <!-- jQuery Validation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="js/home.js"></script>
-    <script src="js/common.js"></script>
 
-    <!-- Project/Snippet Modal -->
-    <!-- Removed duplicate modal block to avoid conflict with JS-created modal -->
-</body>
+    </body>
 </html>
