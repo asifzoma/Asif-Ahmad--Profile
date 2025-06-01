@@ -232,4 +232,17 @@ document.addEventListener('DOMContentLoaded', function() {
             openAccordion();
         }
     }
+
+    // Code Snippets Section Toggle (Accordion)
+    const snippetsHeading = document.querySelector('.code-snippets h2');
+    const snippetsContainer = document.querySelector('.snippets-container');
+    if (snippetsHeading && snippetsContainer) {
+        snippetsContainer.style.display = 'none';
+        snippetsHeading.style.cursor = 'pointer';
+        snippetsHeading.addEventListener('click', () => {
+            const isOpen = snippetsContainer.style.display === 'flex';
+            snippetsContainer.style.display = isOpen ? 'none' : 'flex';
+            snippetsHeading.classList.toggle('active', !isOpen);
+        });
+    }
 }); 

@@ -4,8 +4,8 @@
                 <p>Showcasing my journey into web development</p>
                 <!-- About Me Accordion -->
             <div id="about-accordion" class="about-accordion">
-                <button class="accordion-btn">About Me <i class="fas fa-chevron-down"></i></button>
-                <div class="accordion-content">
+                <button class="about-accordion-btn">About Me <i class="fas fa-chevron-down"></i></button>
+                <div class="about-accordion-content">
                     <p>
                     I'm Asif, a Full Stack Web Developer passionate about designing and developing dynamic, user-friendly applications. 
                         <p> My journey into web development began with a genuine curiosity about technology and a desire to create digital solutions that make a real difference. I have developed a strong foundation in both front-end and back-end development, with hands-on experience in HTML, CSS, JavaScript, and PHP. </p>
