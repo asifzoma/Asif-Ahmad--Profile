@@ -217,19 +217,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Sidebar About Me and AZA buttons always open accordion and scroll
-        document.querySelectorAll('a[href="#about-accordion"]').forEach(function(link) {
+     
+        // Make this more specific to avoid conflict with the #about-accordion specific logic
+        document.querySelectorAll('a[href="#about-accordion"]:not(#profile-sidebar-about-me-link):not(#sidebar-about-me-link)').forEach(function(link) {
             link.addEventListener('click', function(e) {
+                
+                // e.preventDefault(); 
                 setTimeout(function() {
-                    openAccordion();
-                    document.getElementById('about-accordion').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement && typeof openAccordion === 'function') {
+                         // Check if it's the about-accordion, if so, our specific logic below handles it better.
+                        if (targetId !== 'about-accordion') {
+                            openAccordion(); // Generic open
+                        }
+                    }
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 }, 10);
             });
         });
 
-        // Open accordion on initial load if hash is present
-        if (window.location.hash === '#about-accordion') {
-            openAccordion();
+        // Open generic accordion on initial load if hash is present, excluding our specific one
+        if (window.location.hash && window.location.hash !== '#about-accordion') {
+            const targetAccordionContent = document.querySelector(window.location.hash + ' .accordion-content');
+            if (targetAccordionContent && typeof openAccordion === 'function') {
+                 openAccordion(); // Call the generic open for other accordions
+            }
         }
     }
 
@@ -245,4 +261,92 @@ document.addEventListener('DOMContentLoaded', function() {
             snippetsHeading.classList.toggle('active', !isOpen);
         });
     }
+
+    // Specific About Me Accordion Logic
+    const aboutAccordion = document.getElementById('about-accordion');
+
+    if (aboutAccordion) {
+        const aboutAccordionBtn = aboutAccordion.querySelector('.about-accordion-btn');
+        const aboutAccordionContent = aboutAccordion.querySelector('.about-accordion-content');
+        const aboutAccordionIcon = aboutAccordionBtn ? aboutAccordionBtn.querySelector('i.fas') : null;
+
+        function openAboutAccordion() {
+            if (aboutAccordion && aboutAccordionContent && aboutAccordionIcon) {
+                aboutAccordion.classList.add('open');
+                aboutAccordionContent.style.maxHeight = aboutAccordionContent.scrollHeight + "px";
+                aboutAccordionIcon.classList.remove('fa-chevron-down');
+                aboutAccordionIcon.classList.add('fa-chevron-up');
+            }
+        }
+
+        function closeAboutAccordion() {
+            if (aboutAccordion && aboutAccordionContent && aboutAccordionIcon) {
+                aboutAccordion.classList.remove('open');
+                aboutAccordionContent.style.maxHeight = "0";
+                aboutAccordionIcon.classList.remove('fa-chevron-up');
+                aboutAccordionIcon.classList.add('fa-chevron-down');
+            }
+        }
+
+        if (aboutAccordionBtn && aboutAccordionContent) {
+            // Set initial state: closed unless 'open' class is present
+            if (!aboutAccordion.classList.contains('open')) {
+                aboutAccordionContent.style.maxHeight = "0";
+                if (aboutAccordionIcon) {
+                    aboutAccordionIcon.classList.remove('fa-chevron-up');
+                    aboutAccordionIcon.classList.add('fa-chevron-down');
+                }
+            } else {
+                // If initially has 'open' class, ensure maxHeight is set and icon is correct
+                openAboutAccordion();
+            }
+
+            aboutAccordionBtn.addEventListener('click', function(event) {
+                event.stopImmediatePropagation();
+                if (aboutAccordion.classList.contains('open')) {
+                    closeAboutAccordion();
+                } else {
+                    openAboutAccordion();
+                }
+            });
+        }
+
+        const sidebarAboutMeLink = document.getElementById('sidebar-about-me-link'); // For Nettmatters sidebar
+        if (sidebarAboutMeLink) {
+            sidebarAboutMeLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default jump, ensure smooth scroll after open
+                openAboutAccordion();
+                setTimeout(() => {
+                    if (aboutAccordion) { 
+                        aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 50); 
+            });
+        }
+        
+        // Listener for the About Me link in Profile/index.php sidebar
+        const profileSidebarAboutMeLink = document.getElementById('profile-sidebar-about-me-link');
+        if (profileSidebarAboutMeLink) {
+            profileSidebarAboutMeLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default jump, ensure smooth scroll after open
+                openAboutAccordion();
+                setTimeout(() => {
+                    if (aboutAccordion) {
+                        aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 50); // Allow accordion to start opening
+            });
+        }
+
+        if (window.location.hash === '#about-accordion') {
+            openAboutAccordion();
+            setTimeout(() => {
+                if (aboutAccordion) { // Ensure element exists before scrolling
+                    aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100); // Delay for layout
+        }
+    }
+    // End of Specific About Me Accordion Logic
+
 }); 
