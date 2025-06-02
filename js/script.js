@@ -536,9 +536,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.filter = '';
             });
 
-            // Click effect with enhanced ripple
+            // Click effect with navigation to code snippets
             tag.addEventListener('click', function(e) {
                 e.preventDefault();
+                
+                // Get the language from the tag's class
+                const langClass = Array.from(this.classList).find(cls => 
+                    ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls)
+                );
+                
+                if (langClass) {
+                    // Navigate to code snippets section
+                    navigateToCodeSnippet(langClass);
+                }
                 
                 // Create enhanced ripple effect
                 const ripple = document.createElement('div');
@@ -646,5 +656,101 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         document.head.appendChild(style);
+    }
+
+    // --- Function to navigate to specific code snippet ---
+    function navigateToCodeSnippet(language) {
+        const codeSnippetsHeading = document.querySelector('h2#code-snippets');
+        const snippetsContainer = document.querySelector('.snippets-container');
+        
+        if (!codeSnippetsHeading || !snippetsContainer) return;
+        
+        // Always open the container when navigating from floating icons
+        snippetsContainer.classList.remove('hidden');
+        snippetsContainer.classList.add('visible');
+        codeSnippetsHeading.classList.add('active');
+        isContainerOpen = true;
+        
+        // Find the specific snippet card for this language
+        const targetSnippet = document.querySelector(`.snippet-card[data-language="${language}"]`);
+        
+        // Smooth scroll to code snippets section
+        setTimeout(() => {
+            codeSnippetsHeading.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+            
+            // Highlight the specific snippet after scrolling
+            if (targetSnippet) {
+                setTimeout(() => {
+                    highlightSnippet(targetSnippet, language);
+                }, 800); // Wait for scroll to complete
+            }
+        }, 100);
+        
+        // Update hash
+        if (window.location.hash !== '#code-snippets') {
+            history.pushState(null, null, '#code-snippets');
+        }
+    }
+    
+    // --- Function to highlight specific snippet ---
+    function highlightSnippet(snippetCard, language) {
+        // Remove any existing highlights
+        document.querySelectorAll('.snippet-card').forEach(card => {
+            card.classList.remove('highlighted');
+        });
+        
+        // Add highlight to target snippet
+        snippetCard.classList.add('highlighted');
+        
+        // Create a subtle pulse effect
+        snippetCard.style.animation = 'snippetPulse 2s ease-in-out';
+        
+        // Show language-specific message
+        showLanguageMessage(language);
+        
+        // Remove highlight after a few seconds
+        setTimeout(() => {
+            snippetCard.classList.remove('highlighted');
+            snippetCard.style.animation = '';
+        }, 3000);
+    }
+    
+    // --- Function to show language-specific message ---
+    function showLanguageMessage(language) {
+        const languageNames = {
+            html: 'HTML5',
+            css: 'CSS3',
+            javascript: 'JavaScript',
+            php: 'PHP',
+            csharp: 'C# / .NET',
+            laravel: 'Laravel'
+        };
+        
+        const languageName = languageNames[language] || language.toUpperCase();
+        
+        // Create message element
+        const message = document.createElement('div');
+        message.className = 'language-notification';
+        message.innerHTML = `
+            <i class="fas fa-arrow-down"></i>
+            <span>Showing ${languageName} examples</span>
+        `;
+        
+        // Add to page
+        document.body.appendChild(message);
+        
+        // Animate in
+        setTimeout(() => message.classList.add('show'), 100);
+        
+        // Remove after delay
+        setTimeout(() => {
+            message.classList.remove('show');
+            setTimeout(() => {
+                if (message.parentNode) message.remove();
+            }, 300);
+        }, 2500);
     }
 }); 

@@ -134,6 +134,27 @@
             border-color: rgba($primary-color, 0.5);
         }
     }
+
+    &.highlighted {
+        border-color: $accent-color;
+        box-shadow: 0 0 20px rgba($accent-color, 0.4);
+        transform: scale(1.05);
+        background: linear-gradient(135deg, rgba($accent-color, 0.1) 0%, rgba($primary-color, 0.05) 100%);
+        position: relative;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, $accent-color, $primary-color, $accent-color);
+            border-radius: 14px;
+            z-index: -1;
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+    }
 }
 
 .view-code-btn {
@@ -224,4 +245,69 @@
             padding: 0.2rem 0.6rem;
         }
     }
+
+    .language-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+        
+        span {
+            font-size: 0.85rem;
+        }
+    }
+}
+
+// Language notification popup
+.language-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 10%) 100%);
+    color: $light-text;
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba($accent-color, 0.3);
+    
+    &.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    i {
+        font-size: 0.9rem;
+        color: $accent-color;
+        animation: bounce 1s ease-in-out infinite;
+    }
+    
+    span {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+}
+
+// Animation keyframes
+@keyframes snippetPulse {
+    0%, 100% { transform: scale(1.05); }
+    50% { transform: scale(1.08); }
+}
+
+@keyframes borderGlow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-3px); }
+    60% { transform: translateY(-2px); }
 } 

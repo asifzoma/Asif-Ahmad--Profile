@@ -928,6 +928,27 @@ a:focus {
   border-color: rgba(2, 10, 25, 0.5);
 }
 
+.snippet-card.highlighted {
+  border-color: #95252f;
+  box-shadow: 0 0 20px rgba(149, 37, 47, 0.4);
+  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(149, 37, 47, 0.1) 0%, rgba(2, 10, 25, 0.05) 100%);
+  position: relative;
+}
+
+.snippet-card.highlighted::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #95252f, #020a19, #95252f);
+  border-radius: 14px;
+  z-index: -1;
+  animation: borderGlow 2s ease-in-out infinite;
+}
+
 .view-code-btn {
   background-color: #020a19;
   color: #ffffff;
@@ -1028,6 +1049,81 @@ a:focus {
     right: 0.5rem;
     font-size: 0.7rem;
     padding: 0.2rem 0.6rem;
+  }
+  .language-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+  .language-notification span {
+    font-size: 0.85rem;
+  }
+}
+
+.language-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #020a19 0%, black 100%);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(149, 37, 47, 0.3);
+}
+
+.language-notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.language-notification i {
+  font-size: 0.9rem;
+  color: #95252f;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.language-notification span {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+@keyframes snippetPulse {
+  0%, 100% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+  60% {
+    transform: translateY(-2px);
   }
 }
 
