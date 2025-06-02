@@ -130,21 +130,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.handleHashChange();
             });
             
-            // Sidebar link handling - improved to handle multiple possible selectors
-            const sidebarLinks = [
-                document.querySelector('a[href="#code-snippets"]'),
-                document.querySelector('a[href="#code-snippets-section"]'),
-                document.querySelector('[data-target="code-snippets"]') // Fallback
-            ].filter(link => link !== null);
+            // Sidebar link handling - simplified and more reliable approach
+            const sidebarLinks = document.querySelectorAll('a[href="#code-snippets"]');
             
-            sidebarLinks.forEach(sidebarLink => {
+            console.log('🔗 Found sidebar links:', sidebarLinks.length);
+            
+            sidebarLinks.forEach((sidebarLink, index) => {
+                console.log(`🔗 Setting up listener for sidebar link ${index + 1}:`, sidebarLink);
+                
                 sidebarLink.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent default link behavior
-                    console.log('🔗 Sidebar link clicked - forcing accordion open');
-                    this.openContainer();
-                    this.scrollToSection();
+                    console.log('🚨 SIDEBAR LINK CLICKED!');
                     
-                    // Update URL hash without triggering hashchange event
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Direct DOM manipulation approach - force it open
+                    const container = this.snippetsContainer;
+                    const heading = this.snippetsHeading;
+                    
+                    // Force visible state using multiple methods
+                    container.style.display = 'flex';
+                    container.style.visibility = 'visible';
+                    container.style.opacity = '1';
+                    container.classList.remove('hidden');
+                    container.classList.add('visible');
+                    heading.classList.add('active');
+                    
+                    this.isContainerOpen = true;
+                    
+                    console.log('✅ Forced accordion open via direct manipulation');
+                    
+                    // Scroll to section
+                    setTimeout(() => {
+                        this.snippetsSection.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 100);
+                    
+                    // Update hash if needed
                     if (window.location.hash !== '#code-snippets') {
                         history.pushState(null, null, '#code-snippets');
                     }
@@ -349,11 +373,66 @@ document.addEventListener('DOMContentLoaded', function() {
             this.toggleContainer();
         }
         
+        // Sync internal state with actual DOM state
+        syncState() {
+            const isActuallyVisible = this.snippetsContainer.classList.contains('visible') && 
+                                     !this.snippetsContainer.classList.contains('hidden');
+            const computedStyle = window.getComputedStyle(this.snippetsContainer);
+            const isDisplayed = computedStyle.display !== 'none';
+            
+            this.isContainerOpen = isActuallyVisible && isDisplayed;
+            
+            console.log('🔄 State synced:', {
+                isContainerOpen: this.isContainerOpen,
+                hasVisibleClass: this.snippetsContainer.classList.contains('visible'),
+                hasHiddenClass: this.snippetsContainer.classList.contains('hidden'),
+                computedDisplay: computedStyle.display
+            });
+            
+            return this.isContainerOpen;
+        }
+        
         // Force open method for external use or debugging
         forceOpen() {
             console.log('🚀 Force opening accordion...');
+            
+            // Clear any potential inline styles that might interfere
+            this.snippetsContainer.style.display = '';
+            this.snippetsContainer.style.visibility = '';
+            this.snippetsContainer.style.opacity = '';
+            
+            // Force the open state
             this.openContainer();
             this.scrollToSection();
+            
+            // Verify it actually opened
+            setTimeout(() => {
+                const isVisible = this.snippetsContainer.classList.contains('visible');
+                const computedStyle = window.getComputedStyle(this.snippetsContainer);
+                console.log('🔍 Force open verification:', {
+                    hasVisibleClass: isVisible,
+                    computedDisplay: computedStyle.display,
+                    isContainerOpen: this.isContainerOpen
+                });
+                
+                if (!isVisible || computedStyle.display === 'none') {
+                    console.error('⚠️ Force open failed - trying emergency fix');
+                    this.snippetsContainer.style.display = 'flex !important';
+                    this.isContainerOpen = true;
+                }
+            }, 100);
+            
+            return this;
+        }
+        
+        // Test method for manual debugging from console
+        testSidebarClick() {
+            console.log('🧪 Testing sidebar click simulation...');
+            this.syncState();
+            const currentHash = window.location.hash.substring(1);
+            console.log('🧪 Before test - Hash:', currentHash, 'Container open:', this.isContainerOpen);
+            this.forceOpen();
+            console.log('🧪 After test - forcing accordion open');
             return this;
         }
     }
@@ -363,6 +442,38 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Make it globally accessible for debugging/external use
     window.codeSnippetsAccordion = codeSnippetsAccordion;
+    
+    // Add a global backup function for forcing accordion open
+    window.forceOpenCodeSnippets = function() {
+        console.log('🔧 Global force open called');
+        const container = document.querySelector('.snippets-container');
+        const heading = document.querySelector('h2#code-snippets');
+        const section = document.querySelector('section.code-snippets');
+        
+        if (container && heading) {
+            // Multiple approaches to ensure it opens
+            container.style.display = 'flex';
+            container.style.visibility = 'visible';
+            container.style.opacity = '1';
+            container.classList.remove('hidden');
+            container.classList.add('visible');
+            heading.classList.add('active');
+            
+            console.log('✅ Global force open completed');
+            
+            // Scroll to section
+            if (section) {
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+            
+            return true;
+        } else {
+            console.error('❌ Could not find accordion elements');
+            return false;
+        }
+    };
 
     // --- Modal Close Handlers ---
     // Close project modal
