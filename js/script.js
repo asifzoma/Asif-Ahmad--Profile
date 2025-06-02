@@ -581,4 +581,39 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => { if (aboutAccordion) aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100); 
         }
     }
+
+    // Enhanced smooth scrolling for all internal anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#' || href === '') return; // Skip empty anchors
+            
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                e.preventDefault();
+                
+                // Special handling for code snippets
+                if (href === '#code-snippets') {
+                    // Let the code snippets accordion handle this
+                    return;
+                }
+                
+                // Smooth scroll to target section
+                setTimeout(() => {
+                    targetElement.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }, 50);
+                
+                // Update URL hash
+                if (history.pushState) {
+                    history.pushState(null, null, href);
+                }
+                
+                console.log('🎯 Smooth scrolled to:', href);
+            }
+        });
+    });
 }); 
