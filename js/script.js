@@ -100,6 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Set up event listeners
             this.setupEventListeners();
+            
+            // Add loading state handler
+            this.setupLoadingStates();
         }
         
         setupEventListeners() {
@@ -127,21 +130,69 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.handleHashChange();
             });
             
-            // Sidebar link handling
-            const sidebarLink = document.querySelector('a[href="#code-snippets"]');
-            if (sidebarLink) {
+            // Sidebar link handling - improved to handle multiple possible selectors
+            const sidebarLinks = [
+                document.querySelector('a[href="#code-snippets"]'),
+                document.querySelector('a[href="#code-snippets-section"]'),
+                document.querySelector('[data-target="code-snippets"]') // Fallback
+            ].filter(link => link !== null);
+            
+            sidebarLinks.forEach(sidebarLink => {
                 sidebarLink.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    console.log('🔗 Sidebar link clicked - forcing accordion open');
                     this.openContainer();
                     this.scrollToSection();
+                    
+                    // Update URL hash without triggering hashchange event
+                    if (window.location.hash !== '#code-snippets') {
+                        history.pushState(null, null, '#code-snippets');
+                    }
                 });
-            }
+            });
+        }
+        
+        setupLoadingStates() {
+            // Add loading animation to buttons when clicked
+            this.snippetCards.forEach(card => {
+                const viewCodeBtn = card.querySelector('.view-code-btn');
+                if (viewCodeBtn) {
+                    viewCodeBtn.addEventListener('click', () => {
+                        this.addLoadingState(viewCodeBtn);
+                        setTimeout(() => {
+                            this.removeLoadingState(viewCodeBtn);
+                        }, 300);
+                    });
+                }
+            });
+        }
+        
+        addLoadingState(button) {
+            button.classList.add('loading');
+            button.style.pointerEvents = 'none';
+        }
+        
+        removeLoadingState(button) {
+            button.classList.remove('loading');
+            button.style.pointerEvents = '';
         }
         
         openContainer() {
+            // Force container to open regardless of current state
             this.snippetsContainer.classList.remove('hidden');
             this.snippetsContainer.classList.add('visible');
             this.snippetsHeading.classList.add('active');
             this.isContainerOpen = true;
+            
+            // Double-check by removing any conflicting inline styles
+            this.snippetsContainer.style.display = '';
+            
+            console.log('✅ Code snippets container opened - State:', {
+                hasVisibleClass: this.snippetsContainer.classList.contains('visible'),
+                hasHiddenClass: this.snippetsContainer.classList.contains('hidden'),
+                headingActive: this.snippetsHeading.classList.contains('active'),
+                isContainerOpen: this.isContainerOpen
+            });
         }
         
         closeContainer() {
@@ -152,6 +203,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Close all open panels when closing container
             this.closeAllPanels();
+            
+            console.log('❌ Code snippets container closed');
         }
         
         toggleContainer() {
@@ -176,13 +229,25 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Toggle this panel
             if (!isCurrentlyOpen) {
-                panel.classList.add('active');
-                button.textContent = 'Hide Code';
-                
-                // Scroll to the card
+                // Add a slight delay for better animation
                 setTimeout(() => {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
+                    panel.classList.add('active');
+                    button.textContent = 'Hide Code';
+                    console.log('📖 Code panel opened:', card.id);
+                    
+                    // Scroll to the card with improved timing
+                    setTimeout(() => {
+                        card.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'nearest',
+                            inline: 'nearest'
+                        });
+                    }, 150);
+                }, 50);
+            } else {
+                panel.classList.remove('active');
+                button.textContent = 'View Code';
+                console.log('📕 Code panel closed:', card.id);
             }
         }
         
@@ -212,13 +277,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Close all panels first
                     this.closeAllPanels();
                     
-                    // Open target panel
-                    panel.classList.add('active');
-                    viewCodeBtn.textContent = 'Hide Code';
-                    
-                    // Scroll to the card
+                    // Open target panel with animation
                     setTimeout(() => {
-                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        panel.classList.add('active');
+                        viewCodeBtn.textContent = 'Hide Code';
+                        console.log('🎯 Opened snippet by ID:', snippetId);
+                        
+                        // Scroll to the card
+                        setTimeout(() => {
+                            targetCard.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'center',
+                                inline: 'nearest'
+                            });
+                        }, 200);
                     }, 100);
                 }
             }
@@ -226,35 +298,71 @@ document.addEventListener('DOMContentLoaded', function() {
         
         handleInitialHash() {
             const hash = window.location.hash.substring(1);
+            console.log('🔗 Initial hash detected:', hash);
+            
             if (hash === 'code-snippets' || hash === 'code-snippets-section') {
+                console.log('📂 Opening container from initial hash');
                 this.openContainer();
                 this.scrollToSection();
             } else if (hash.startsWith('snippet-')) {
+                console.log('🎯 Opening specific snippet from initial hash:', hash);
                 this.openSnippetById(hash);
             }
         }
         
         handleHashChange() {
             const hash = window.location.hash.substring(1);
+            console.log('🔗 Hash changed to:', hash);
+            
             if (hash === 'code-snippets' || hash === 'code-snippets-section') {
+                console.log('📂 Opening container from hash change');
                 this.openContainer();
                 this.scrollToSection();
             } else if (hash.startsWith('snippet-')) {
+                console.log('🎯 Opening specific snippet from hash change:', hash);
                 this.openSnippetById(hash);
+            } else if (hash === '') {
+                // Empty hash - don't auto-close, let user control manually
+                console.log('🏠 Hash cleared - keeping current accordion state');
             }
         }
         
         scrollToSection() {
             if (this.snippetsSection) {
                 setTimeout(() => {
-                    this.snippetsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    this.snippetsSection.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                    });
                 }, 100);
             }
+        }
+        
+        // Public method to open a specific snippet (can be called from outside)
+        openSpecificSnippet(snippetId) {
+            this.openSnippetById(snippetId);
+        }
+        
+        // Public method to toggle container (can be called from outside)
+        toggle() {
+            this.toggleContainer();
+        }
+        
+        // Force open method for external use or debugging
+        forceOpen() {
+            console.log('🚀 Force opening accordion...');
+            this.openContainer();
+            this.scrollToSection();
+            return this;
         }
     }
     
     // Initialize the accordion
     const codeSnippetsAccordion = new CodeSnippetsAccordion();
+    
+    // Make it globally accessible for debugging/external use
+    window.codeSnippetsAccordion = codeSnippetsAccordion;
 
     // --- Modal Close Handlers ---
     // Close project modal
