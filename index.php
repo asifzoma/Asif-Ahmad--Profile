@@ -47,6 +47,16 @@
         <div class="main-container">
             <!-- Header Section with Hero Image -->
             <div class="image-container">
+                <!-- Floating Programming Languages -->
+                <div class="floating-languages">
+                    <div class="floating-tag html" title="HTML5" data-tooltip="HTML5"><i class="fab fa-html5"></i></div>
+                    <div class="floating-tag css" title="CSS3" data-tooltip="CSS3"><i class="fab fa-css3-alt"></i></div>
+                    <div class="floating-tag javascript" title="JavaScript" data-tooltip="JavaScript"><i class="fab fa-js"></i></div>
+                    <div class="floating-tag php" title="PHP" data-tooltip="PHP"><i class="fab fa-php"></i></div>
+                    <div class="floating-tag csharp" title="C# / .NET" data-tooltip="C# / .NET"><i class="fab fa-microsoft"></i></div>
+                    <div class="floating-tag laravel" title="Laravel" data-tooltip="Laravel"><i class="fab fa-laravel"></i></div>
+                </div>
+                
                 <header class="header">
                     <div class="hero-text">
                         <h1>Asif Ahmad</h1>

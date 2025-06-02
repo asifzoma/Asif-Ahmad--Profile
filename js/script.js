@@ -343,4 +343,308 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // --- Scroll-Controlled Floating Languages Animation ---
+    const imageContainer = document.querySelector('.image-container');
+    const floatingTags = document.querySelectorAll('.floating-tag');
+    
+    if (imageContainer && floatingTags.length > 0) {
+        const isMobile = window.innerWidth <= 767;
+        let animationId;
+        
+        // Orbital parameters - adjust radius based on viewport size
+        let orbitRadius;
+        if (window.innerWidth <= 480) {
+            orbitRadius = 80; // Very small screens
+        } else if (window.innerWidth <= 802) {
+            orbitRadius = 100; // Mobile/tablet
+        } else {
+            orbitRadius = 140; // Desktop (reduced from 160 to ensure visibility)
+        }
+        
+        // Assign each language an angle position on the circle (evenly spaced)
+        const languages = ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'];
+        const angleStep = (2 * Math.PI) / languages.length; // 60 degrees apart
+        
+        const orbitalData = {};
+        languages.forEach((lang, index) => {
+            orbitalData[lang] = {
+                baseAngle: index * angleStep, // Starting angle
+                currentAngle: index * angleStep
+            };
+        });
+
+        // Function to update circular orbit positions (when not scrolled)
+        function updateOrbitalPositions(time) {
+            // Calculate center considering sidebar width
+            let viewportCenterX, viewportCenterY;
+            
+            if (window.innerWidth > 802) {
+                // Desktop: Account for 15vw sidebar width
+                const sidebarWidth = window.innerWidth * 0.15; // 15vw
+                const contentAreaWidth = window.innerWidth - sidebarWidth;
+                viewportCenterX = sidebarWidth + (contentAreaWidth * 0.5); // Center of content area
+                viewportCenterY = window.innerHeight * 0.5;
+            } else {
+                // Mobile: Sidebar is hidden, use full viewport center
+                viewportCenterX = window.innerWidth * 0.5;
+                viewportCenterY = window.innerHeight * 0.5;
+            }
+            
+            floatingTags.forEach(tag => {
+                const langClass = Array.from(tag.classList).find(cls => languages.includes(cls));
+                if (!langClass || !orbitalData[langClass]) return;
+                
+                // Update angle for continuous rotation (slow orbit)
+                orbitalData[langClass].currentAngle = orbitalData[langClass].baseAngle + (time * 0.0005);
+                
+                // Calculate orbital position around adjusted center
+                const angle = orbitalData[langClass].currentAngle;
+                const x = viewportCenterX + Math.cos(angle) * orbitRadius;
+                const y = viewportCenterY + Math.sin(angle) * orbitRadius;
+                
+                // Convert to absolute positioning
+                tag.style.position = 'fixed';
+                tag.style.top = `${y}px`;
+                tag.style.left = `${x}px`;
+                tag.style.transform = `translate(-50%, -50%) rotate(${angle * 180 / Math.PI}deg)`;
+                tag.style.opacity = 0.8;
+                tag.style.zIndex = '100'; // Ensure they appear above other content
+            });
+        }
+
+        // Function to update language positions based on scroll progress
+        function updateLanguagePositions() {
+            const scrollY = window.scrollY;
+            const imageContainerHeight = imageContainer.offsetHeight;
+            const imageContainerWidth = imageContainer.offsetWidth;
+            
+            // Calculate scroll progress (0 to 1)
+            const maxScroll = imageContainerHeight * 0.6; // Complete alignment at 60% scroll
+            const scrollProgress = Math.min(scrollY / maxScroll, 1);
+            
+            // Easing function for smooth transition
+            const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+            const easedProgress = easeOutCubic(scrollProgress);
+
+            if (scrollProgress === 0) {
+                // No scroll - continue orbital motion
+                return; // Let orbital animation handle this
+            }
+
+            // Target horizontal positions when aligned (side by side)
+            const spacing = isMobile ? 40 : 60; // Reduced spacing for smaller viewports
+            const targetPositions = {
+                html: -2.5 * spacing,
+                css: -1.5 * spacing,
+                javascript: -0.5 * spacing,
+                php: 0.5 * spacing,
+                csharp: 1.5 * spacing,
+                laravel: 2.5 * spacing
+            };
+
+            // Target Y position for horizontal alignment (bottom 20% area of image container)
+            const containerRect = imageContainer.getBoundingClientRect();
+            const targetTop = containerRect.top + imageContainerHeight * 0.85;
+            const centerLeft = containerRect.left + imageContainerWidth / 2;
+
+            floatingTags.forEach(tag => {
+                const langClass = Array.from(tag.classList).find(cls => targetPositions.hasOwnProperty(cls));
+                if (!langClass || !orbitalData[langClass]) return;
+                
+                // Get current orbital position in viewport coordinates (starting point)
+                let viewportCenterX, viewportCenterY;
+                
+                if (window.innerWidth > 802) {
+                    // Desktop: Account for sidebar
+                    const sidebarWidth = window.innerWidth * 0.15;
+                    const contentAreaWidth = window.innerWidth - sidebarWidth;
+                    viewportCenterX = sidebarWidth + (contentAreaWidth * 0.5);
+                    viewportCenterY = window.innerHeight * 0.5;
+                } else {
+                    // Mobile: Full viewport
+                    viewportCenterX = window.innerWidth * 0.5;
+                    viewportCenterY = window.innerHeight * 0.5;
+                }
+                
+                const currentAngle = orbitalData[langClass].currentAngle;
+                const initialX = viewportCenterX + Math.cos(currentAngle) * orbitRadius;
+                const initialY = viewportCenterY + Math.sin(currentAngle) * orbitRadius;
+                
+                // Calculate target aligned position (in viewport coordinates)
+                const finalTop = targetTop;
+                const finalLeft = centerLeft + targetPositions[langClass];
+                
+                // Ensure icons stay within viewport bounds on smaller screens
+                const clampedFinalLeft = Math.max(25, Math.min(window.innerWidth - 25, finalLeft));
+                
+                // Interpolate between orbital position and final aligned position
+                const currentTop = initialY + (finalTop - initialY) * easedProgress;
+                const currentLeft = initialX + (clampedFinalLeft - initialX) * easedProgress;
+
+                // Keep using fixed positioning during transition
+                tag.style.position = 'fixed';
+                tag.style.top = `${currentTop}px`;
+                tag.style.left = `${currentLeft}px`;
+                
+                // Animation effects - rotation aligns with scroll
+                const orbitalRotation = currentAngle * 180 / Math.PI;
+                const alignedRotation = 0; // No rotation when aligned
+                const currentRotation = orbitalRotation + (alignedRotation - orbitalRotation) * easedProgress;
+                
+                const scale = 0.8 + (easedProgress * 0.4); // Scale up when aligning
+                tag.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
+                tag.style.opacity = 0.8 + (easedProgress * 0.2); // Slightly more opaque when aligned
+                tag.style.zIndex = '100';
+            });
+        }
+
+        // Animation loop for orbital motion
+        function animate(time) {
+            const scrollY = window.scrollY;
+            const maxScroll = imageContainer.offsetHeight * 0.6;
+            const scrollProgress = Math.min(scrollY / maxScroll, 1);
+            
+            if (scrollProgress === 0) {
+                // Only do orbital animation when not scrolled
+                updateOrbitalPositions(time);
+            } else {
+                // Handle scroll-based alignment
+                updateLanguagePositions();
+            }
+            
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        // Start the animation loop
+        animationId = requestAnimationFrame(animate);
+
+        // Enhanced hover effects for individual tags
+        floatingTags.forEach(tag => {
+            tag.addEventListener('mouseenter', function() {
+                this.style.transform += ' scale(1.2)';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
+                this.style.zIndex = '10';
+                this.style.filter = 'brightness(1.1)';
+            });
+
+            tag.addEventListener('mouseleave', function() {
+                // Reset to scroll-controlled state
+                updateLanguagePositions();
+                this.style.boxShadow = '';
+                this.style.zIndex = '';
+                this.style.filter = '';
+            });
+
+            // Click effect with enhanced ripple
+            tag.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Create enhanced ripple effect
+                const ripple = document.createElement('div');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 70%, transparent 100%);
+                    transform: scale(0);
+                    animation: scrollRipple 0.8s ease-out;
+                    left: ${e.offsetX - size/2}px;
+                    top: ${e.offsetY - size/2}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    pointer-events: none;
+                    z-index: 1;
+                `;
+                
+                this.appendChild(ripple);
+                
+                // Add a brief shake effect
+                this.style.animation = 'shake 0.5s ease-in-out';
+                
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                    this.style.animation = '';
+                }, 800);
+            });
+        });
+
+        // Scroll event listener (simplified since animation loop handles most of it)
+        let ticking = false;
+        function handleScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    // The animation loop now handles position updates
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Window resize handler
+        function handleResize() {
+            // Recalculate orbital radius based on new viewport size
+            if (window.innerWidth <= 480) {
+                orbitRadius = 80;
+            } else if (window.innerWidth <= 802) {
+                orbitRadius = 100;
+            } else {
+                orbitRadius = 140;
+            }
+            
+            // Cancel and restart animation with new dimensions
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            
+            // Restart animation (viewport center will be recalculated automatically)
+            setTimeout(() => {
+                animationId = requestAnimationFrame(animate);
+            }, 100);
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('resize', handleResize);
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+
+        // Initial position update
+        updateLanguagePositions();
+
+        // Add enhanced CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes scrollRipple {
+                to {
+                    transform: scale(2.5);
+                    opacity: 0;
+                }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+                25% { transform: translate(-50%, -50%) translateX(-5px); }
+                75% { transform: translate(-50%, -50%) translateX(5px); }
+            }
+            .floating-tag {
+                position: absolute;
+                overflow: visible;
+                transition: filter 0.3s ease, box-shadow 0.3s ease;
+                will-change: transform, opacity;
+            }
+            
+            /* Smooth scrolling for the entire page */
+            html {
+                scroll-behavior: smooth;
+            }
+        `;
+        document.head.appendChild(style);
+    }
 }); 

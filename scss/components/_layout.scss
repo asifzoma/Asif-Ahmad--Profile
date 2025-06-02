@@ -187,6 +187,8 @@
     padding: 0.3rem;
     text-align: center;
     border-radius: 10px;
+    position: relative;
+    z-index: 2;
 
     h1, p {
         color: $primary-color;
@@ -235,6 +237,178 @@
     margin-right: 0px;
     max-width: 100%;
     transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+// Floating Programming Languages Animation
+.floating-languages {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-tag {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    color: $light-text;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+    // Initial centered horizontal line positions
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    i {
+        font-size: 1.5rem;
+        line-height: 1;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+    
+    &:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        
+        i {
+            transform: scale(1.1);
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+        }
+        
+        // Show custom tooltip on hover
+        &::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    }
+    
+    // Custom tooltip styling
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(0px);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        pointer-events: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    // Tooltip arrow
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(6px);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    
+    &:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-4px);
+    }
+    
+    // Individual icon colors for better recognition (enhanced with shadows)
+    &.html i { color: #e34f26; } // HTML5 orange
+    &.css i { color: #1572b6; } // CSS3 blue  
+    &.javascript i { color: #f7df1e; } // JavaScript yellow
+    &.php i { color: #777bb4; } // PHP purple
+    &.csharp i { color: #239120; } // Microsoft green
+    &.laravel i { color: #ff2d20; } // Laravel red
+}
+
+// Target positions for spread-out state (desktop)
+@media (min-width: 768px) {
+    .floating-tag {
+        &[data-target-top] { --target-top: attr(data-target-top); }
+        &[data-target-left] { --target-left: attr(data-target-left); }
+        &[data-target-right] { --target-right: attr(data-target-right); }
+        &[data-target-bottom] { --target-bottom: attr(data-target-bottom); }
+    }
+}
+
+@media (max-width: 802px) {
+    .floating-tag {
+        font-size: 1.0rem;
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+        
+        i {
+            font-size: 1.0rem;
+        }
+        
+        // Smaller tooltips for mobile
+        &::after {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+        }
+        
+        &::before {
+            border-width: 4px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-tag {
+        font-size: 0.9rem;
+        padding: 6px;
+        width: 32px;
+        height: 32px;
+        
+        i {
+            font-size: 0.9rem;
+        }
+        
+        // Even smaller tooltips for very small screens
+        &::after {
+            font-size: 0.6rem;
+            padding: 3px 6px;
+        }
+        
+        &::before {
+            border-width: 3px;
+        }
+    }
 }
 
 // Banner Section
