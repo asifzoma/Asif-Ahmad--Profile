@@ -883,6 +883,51 @@ a:focus {
   line-height: 1.5;
 }
 
+.snippet-card.coming-soon {
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.1) 0%, rgba(149, 37, 47, 0.1) 100%);
+  border: 2px dashed rgba(2, 10, 25, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.snippet-card.coming-soon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(149, 37, 47, 0.1), transparent);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+.snippet-card.coming-soon p {
+  color: rgba(2, 10, 25, 0.8);
+  font-style: italic;
+}
+
+.snippet-card.coming-soon .coming-soon-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #95252f;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(149, 37, 47, 0.3);
+}
+
+.snippet-card.coming-soon:hover {
+  transform: none;
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.15) 0%, rgba(149, 37, 47, 0.15) 100%);
+  border-color: rgba(2, 10, 25, 0.5);
+}
+
 .view-code-btn {
   background-color: #020a19;
   color: #ffffff;
@@ -908,6 +953,57 @@ a:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.snippet-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.snippet-header .language-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.snippet-header .language-icon.fa-html5 {
+  color: #e34f26;
+}
+
+.snippet-header .language-icon.fa-css3-alt {
+  color: #1572b6;
+}
+
+.snippet-header .language-icon.fa-js {
+  color: #f7df1e;
+}
+
+.snippet-header .language-icon.fa-php {
+  color: #777bb4;
+}
+
+.snippet-header .language-icon.fa-microsoft {
+  color: #239120;
+}
+
+.snippet-header .language-icon.fa-laravel {
+  color: #ff2d20;
+}
+
+.snippet-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #020a19;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
 @media (max-width: 792px) {
   .snippets-container {
     align-items: center;
@@ -917,6 +1013,21 @@ a:focus {
     flex: 1 1 100%;
     width: 95vw;
     margin: 10px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .snippet-header .language-icon {
+    font-size: 1.5rem;
+  }
+  .snippet-header h3 {
+    font-size: 1.1rem;
+  }
+  .snippet-card.coming-soon .coming-soon-badge {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
   }
 }
 

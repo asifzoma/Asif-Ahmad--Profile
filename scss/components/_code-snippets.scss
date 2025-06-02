@@ -89,6 +89,51 @@
         margin-bottom: 15px;
         line-height: 1.5;
     }
+
+    &.coming-soon {
+        background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
+        border: 2px dashed rgba($primary-color, 0.3);
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba($accent-color, 0.1), transparent);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+        
+        p {
+            color: rgba($primary-color, 0.8);
+            font-style: italic;
+        }
+        
+        .coming-soon-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: $accent-color;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+        }
+        
+        &:hover {
+            transform: none;
+            background: linear-gradient(135deg, rgba($primary-color, 0.15) 0%, rgba($secondary-color, 0.15) 100%);
+            border-color: rgba($primary-color, 0.5);
+        }
+    }
 }
 
 .view-code-btn {
@@ -116,6 +161,37 @@
     }
 }
 
+.snippet-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+
+    .language-icon {
+        font-size: 1.8rem;
+        line-height: 1;
+        
+        // Language-specific colors
+        &.fa-html5 { color: #e34f26; }
+        &.fa-css3-alt { color: #1572b6; }
+        &.fa-js { color: #f7df1e; }
+        &.fa-php { color: #777bb4; }
+        &.fa-microsoft { color: #239120; }
+        &.fa-laravel { color: #ff2d20; }
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: $primary-color;
+    }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
 @media (max-width: 792px) {
     .snippets-container {
         align-items: center;
@@ -126,5 +202,26 @@
         flex: 1 1 100%;
         width: 95vw;
         margin: 10px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .snippet-header {
+        .language-icon {
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.1rem;
+        }
+    }
+    
+    .snippet-card.coming-soon {
+        .coming-soon-badge {
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+        }
     }
 } 
