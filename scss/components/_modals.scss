@@ -1,0 +1,72 @@
+// Code Modal Specific Styles
+.code-modal {
+    .modal-content {
+        background: $primary-color;
+        color: $light-text;
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        
+        .modal-header {
+            border-bottom: 2px solid rgba($light-text, 0.2);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            
+            h3 {
+                color: $light-text;
+                margin: 0;
+                font-size: 1.5rem;
+            }
+        }
+        
+        .modal-body {
+            .code-section, .explanation-section {
+                margin-bottom: 2rem;
+                
+                h4 {
+                    color: $accent-color;
+                    margin-bottom: 1rem;
+                    font-size: 1.2rem;
+                    border-bottom: 1px solid rgba($accent-color, 0.3);
+                    padding-bottom: 0.5rem;
+                }
+                
+                pre {
+                    background: rgba(0, 0, 0, 0.3);
+                    border: 1px solid rgba($light-text, 0.2);
+                    border-radius: 8px;
+                    padding: 1.5rem;
+                    overflow-x: auto;
+                    line-height: 1.6;
+                    
+                    code {
+                        color: $light-text;
+                        font-family: 'Courier New', monospace;
+                        font-size: 0.9rem;
+                    }
+                }
+                
+                p {
+                    color: rgba($light-text, 0.9);
+                    line-height: 1.6;
+                    font-size: 1rem;
+                }
+            }
+        }
+        
+        .modal-close {
+            color: $light-text;
+            background: transparent;
+            border: 2px solid rgba($light-text, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            
+            &:hover {
+                background: rgba($light-text, 0.1);
+                border-color: $accent-color;
+                color: $accent-color;
+            }
+        }
+    }
+} 

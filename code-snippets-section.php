@@ -3,29 +3,38 @@
                 <h2 id="code-snippets">Code Snippets</h2>
                 <div class="snippets-container">
                     <!-- HTML Snippet -->
-                    <div class="snippet-card" data-language="html" data-code="&lt;!-- Responsive Navigation Component --&gt;
-&lt;nav class=&quot;main-navigation&quot;&gt;
-    &lt;div class=&quot;nav-container&quot;&gt;
-        &lt;div class=&quot;nav-logo&quot;&gt;
-            &lt;a href=&quot;#home&quot;&gt;Portfolio&lt;/a&gt;
-        &lt;/div&gt;
-        &lt;ul class=&quot;nav-menu&quot;&gt;
-            &lt;li&gt;&lt;a href=&quot;#about&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;#portfolio&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;div class=&quot;hamburger&quot;&gt;
-            &lt;span&gt;&lt;/span&gt;
-            &lt;span&gt;&lt;/span&gt;
-            &lt;span&gt;&lt;/span&gt;
-        &lt;/div&gt;
+                    <div class="snippet-card" data-language="html" data-code="&lt;!-- Portfolio Sidebar Navigation --&gt;
+&lt;nav id=&quot;navigator&quot; class=&quot;sidebar-container&quot;&gt;
+    &lt;div class=&quot;sidebar-header&quot;&gt;
+        &lt;h3&gt;&lt;a href=&quot;index.php&quot;&gt;AZA&lt;/a&gt;&lt;/h3&gt;
     &lt;/div&gt;
-&lt;/nav&gt;" data-explanation="This HTML structure creates a responsive navigation component with semantic markup and accessibility in mind. The navigation uses a container for proper alignment, includes a logo/brand area, and implements a hamburger menu for mobile devices. The structure follows modern HTML5 semantics with proper use of nav, ul, and li elements. The hamburger menu uses three span elements that can be styled with CSS to create the classic three-line mobile menu icon.">
+    &lt;div class=&quot;sidebar-menu&quot;&gt;
+        &lt;ul&gt;
+            &lt;li class=&quot;nav-tab&quot;&gt;&lt;a href=&quot;#about-accordion&quot;&gt;About Me&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-tab&quot;&gt;&lt;a href=&quot;#portfolio&quot;&gt;My Portfolio&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-tab&quot;&gt;&lt;a href=&quot;#code-snippets&quot;&gt;Code Snippets&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-tab&quot;&gt;&lt;a href=&quot;#scion-scheme-section&quot;&gt;SCS Scheme&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-tab&quot;&gt;&lt;a href=&quot;#contact&quot;&gt;Contact Me&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;sidebar-social&quot;&gt;
+        &lt;a href=&quot;https://github.com/asifzoma&quot;&gt;&lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;a href=&quot;https://www.linkedin.com/in/asifzahmad/&quot;&gt;&lt;i class=&quot;fab fa-linkedin&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+        &lt;a href=&quot;https://discord.com/users/AsifZahmad&quot;&gt;&lt;i class=&quot;fab fa-discord&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;!-- Hamburger Menu for Mobile --&gt;
+&lt;button class=&quot;hamburger-menu&quot;&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+&lt;/button&gt;" data-explanation="This HTML structure represents the actual sidebar navigation system used in this portfolio. It features a fixed sidebar with the personal brand 'AZA', organized navigation sections including About Me, Portfolio, Code Snippets, SCS Scheme, and Contact. The sidebar includes social media links for GitHub, LinkedIn, and Discord. The structure also incorporates a responsive hamburger menu for mobile devices. Each navigation item uses the 'nav-tab' class for consistent styling and behavior. The semantic HTML structure ensures accessibility while the anchor links enable smooth scrolling navigation throughout the portfolio.">
                         <div class="snippet-header">
                             <i class="fab fa-html5 language-icon"></i>
-                            <h3>Responsive Navigation</h3>
+                            <h3>Portfolio Sidebar Navigation</h3>
                         </div>
-                        <p>Semantic HTML structure for responsive navigation with mobile hamburger menu.</p>
+                        <p>The actual sidebar navigation structure used in this portfolio with responsive design and social links.</p>
                         <button class="view-code-btn">View Code</button>
                     </div>
 

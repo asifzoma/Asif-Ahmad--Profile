@@ -81,6 +81,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Code Snippets Modal Logic ---
     const snippetCards = document.querySelectorAll('.snippet-card');
     if (snippetCards.length > 0 && codeModal && codeModalContent) {
+        
+        // Function to decode HTML entities
+        function decodeHtmlEntities(text) {
+            const textArea = document.createElement('textarea');
+            textArea.innerHTML = text;
+            return textArea.value;
+        }
+        
+        // Function to escape HTML for display as text
+        function escapeHtmlForDisplay(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         snippetCards.forEach(card => {
             const viewCodeBtn = card.querySelector('.view-code-btn');
             if (viewCodeBtn) {
@@ -93,6 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const title = card.querySelector('h3').textContent;
                     
                     if (codeContent && explanation) {
+                        // First decode HTML entities, then escape for display as text
+                        const decodedCode = decodeHtmlEntities(codeContent);
+                        const escapedCode = escapeHtmlForDisplay(decodedCode);
+                        
                         codeModalContent.innerHTML = `
                             <button class="modal-close">&times;</button>
                             <div class="modal-header">
@@ -101,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="modal-body">
                                 <div class="code-section">
                                     <h4>Code:</h4>
-                                    <pre><code>${codeContent}</code></pre>
+                                    <pre><code>${escapedCode}</code></pre>
                                 </div>
                                 <div class="explanation-section">
                                     <h4>Explanation:</h4>
