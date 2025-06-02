@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // === NOTE: Sidebar underline animations are now handled purely by CSS/SCSS ===
+    // No JavaScript needed for visual effects - all hover/active states are CSS-based
+    // This improves performance and ensures consistent behavior across all nav elements
+    
     // --- Modals (Project & Code) ---
     // Ensure existing modals are hidden initially (safety measure)
     const existingProjectModal = document.querySelector('.project-modal');

@@ -52,6 +52,21 @@
                 padding-bottom: 3px;
                 position: relative;
 
+                // Base underline styling for ALL links (not just .active)
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;  // Start from center
+                    width: 100%;
+                    height: 2px;
+                    background-color: $light-text;
+                    transform: translateX(-50%) scaleX(0);  // Start scaled to 0 from center
+                    transform-origin: center;  // Ensure it grows from center
+                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);  // Smooth easing
+                }
+
+                // Active state - keep underline visible
                 &.active {
                     a {
                         color: $accent-color;
@@ -59,28 +74,19 @@
                     }
 
                     &::after {
-                        content: "";
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 2px;
-                        background-color: $light-text;
-                        transform: scaleX(1);
-                        transition: transform 0.3s ease;
+                        transform: translateX(-50%) scaleX(1);  // Show full underline
                     }
                 }
 
-                &::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-color: $light-text;
-                    transform: scaleX(0);
-                    transition: transform 0.3s ease;
+                // Hover state - show underline on hover for ALL links
+                &:hover {
+                    &::after {
+                        transform: translateX(-50%) scaleX(1);  // Show full underline
+                    }
+                    
+                    a {
+                        color: $accent-color;
+                    }
                 }
 
                 a {
@@ -89,11 +95,44 @@
                     font-size: 18px;
                     display: block;
                     transition: color 0.3s ease;
-
-                    &:hover {
-                        color: $accent-color;
-                    }
+                    position: relative;
+                    z-index: 1;
                 }
+            }
+        }
+    }
+
+    // Enhanced nav-tab specific styling for consistency
+    .nav-tab {
+        // Override any existing nav-tab styles to ensure consistency
+        &::after {
+            // Ensure nav-tabs use the same underline animation
+            background-color: $light-text !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        
+        // Enhanced hover and focus states
+        &:hover, &:focus-within {
+            &::after {
+                transform: translateX(-50%) scaleX(1) !important;
+            }
+            
+            a {
+                color: $accent-color !important;
+                transform: translateX(2px); // Subtle slide effect
+            }
+        }
+        
+        // Active/current page state
+        &.current, &[aria-current="page"] {
+            a {
+                color: $accent-color;
+                font-weight: bold;
+            }
+            
+            &::after {
+                transform: translateX(-50%) scaleX(1);
+                background-color: $accent-color;
             }
         }
     }
@@ -105,10 +144,20 @@
         a {
             color: $light-text;
             font-size: 20px;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding: 8px;
+            border-radius: 4px;
 
-            &:hover {
+            &:hover, &:focus {
                 color: $accent-color;
+                transform: translateY(-2px) scale(1.1);
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            &:focus {
+                outline: 2px solid $accent-color;
+                outline-offset: 2px;
             }
         }
     }
