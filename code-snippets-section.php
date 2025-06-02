@@ -2,7 +2,12 @@
             <section class="code-snippets">
                 <h2 id="code-snippets">Code Snippets</h2>
                 <div class="snippets-container">
-                    <div class="snippet-card" data-full-desc="class Database {
+                    <div class="snippet-card" id="snippet-db-connection">
+                        <h3>PHP Database Connection</h3>
+                        <p>Secure database connectivity using PDO with error handling and configuration management.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">class Database {
     private $host = 'localhost';
     private $db_name = '*****_db';
     private $username = '*****';
@@ -23,13 +28,17 @@
         }
         return $this->conn;
     }
-}" data-detailed-explanation="This Database class implements a secure and robust database connection using PDO (PHP Data Objects). The class uses private properties to store sensitive connection details, following encapsulation principles. The getConnection() method establishes a connection with proper error handling using try-catch blocks. It sets the error mode to exception, which is a best practice for catching and handling database errors. The connection is returned only if successful, making it safe to use in other parts of the application.">
-                        <h3>PHP Database Connection</h3>
-                        <p>Secure database connectivity using PDO with error handling and configuration management.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">This Database class implements a secure and robust database connection using PDO (PHP Data Objects). The class uses private properties to store sensitive connection details, following encapsulation principles. The getConnection() method establishes a connection with proper error handling using try-catch blocks. It sets the error mode to exception, which is a best practice for catching and handling database errors. The connection is returned only if successful, making it safe to use in other parts of the application.</div>
+                        </div>
                     </div>
 
-                    <div class="snippet-card" data-full-desc="// Contact Form Handler
+                    <div class="snippet-card" id="snippet-contact-form">
+                        <h3>PHP Contact Form Handler</h3>
+                        <p>Secure form processing with input validation and database storage.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">// Contact Form Handler
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -43,13 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response = ['success' => false, 'error' => 'Invalid input'];
     }
     echo json_encode($response);
-}" data-detailed-explanation="This contact form handler implements secure form processing with multiple layers of protection. It first checks if the request method is POST, then uses filter_input() to sanitize all user inputs, preventing XSS attacks. The code uses prepared statements with PDO to prevent SQL injection. The response is structured as JSON, making it easy to handle on the frontend. Error handling is implemented to catch invalid inputs, and the code follows a clean, maintainable structure.">
-                        <h3>PHP Contact Form Handler</h3>
-                        <p>Secure form processing with input validation and database storage.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">This contact form handler implements secure form processing with multiple layers of protection. It first checks if the request method is POST, then uses filter_input() to sanitize all user inputs, preventing XSS attacks. The code uses prepared statements with PDO to prevent SQL injection. The response is structured as JSON, making it easy to handle on the frontend. Error handling is implemented to catch invalid inputs, and the code follows a clean, maintainable structure.</div>
+                        </div>
                     </div>
 
-                    <div class="snippet-card" data-full-desc="// News Card Manager
+                    <div class="snippet-card" id="snippet-news-manager">
+                        <h3>PHP News Card Manager</h3>
+                        <p>Class for managing news cards with database integration.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">// News Card Manager
 class NewsCard {
     private $pdo;
     
@@ -66,13 +79,17 @@ class NewsCard {
         $stmt = $this->pdo->prepare('INSERT INTO news_cards (title, content, image) VALUES (?, ?, ?)');
         return $stmt->execute([$title, $content, $image]);
     }
-}" data-detailed-explanation="The NewsCard class demonstrates object-oriented programming principles with a focus on database operations. It uses dependency injection by accepting a PDO instance in the constructor, making the class more testable and flexible. The getNewsCards() method retrieves news cards in reverse chronological order, while addNewsCard() uses prepared statements for secure data insertion. The class follows the Single Responsibility Principle by focusing solely on news card management.">
-                        <h3>PHP News Card Manager</h3>
-                        <p>Class for managing news cards with database integration.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">The NewsCard class demonstrates object-oriented programming principles with a focus on database operations. It uses dependency injection by accepting a PDO instance in the constructor, making the class more testable and flexible. The getNewsCards() method retrieves news cards in reverse chronological order, while addNewsCard() uses prepared statements for secure data insertion. The class follows the Single Responsibility Principle by focusing solely on news card management.</div>
+                        </div>
                     </div>
 
-                    <div class="snippet-card" data-full-desc="// Admin Authentication
+                    <div class="snippet-card" id="snippet-admin-auth">
+                        <h3>PHP Admin Authentication</h3>
+                        <p>Secure admin authentication with password hashing.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">// Admin Authentication
 class AdminAuth {
     private $pdo;
     
@@ -91,13 +108,17 @@ class AdminAuth {
         }
         return false;
     }
-}" data-detailed-explanation="This AdminAuth class implements secure authentication for admin users. It uses password_verify() for secure password comparison, ensuring that even if the database is compromised, the actual passwords remain protected. The class uses prepared statements to prevent SQL injection, and session management for maintaining user state. The login method returns a boolean, making it easy to handle authentication results in the application logic.">
-                        <h3>PHP Admin Authentication</h3>
-                        <p>Secure admin authentication with password hashing.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">This AdminAuth class implements secure authentication for admin users. It uses password_verify() for secure password comparison, ensuring that even if the database is compromised, the actual passwords remain protected. The class uses prepared statements to prevent SQL injection, and session management for maintaining user state. The login method returns a boolean, making it easy to handle authentication results in the application logic.</div>
+                        </div>
                     </div>
 
-                    <div class="snippet-card" data-full-desc="// Image Manager
+                    <div class="snippet-card" id="snippet-image-manager">
+                        <h3>PHP Image Manager</h3>
+                        <p>Secure image upload handling with validation.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">// Image Manager
 class ImageManager {
     public function uploadImage($file, $target_dir) {
         $target_file = $target_dir . basename($file['name']);
@@ -123,13 +144,17 @@ class ImageManager {
         }
         return ['success' => false, 'error' => 'Failed to upload file'];
     }
-}" data-detailed-explanation="The ImageManager class provides a comprehensive solution for secure image uploads. It implements multiple security checks: validating file types using getimagesize(), checking file size limits, and restricting allowed file extensions. The class uses move_uploaded_file() for secure file handling and returns a structured response with success/error information. This implementation follows security best practices for file uploads while maintaining a clean and maintainable code structure.">
-                        <h3>PHP Image Manager</h3>
-                        <p>Secure image upload handling with validation.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">The ImageManager class provides a comprehensive solution for secure image uploads. It implements multiple security checks: validating file types using getimagesize(), checking file size limits, and restricting allowed file extensions. The class uses move_uploaded_file() for secure file handling and returns a structured response with success/error information. This implementation follows security best practices for file uploads while maintaining a clean and maintainable code structure.</div>
+                        </div>
                     </div>
 
-                    <div class="snippet-card" data-full-desc="// Error Logger
+                    <div class="snippet-card" id="snippet-error-logger">
+                        <h3>PHP Error Logger</h3>
+                        <p>Custom error logging for debugging and monitoring.</p>
+                        <button class="view-code-btn">View Code</button>
+                        <div class="snippet-content-panel">
+                            <div class="code-content">// Error Logger
 class ErrorLogger {
     private $logFile;
     
@@ -148,10 +173,9 @@ class ErrorLogger {
         
         file_put_contents($this->logFile, $logMessage, FILE_APPEND);
     }
-}" data-detailed-explanation="This ErrorLogger class implements a robust error logging system. It uses a configurable log file path and includes timestamps with each log entry. The logError method accepts both a message and a context array, allowing for detailed error information to be captured. The class uses file_put_contents() with FILE_APPEND to ensure logs are not overwritten. The implementation follows the singleton pattern and provides a clean interface for error logging throughout the application.">
-                        <h3>PHP Error Logger</h3>
-                        <p>Custom error logging for debugging and monitoring.</p>
-                        <button class="view-code-btn">View Code</button>
+}</div>
+                            <div class="code-explanation">This ErrorLogger class implements a robust error logging system. It uses a configurable log file path and includes timestamps with each log entry. The logError method accepts both a message and a context array, allowing for detailed error information to be captured. The class uses file_put_contents() with FILE_APPEND to ensure logs are not overwritten. The implementation follows the singleton pattern and provides a clean interface for error logging throughout the application.</div>
+                        </div>
                     </div>
                 </div>
             </section> 

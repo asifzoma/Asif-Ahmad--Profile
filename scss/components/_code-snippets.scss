@@ -44,7 +44,15 @@
     max-width: 100%;
     margin-bottom: 20px;
     text-align: center;
-    transition: all 0.3s ease;
+    overflow: hidden;
+    
+    &.hidden {
+        display: none;
+    }
+    
+    &.visible {
+        display: flex;
+    }
 }
 
 .snippet-card {
@@ -76,6 +84,38 @@
 
     .hover-prompt {
         display: none !important;
+    }
+}
+
+.snippet-content-panel {
+    display: none;
+    padding: 20px;
+    margin-top: 15px;
+    background-color: lighten($background-color, 5%);
+    border-radius: 8px;
+    border-left: 4px solid $primary-color;
+    
+    &.active {
+        display: block;
+    }
+    
+    .code-content {
+        font-family: 'Courier New', Courier, monospace;
+        white-space: pre-wrap;
+        background-color: $primary-color;
+        color: $light-text;
+        padding: 15px;
+        border-radius: 4px;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        overflow-x: auto;
+    }
+    
+    .code-explanation {
+        color: $text-color;
+        line-height: 1.6;
+        font-size: 15px;
     }
 }
 
@@ -126,7 +166,6 @@
 
 @media (max-width: 792px) {
     .snippets-container {
-    
         align-items: center;
         margin-left: 0;
     }
