@@ -122,18 +122,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Code Snippets Section Navigation ---
+    // --- Code Snippets Section Navigation and Toggle ---
     const codeSnippetsHeading = document.querySelector('h2#code-snippets');
     const snippetsContainer = document.querySelector('.snippets-container');
+    let isContainerOpen = false; // Start with container closed by default
     
     if (codeSnippetsHeading && snippetsContainer) {
-        // Handle heading click to scroll to section
+        // Set initial state - closed by default
+        snippetsContainer.classList.remove('visible');
+        snippetsContainer.classList.add('hidden');
+        codeSnippetsHeading.classList.remove('active');
+        
+        // Handle heading click to toggle container visibility
         codeSnippetsHeading.addEventListener('click', (e) => {
             e.preventDefault();
-            codeSnippetsHeading.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
+            
+            if (isContainerOpen) {
+                // Close container
+                snippetsContainer.classList.remove('visible');
+                snippetsContainer.classList.add('hidden');
+                codeSnippetsHeading.classList.remove('active');
+                isContainerOpen = false;
+            } else {
+                // Open container
+                snippetsContainer.classList.remove('hidden');
+                snippetsContainer.classList.add('visible');
+                codeSnippetsHeading.classList.add('active');
+                isContainerOpen = true;
+                
+                // Scroll to section when opening
+                setTimeout(() => {
+                    codeSnippetsHeading.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }, 100);
+            }
         });
         
         // Handle sidebar navigation to code snippets
@@ -141,6 +165,12 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarCodeLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                
+                // Always open the container when navigating from sidebar
+                snippetsContainer.classList.remove('hidden');
+                snippetsContainer.classList.add('visible');
+                codeSnippetsHeading.classList.add('active');
+                isContainerOpen = true;
                 
                 // Smooth scroll to code snippets section
                 setTimeout(() => {
@@ -159,6 +189,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+        
+        // Handle initial hash navigation - only open if specifically navigated to
+        if (window.location.hash === '#code-snippets') {
+            snippetsContainer.classList.remove('hidden');
+            snippetsContainer.classList.add('visible');
+            codeSnippetsHeading.classList.add('active');
+            isContainerOpen = true;
+            
+            setTimeout(() => {
+                codeSnippetsHeading.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
     }
 
     // --- Modal Close Handlers ---

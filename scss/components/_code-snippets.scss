@@ -7,7 +7,7 @@
         margin-bottom: 2rem;
         color: $light-text;
         position: relative;
-        padding: 10px 20px;
+        padding: 10px 40px 10px 20px;
         transition: all 0.3s ease;
         background-color: $primary-color;
         border-radius: 8px;
@@ -20,6 +20,20 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        &::after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        &.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
     }
 }
 
@@ -31,6 +45,19 @@
     max-width: 100%;
     margin-bottom: 20px;
     text-align: center;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    
+    &.hidden {
+        display: none;
+        opacity: 0;
+    }
+    
+    &.visible {
+        display: flex;
+        opacity: 1;
+    }
 }
 
 .snippet-card {
