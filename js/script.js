@@ -311,18 +311,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         // Sidebar links for About Me accordion
-        const sidebarLinksToAbout = [
-            document.getElementById('sidebar-about-me-link'), 
-            document.getElementById('profile-sidebar-about-me-link')
-        ];
-        sidebarLinksToAbout.forEach(link => {
-            if (link) {
-                link.addEventListener('click', function(e) { 
-                    e.preventDefault(); 
+        document.querySelectorAll('a[href="#about-accordion"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 openAboutAccordion();
-                    setTimeout(() => { if (aboutAccordion) aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50); 
-                });
-            }
+                setTimeout(() => {
+                    if (aboutAccordion) {
+                        aboutAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 50);
+            });
         });
         // Hash link for About Me accordion
         if (window.location.hash === '#about-accordion') {
@@ -341,9 +340,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (targetElement) {
                 e.preventDefault();
                 
-                // Special handling for code snippets
-                if (href === '#code-snippets') {
-                    // Let the code snippets accordion handle this
+                // Special handling for code snippets and about accordion
+                if (href === '#code-snippets' || href === '#about-accordion') {
+                    // Let their specific handlers take care of these
                     return;
                 }
                 
