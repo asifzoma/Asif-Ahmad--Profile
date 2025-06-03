@@ -372,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (imageContainer && floatingTags.length > 0) {
         const isMobile = window.innerWidth <= 902;
         let animationId;
+        let isSecondScroll = false; // Add tracking for second scroll
         
         // Function to calculate optimal orbital radius based on image container size
         function calculateOptimalRadius() {
@@ -569,14 +570,41 @@ document.addEventListener('DOMContentLoaded', function() {
             const maxScroll = imageContainerHeight * 0.05; // Complete alignment at 5% scroll
             const scrollProgress = Math.min(scrollY / maxScroll, 1);
             
+            // Track second scroll and handle scroll up
+            if (scrollProgress === 0) {
+                // Reset scroll state when back at top
+                isSecondScroll = false;
+                // Return to orbital animation when scrolled back up
+                floatingTags.forEach(tag => {
+                    // Remove alignment classes and reset styles
+                    tag.classList.remove('transition-state', 'aligned-state');
+                    tag.classList.add('orbital-animation');
+                    
+                    // Clear all position-related inline styles
+                    tag.style.removeProperty('top');
+                    tag.style.removeProperty('left');
+                    tag.style.removeProperty('transform');
+                    tag.style.removeProperty('z-index');
+                    tag.style.removeProperty('transition');
+                    
+                    // Reset the orbital data for this tag
+                    const langClass = Array.from(tag.classList).find(cls => orbitalData.hasOwnProperty(cls));
+                    if (langClass && orbitalData[langClass]) {
+                        orbitalData[langClass].currentAngle = orbitalData[langClass].baseAngle;
+                    }
+                });
+                
+                // Force immediate update of orbital positions
+                updateOrbitalPositions(Date.now());
+                return; // Let orbital animation take over
+            } else if (scrollProgress === 1) {
+                // Mark as second scroll when reaching bottom first time
+                isSecondScroll = true;
+            }
+
             // Easing function for smooth transition
             const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
             const easedProgress = easeOutCubic(scrollProgress);
-
-            if (scrollProgress === 0) {
-                // No scroll - continue orbital motion
-                return; // Let orbital animation handle this
-            }
 
             // Get the current center of the image container for consistent tracking
             const imageCenter = getImageContainerCenter();
@@ -593,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
             };
 
             // Target Y position for horizontal alignment (bottom area of image container)
-            const targetTop = imageCenter.y + (imageCenter.height * 0.35); // 35% down from center
+            const targetTop = imageCenter.y + (imageCenter.height * (isSecondScroll ? 0.60 : 0.50)); // Move lower on second scroll
             const centerLeft = imageCenter.x; // Use actual image center X
 
             // Calculate initial positions and store them for collision detection
@@ -608,6 +636,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add transition state class for SCSS styling
                 tag.classList.remove('orbital-animation');
                 tag.classList.add('transition-state');
+                
+                // Set higher z-index for orbital elements
+                tag.style.zIndex = '25'; // Ensure this is higher than typed text
                 
                 // Get current orbital position relative to image center (starting point)
                 const currentAngle = orbitalData[langClass].currentAngle;
