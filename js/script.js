@@ -935,6 +935,101 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         `;
         document.head.appendChild(style);
+
+        // Add mobile-specific styles
+        const mobileStyle = document.createElement('style');
+        mobileStyle.textContent = `
+            @media (max-width: 902px) {
+                .image-container {
+                    position: relative;
+                }
+                
+                .floating-tags-wrapper {
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 90% !important;
+                    transform: translate(-50%, -50%) !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 30px !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    background: var(--primary-color) !important;
+                }
+                
+                .floating-tag {
+                    position: static !important;
+                    transform: scale(2) !important;
+                    background: var(--background-color) !important;
+                    border: 2px solid var(--primary-color) !important;
+                    padding: 12px !important;
+                    cursor: pointer !important;
+                    transition: all 0.3s ease !important;
+                }
+
+                .floating-tag:hover {
+                    background: var(--primary-color) !important;
+                }
+
+                .floating-tag img {
+                    filter: brightness(0) invert(1) !important;
+                    opacity: 1 !important;
+                }
+
+                /* Remove any existing tooltip styles */
+                .floating-tag::before,
+                .floating-tag::after {
+                    display: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(mobileStyle);
+
+        // Create wrapper for floating tags on mobile
+        if (window.innerWidth <= 902) {
+            let wrapper = document.querySelector('.floating-tags-wrapper');
+            if (!wrapper) {
+                wrapper = document.createElement('div');
+                wrapper.className = 'floating-tags-wrapper';
+                
+                // Move all floating tags into the wrapper
+                floatingTags.forEach(tag => {
+                    tag.style.animation = 'none';
+                    wrapper.appendChild(tag);
+                });
+                
+                // Add wrapper to image container
+                imageContainer.appendChild(wrapper);
+            }
+        }
+
+        // Disable animations for mobile
+        if (window.innerWidth <= 902) {
+            floatingTags.forEach(tag => {
+                tag.style.animation = 'none';
+            });
+        }
+
+        // Remove any existing tooltips and add single tooltip implementation
+        if (window.innerWidth <= 902) {
+            floatingTags.forEach(tag => {
+                // Remove any existing tooltip attributes
+                tag.removeAttribute('title');
+                tag.removeAttribute('data-tooltip');
+                
+                // Add single tooltip using title attribute
+                const langClass = Array.from(tag.classList).find(cls => 
+                    ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls)
+                );
+                if (langClass) {
+                    let tooltipText = langClass.charAt(0).toUpperCase() + langClass.slice(1);
+                    if (langClass === 'csharp') tooltipText = 'C#';
+                    if (langClass === 'javascript') tooltipText = 'JavaScript';
+                    
+                    tag.setAttribute('title', tooltipText);
+                }
+            });
+        }
     }
 
     // --- Function to navigate to specific code snippet ---

@@ -21,6 +21,7 @@ Thumbs.db
 
 # Log files
 *.log
+debug.log
 
 # OS generated files
 *.swp
@@ -33,3 +34,9 @@ coverage/
 *.pyo
 __pycache__/ 
 /vendor/
+
+# Test files
+*test*.html
+*test*.php
+test-*.html
+test-*.php
