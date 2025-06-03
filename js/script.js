@@ -439,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const imageContainerWidth = imageContainer.offsetWidth;
             
             // Calculate scroll progress (0 to 1)
-            const maxScroll = imageContainerHeight * 0.6; // Complete alignment at 60% scroll
+            const maxScroll = imageContainerHeight * 0.05; // Complete alignment at 60% scroll
             const scrollProgress = Math.min(scrollY / maxScroll, 1);
             
             // Easing function for smooth transition
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Target horizontal positions when aligned (side by side)
-            const spacing = isMobile ? 40 : 60; // Reduced spacing for smaller viewports
+            const spacing = isMobile ? 80 : 120; // Reduced spacing for smaller viewports
             const targetPositions = {
                 html: -2.5 * spacing,
                 css: -1.5 * spacing,
@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Animation loop for orbital motion
         function animate(time) {
             const scrollY = window.scrollY;
-            const maxScroll = imageContainer.offsetHeight * 0.6;
+            const maxScroll = imageContainer.offsetHeight * 0.05;
             const scrollProgress = Math.min(scrollY / maxScroll, 1);
             
             if (scrollProgress === 0) {

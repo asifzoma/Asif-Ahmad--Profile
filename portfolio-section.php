@@ -8,15 +8,31 @@
                         <p>Cloning Netmatters website to improve my skills...</p>
                         <a href="https://netmatters.asif-ahmad.netmatters-scs.co.uk/" class="btn">View the live site</a>
                     </div>
-                    <div class="project-card" data-full-desc="This is a placeholder project. Add your full project description here for the modal.">
-                        <img src="img/placeholder.jpg" alt="Project Placeholder">
-                        <h3>Project Title</h3>
-                        <p>Project description goes here...</p>
+                    <div class="project-card coming-soon" data-full-desc="An exciting new full-stack web application project is currently in development. This project will showcase modern development practices using PHP, Laravel, MySQL, and JavaScript. Stay tuned for updates as I continue to build and refine this application with advanced features and responsive design.">
+                        <div class="coming-soon-overlay">
+                            <i class="fas fa-clock"></i>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                        <img src="img/placeholder.jpg" alt="Upcoming Project">
+                        <h3>Full-Stack Web Application</h3>
+                        <p>A web application which is currently in development...</p>
+                        <div class="project-status">
+                            <i class="fas fa-code"></i>
+                            <span>In Development</span>
+                        </div>
                     </div>
-                    <div class="project-card" data-full-desc="This is another placeholder project. Add your full project description here for the modal.">
-                        <img src="img/placeholder.jpg" alt="Project Placeholder">
-                        <h3>Project Title</h3>
-                        <p>Project description goes here...</p>
+                    <div class="project-card coming-soon" data-full-desc="A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.">
+                        <div class="coming-soon-overlay">
+                            <i class="fas fa-clock"></i>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                        <img src="img/placeholder.jpg" alt="Upcoming E-commerce Project">
+                        <h3>E-Commerce Platform</h3>
+                        <p>A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.</p>
+                        <div class="project-status">
+                            <i class="fas fa-tools"></i>
+                            <span>Planning Phase</span>
+                        </div>
                     </div>
                 </div>
             </section> 
