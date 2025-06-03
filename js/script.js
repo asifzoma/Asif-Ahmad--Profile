@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // No JavaScript needed for visual effects - all hover/active states are CSS-based
     // This improves performance and ensures consistent behavior across all nav elements
     
+    // === NOTE: Hamburger menu functionality is handled by home.js ===
+    // No need to duplicate the functionality here to avoid conflicts
+    
     // --- Modals (Project & Code) ---
     // Ensure existing modals are hidden initially (safety measure)
     const existingProjectModal = document.querySelector('.project-modal');
@@ -368,14 +371,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const floatingTags = document.querySelectorAll('.floating-tag');
     
     if (imageContainer && floatingTags.length > 0) {
-        const isMobile = window.innerWidth <= 767;
+        const isMobile = window.innerWidth <= 902;
         let animationId;
         
         // Orbital parameters - adjust radius based on viewport size
         let orbitRadius;
         if (window.innerWidth <= 480) {
             orbitRadius = 80; // Very small screens
-        } else if (window.innerWidth <= 802) {
+        } else if (window.innerWidth <= 902) {
             orbitRadius = 100; // Mobile/tablet
         } else {
             orbitRadius = 140; // Desktop (reduced from 160 to ensure visibility)
@@ -398,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Calculate center considering sidebar width
             let viewportCenterX, viewportCenterY;
             
-            if (window.innerWidth > 802) {
+            if (window.innerWidth > 902) {
                 // Desktop: Account for 15vw sidebar width
                 const sidebarWidth = window.innerWidth * 0.15; // 15vw
                 const contentAreaWidth = window.innerWidth - sidebarWidth;
@@ -467,6 +470,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetTop = containerRect.top + imageContainerHeight * 0.85;
             const centerLeft = containerRect.left + imageContainerWidth / 2;
 
+            // Calculate initial positions and store them for collision detection
+            const iconData = [];
+            const iconSize = isMobile ? 60 : 80; // Approximate icon size including padding
+            const minSpacing = iconSize + 10; // Minimum spacing between icons
+
             floatingTags.forEach(tag => {
                 const langClass = Array.from(tag.classList).find(cls => targetPositions.hasOwnProperty(cls));
                 if (!langClass || !orbitalData[langClass]) return;
@@ -474,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Get current orbital position in viewport coordinates (starting point)
                 let viewportCenterX, viewportCenterY;
                 
-                if (window.innerWidth > 802) {
+                if (window.innerWidth > 902) {
                     // Desktop: Account for sidebar
                     const sidebarWidth = window.innerWidth * 0.15;
                     const contentAreaWidth = window.innerWidth - sidebarWidth;
@@ -495,26 +503,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 const finalLeft = centerLeft + targetPositions[langClass];
                 
                 // Ensure icons stay within viewport bounds on smaller screens
-                const clampedFinalLeft = Math.max(25, Math.min(window.innerWidth - 25, finalLeft));
+                const clampedFinalLeft = Math.max(iconSize / 2 + 25, Math.min(window.innerWidth - iconSize / 2 - 25, finalLeft));
                 
-                // Interpolate between orbital position and final aligned position
-                const currentTop = initialY + (finalTop - initialY) * easedProgress;
-                const currentLeft = initialX + (clampedFinalLeft - initialX) * easedProgress;
+                // Store icon data for collision detection
+                iconData.push({
+                    tag,
+                    langClass,
+                    initialX,
+                    initialY,
+                    finalTop,
+                    finalLeft: clampedFinalLeft,
+                    targetOrder: Object.keys(targetPositions).indexOf(langClass) // Maintain order
+                });
+            });
 
-                // Keep using fixed positioning during transition
-                tag.style.position = 'fixed';
-                tag.style.top = `${currentTop}px`;
-                tag.style.left = `${currentLeft}px`;
+            // Sort icons by their target order to maintain consistent spacing
+            iconData.sort((a, b) => a.targetOrder - b.targetOrder);
+
+            // Calculate transition positions with collision prevention
+            const processedPositions = [];
+
+            iconData.forEach((iconInfo, index) => {
+                // Basic interpolation between orbital and target position
+                let currentTop = iconInfo.initialY + (iconInfo.finalTop - iconInfo.initialY) * easedProgress;
+                let currentLeft = iconInfo.initialX + (iconInfo.finalLeft - iconInfo.initialX) * easedProgress;
+
+                // Collision detection and prevention during transition
+                if (easedProgress > 0.1) { // Start collision prevention after initial movement
+                    // Check against previously processed icons
+                    for (let i = 0; i < processedPositions.length; i++) {
+                        const otherPos = processedPositions[i];
+                        const distance = Math.abs(currentLeft - otherPos.left);
+                        
+                        if (distance < minSpacing) {
+                            // Collision detected - adjust position
+                            if (index < processedPositions.length) {
+                                // This icon should be to the left
+                                currentLeft = otherPos.left - minSpacing;
+                            } else {
+                                // This icon should be to the right
+                                currentLeft = otherPos.left + minSpacing;
+                            }
+                            
+                            // Ensure we don't go outside viewport bounds
+                            currentLeft = Math.max(iconSize / 2 + 25, Math.min(window.innerWidth - iconSize / 2 - 25, currentLeft));
+                        }
+                    }
+                }
+
+                // Store processed position
+                processedPositions.push({
+                    left: currentLeft,
+                    top: currentTop,
+                    langClass: iconInfo.langClass
+                });
+
+                // Apply the calculated position to the tag
+                iconInfo.tag.style.position = 'fixed';
+                iconInfo.tag.style.top = `${currentTop}px`;
+                iconInfo.tag.style.left = `${currentLeft}px`;
                 
                 // Animation effects - rotation aligns with scroll
+                const currentAngle = orbitalData[iconInfo.langClass].currentAngle;
                 const orbitalRotation = currentAngle * 180 / Math.PI;
                 const alignedRotation = 0; // No rotation when aligned
                 const currentRotation = orbitalRotation + (alignedRotation - orbitalRotation) * easedProgress;
                 
                 const scale = 0.8 + (easedProgress * 0.4); // Scale up when aligning
-                tag.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
-                tag.style.opacity = 0.8 + (easedProgress * 0.2); // Slightly more opaque when aligned
-                tag.style.zIndex = '100';
+                iconInfo.tag.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
+                iconInfo.tag.style.opacity = 0.8 + (easedProgress * 0.2); // Slightly more opaque when aligned
+                iconInfo.tag.style.zIndex = '100';
             });
         }
 
@@ -617,7 +675,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Recalculate orbital radius based on new viewport size
             if (window.innerWidth <= 480) {
                 orbitRadius = 80;
-            } else if (window.innerWidth <= 802) {
+            } else if (window.innerWidth <= 902) {
                 orbitRadius = 100;
             } else {
                 orbitRadius = 140;

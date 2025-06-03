@@ -239,6 +239,8 @@
     transition: transform 0.3s ease;
     position: relative;
     overflow: hidden;
+    transform: scale(1); // Zoom in by 50%
+    transform-origin: center center;
 }
 
 // Floating Programming Languages Animation
@@ -365,7 +367,7 @@
     }
 }
 
-@media (max-width: 802px) {
+@media (max-width: $mobile-breakpoint) {
     .floating-tag {
         font-size: 1.0rem;
         padding: 8px;
@@ -779,7 +781,7 @@
 }
 
 /* Media Queries */
-@media (max-width: 800px) {
+@media (max-width: $mobile-breakpoint) {
     html, body {
         overflow-x: hidden;
     }
@@ -803,7 +805,6 @@
 
     .image-container {
         margin-bottom: 20px;
-        z-index: -50;
         transform: scale(1); // Zoom in by 50%
         transform-origin: center center;
         overflow: hidden;
@@ -839,7 +840,7 @@
     }
 }
 
-@media (min-width: 801px) {
+@media (min-width: #{$mobile-breakpoint + 1px}) {
     .hamburger-menu {
         display: none;
     }

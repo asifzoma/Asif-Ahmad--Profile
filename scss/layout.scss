@@ -146,7 +146,7 @@ header,
 }
 
 // Media Queries
-@media (max-width: 800px) {
+@media (max-width: $mobile-breakpoint) {
   .main-container {
     margin-left: 0;
     width: 100%;

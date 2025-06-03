@@ -22,6 +22,9 @@
             <span></span>
         </button>
 
+        <!-- Overlay for mobile sidebar -->
+        <div class="overlay"></div>
+
         <!-- Sidebar Container -->
         <nav id="navigator"class="sidebar-container">
             <div class="sidebar-header">

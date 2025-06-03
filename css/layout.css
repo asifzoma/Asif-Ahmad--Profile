@@ -127,7 +127,7 @@ header,
   overflow: hidden;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 902px) {
   .main-container {
     margin-left: 0;
     width: 100%;

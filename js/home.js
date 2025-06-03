@@ -86,7 +86,7 @@ try {
                     navItems.forEach(i => i.classList.remove('active'));
                     this.classList.add('active');
                 }
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 902) {
                     const sidebar = document.querySelector('.sidebar-container');
                     const hamburger = document.querySelector('.hamburger-menu');
                     const overlay = document.querySelector('.overlay');
