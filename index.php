@@ -65,6 +65,7 @@
     <!-- jQuery Validation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="js/home.js"></script>
+    <script src="js/contact-form.js"></script>
 
     </body>
 </html>

@@ -32,7 +32,7 @@
         <!-- Sidebar Container -->
         <nav id="navigator" class="sidebar-container">
             <div class="sidebar-header">
-                <h3><a href="#about-accordion">AZA</a></h3>
+                <h3><a href="index.php">AZA</a></h3>
             </div>
             <div class="sidebar-menu">
                 <ul>

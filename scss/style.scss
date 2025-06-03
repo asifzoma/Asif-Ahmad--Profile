@@ -7,6 +7,7 @@
 // Import components
 @import 'components/layout';
 @import 'components/_code-snippets.scss';
+@import 'components/contact';
 
 // Global styles using variables
 #contact, .banner {
@@ -504,6 +505,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     }
 }
 
+/*
 #contact, .contact {
     background-color: $primary-color;
     border-radius: 8px;
@@ -534,6 +536,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     background-color: darken($background-color, 10%);
     color: $primary-color;
 }
+*/
 
 #submission-success {
   position: fixed;

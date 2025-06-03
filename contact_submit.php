@@ -6,8 +6,8 @@
 // $DB_NAME = 'Asif_db';
 // $DB_PORT = 3306;
 
-
-
+// Set content type to JSON for AJAX responses
+header('Content-Type: application/json');
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -38,36 +38,101 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 
+// Function to validate input and return errors
+function validateInput($name, $email, $message) {
+    $errors = [];
+    
+    // Validate name
+    if (empty($name)) {
+        $errors['name'] = 'Name is required';
+    } elseif (strlen($name) < 2) {
+        $errors['name'] = 'Name must be at least 2 characters long';
+    } elseif (strlen($name) > 100) {
+        $errors['name'] = 'Name must be less than 100 characters';
+    } elseif (!preg_match('/^[a-zA-Z\s\'-]+$/', $name)) {
+        $errors['name'] = 'Name can only contain letters, spaces, hyphens, and apostrophes';
+    }
+    
+    // Validate email
+    if (empty($email)) {
+        $errors['email'] = 'Email is required';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Please enter a valid email address';
+    } elseif (strlen($email) > 254) {
+        $errors['email'] = 'Email address is too long';
+    }
+    
+    // Validate message
+    if (empty($message)) {
+        $errors['message'] = 'Message is required';
+    } elseif (strlen($message) < 10) {
+        $errors['message'] = 'Message must be at least 10 characters long';
+    } elseif (strlen($message) > 5000) {
+        $errors['message'] = 'Message must be less than 5000 characters';
+    }
+    
+    return $errors;
+}
+
 try {
     // Create PDO instance
     $pdo = new PDO($conn, $username, $password, $options);
     
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'], $_POST['message'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Check if required fields are present
+        if (!isset($_POST['name'], $_POST['email'], $_POST['message'])) {
+            echo json_encode([
+                'success' => false,
+                'errors' => ['general' => 'All fields are required. Please fill out the complete form.']
+            ]);
+            exit;
+        }
+        
         $name = trim($_POST['name']);
         $email = trim($_POST['email']);
         $message = trim($_POST['message']);
-
-        // Prepare the statement
-        $stmt = $pdo->prepare("INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)");
         
-        // Execute with parameters as an array
+        // Validate all inputs and collect errors
+        $errors = validateInput($name, $email, $message);
+        
+        // If there are validation errors, return them all at once
+        if (!empty($errors)) {
+            echo json_encode([
+                'success' => false,
+                'errors' => $errors
+            ]);
+            exit;
+        }
+        
+        // If validation passes, insert into database
+        $stmt = $pdo->prepare("INSERT INTO contacts (name, email, message, submitted_at) VALUES (?, ?, ?, NOW())");
+        
         if ($stmt->execute([$name, $email, $message])) {
-            echo "Thank you! Your message has been received.";
+            echo json_encode([
+                'success' => true,
+                'message' => 'Thank you! Your message has been received successfully. I\'ll get back to you soon.'
+            ]);
         } else {
-            echo "Error: " . $stmt->errorInfo()[2];
+            echo json_encode([
+                'success' => false,
+                'errors' => ['general' => 'There was an error saving your message. Please try again.']
+            ]);
         }
     } else {
-        echo '<div style="color: red; font-weight: bold;">Error: This page should only be accessed via the contact form. Please fill out the form on the <a href="index.php">contact page</a>.</div>';
-        exit;
+        echo json_encode([
+            'success' => false,
+            'errors' => ['general' => 'Invalid request method. Please submit the form properly.']
+        ]);
     }
 
 } catch (PDOException $e) {
-    // Handle errors
-    die("Database error: " . $e->getMessage());
+    // Handle database errors
+    file_put_contents(__DIR__ . '/debug.log', "Database error: " . $e->getMessage() . "\n", FILE_APPEND);
+    echo json_encode([
+        'success' => false,
+        'errors' => ['general' => 'Database connection error. Please try again later.']
+    ]);
 }
 
-file_put_contents(__DIR__ . '/debug.log', "Script hit\n", FILE_APPEND);
-file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true), FILE_APPEND);
-
-// (Your existing form handling code here)
-// ?>
+file_put_contents(__DIR__ . '/debug.log', "Script completed\n", FILE_APPEND);
+?>
