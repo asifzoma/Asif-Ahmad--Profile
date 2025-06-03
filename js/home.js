@@ -26,32 +26,127 @@ try {
 // Sidebar and navigation functionality
 try {
     document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.querySelector('.hamburger-menu');
+        console.log('🔍 Hamburger Debug: DOM Content Loaded');
+        
+        const btn = document.getElementById('navToggle');
         const sidebar = document.querySelector('.sidebar-container');
         let overlay = document.querySelector('.overlay');
+        
+        console.log('🔍 Hamburger Debug: Elements found:', {
+            hamburger: !!btn,
+            sidebar: !!sidebar,
+            overlay: !!overlay
+        });
+        
+        console.log('🔍 Hamburger Debug: Current viewport:', {
+            width: window.innerWidth,
+            shouldShowHamburger: window.innerWidth <= 902
+        });
+        
+        // Create overlay if it doesn't exist
         if (!overlay) {
+            console.log('🔍 Hamburger Debug: Creating overlay element');
             overlay = document.createElement('div');
             overlay.className = 'overlay';
             document.querySelector('.page-wrapper').prepend(overlay);
         }
+        
+        // Check if hamburger is actually visible
         if (btn) {
-            btn.addEventListener('click', function() {
+            const computedStyle = window.getComputedStyle(btn);
+            console.log('🔍 Hamburger Debug: Computed styles:', {
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                zIndex: computedStyle.zIndex,
+                position: computedStyle.position,
+                top: computedStyle.top,
+                left: computedStyle.left,
+                pointerEvents: computedStyle.pointerEvents,
+                cursor: computedStyle.cursor
+            });
+            
+            // Test initial states
+            console.log('🔍 Initial States:', {
+                sidebarClasses: sidebar.className,
+                hamburgerClasses: btn.className,
+                overlayClasses: overlay.className
+            });
+            
+            // Add click event listener
+            console.log('🔍 Hamburger Debug: Adding click event listener');
+            
+            btn.addEventListener('click', function(e) {
+                console.log('🔍 Hamburger Debug: CLICK event triggered!');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                console.log('🔍 Before toggle - Classes:', {
+                    sidebar: sidebar.className,
+                    hamburger: btn.className,
+                    overlay: overlay.className
+                });
+                
+                // Toggle classes
+                const wasActive = sidebar.classList.contains('active');
+                
                 sidebar.classList.toggle('active');
                 btn.classList.toggle('active');
                 overlay.classList.toggle('active');
+                
+                console.log('🔍 After toggle - Classes:', {
+                    sidebar: sidebar.className,
+                    hamburger: btn.className,
+                    overlay: overlay.className
+                });
+                
+                // Force reflow to ensure CSS is applied
+                sidebar.offsetHeight;
+                
+                // Get computed styles after toggle
+                const sidebarStyle = window.getComputedStyle(sidebar);
+                console.log('🔍 Sidebar computed transform after toggle:', sidebarStyle.transform);
+                
+                console.log('🔍 Hamburger Debug: Classes after toggle:', {
+                    sidebarActive: sidebar.classList.contains('active'),
+                    hamburgerActive: btn.classList.contains('active'),
+                    overlayActive: overlay.classList.contains('active')
+                });
+                
                 if (sidebar.classList.contains('active')) {
                     document.body.style.overflow = 'hidden';
+                    console.log('🔍 Sidebar should be visible now - Transform should be translateX(0)');
                 } else {
                     document.body.style.overflow = '';
+                    console.log('🔍 Sidebar should be hidden now - Transform should be translateX(-100%)');
                 }
             });
+            
+        } else {
+            console.error('🔍 Hamburger Debug: Hamburger button not found!');
         }
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            btn.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
+        
+        // Overlay click handler
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                console.log('🔍 Hamburger Debug: Overlay clicked');
+                sidebar.classList.remove('active');
+                btn.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        // Test viewport resize functionality
+        window.addEventListener('resize', function() {
+            const newWidth = window.innerWidth;
+            console.log('🔍 Viewport resized:', {
+                width: newWidth,
+                shouldShowHamburger: newWidth <= 902,
+                hamburgerDisplay: btn ? window.getComputedStyle(btn).display : 'N/A'
+            });
         });
+        
         const navItems = document.querySelectorAll('.sidebar-menu li');
         function highlightActiveNavItem() {
             const currentPath = window.location.pathname;
@@ -88,7 +183,7 @@ try {
                 }
                 if (window.innerWidth <= 902) {
                     const sidebar = document.querySelector('.sidebar-container');
-                    const hamburger = document.querySelector('.hamburger-menu');
+                    const hamburger = document.getElementById('navToggle');
                     const overlay = document.querySelector('.overlay');
                     if (sidebar) sidebar.classList.remove('active');
                     if (hamburger) hamburger.classList.remove('active');

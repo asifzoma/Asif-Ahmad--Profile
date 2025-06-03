@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamburger Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .test-info { 
+            position: fixed; 
+            top: 80px; 
+            right: 20px; 
+            background: white; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+            z-index: 2000;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <strong>Enhanced Hamburger Test:</strong><br>
+        Viewport: <span id="viewport-width"></span>px<br>
+        Hamburger Display: <span id="hamburger-display"></span><br>
+        Status: <span id="status">Loading...</span><br>
+        Hamburger State: <span id="hamburger-state">Normal</span><br>
+        <br>
+        <strong>✅ Professional Transformation:</strong><br>
+        • Hamburger completely disappears on click<br>
+        • Clean X appears in different position<br>
+        • X created with CSS pseudo-elements<br>
+        • X positioned on right edge of sidebar<br>
+        • X uses accent color gradient<br>
+        • X is fully clickable to close sidebar<br>
+        • X transforms back to hamburger on close<br>
+        • No unprofessional overlapping elements<br>
+    </div>
+    
+    <div class="page-wrapper">
+        <!-- Hamburger Menu -->
+        <button class="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Overlay for mobile sidebar -->
+        <div class="overlay"></div>
+
+        <!-- Sidebar Container -->
+        <nav class="sidebar-container">
+            <div class="sidebar-header">
+                <h3><a href="#">TEST</a></h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="nav-tab"><a href="#test1">Test Link 1</a></li>
+                    <li class="nav-tab"><a href="#test2">Test Link 2</a></li>
+                    <li class="nav-tab"><a href="#test3">Test Link 3</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            <h1>Hamburger Menu Test</h1>
+            <p>Resize the window to below 902px to see the hamburger menu.</p>
+            <p>Click the hamburger (☰) to test if the sidebar slides out.</p>
+            <p>Check the test info box (top right) for debugging information.</p>
+            
+            <h2>Expected Behavior:</h2>
+            <ul>
+                <li>Hamburger visible at ≤902px viewport</li>
+                <li><strong>No white background - transparent design</strong></li>
+                <li>Sidebar slides from left when hamburger clicked</li>
+                <li><strong>Hamburger completely disappears (professional)</strong></li>
+                <li><strong>Clean X appears on right edge of sidebar</strong></li>
+                <li><strong>X created with CSS pseudo-elements (not transformed lines)</strong></li>
+                <li><strong>X uses accent color and is clearly clickable</strong></li>
+                <li>Overlay appears behind sidebar</li>
+                <li>Body scroll disabled when sidebar open</li>
+                <li><strong>Click X - closes sidebar and hamburger reappears</strong></li>
+            </ul>
+            
+            <h2>Test Steps:</h2>
+            <ol>
+                <li>Resize window to ≤902px</li>
+                <li><strong>Notice hamburger has no background - just floating lines</strong></li>
+                <li>Click hamburger (☰) - <strong>hamburger should completely disappear</strong></li>
+                <li><strong>Clean X should appear on right edge of sidebar</strong></li>
+                <li>Verify no overlapping or unprofessional elements</li>
+                <li>Verify X is clearly visible and positioned correctly</li>
+                <li>Hover over X - should scale and intensify colors</li>
+                <li><strong>Click X - should close sidebar and hamburger reappears in original position</strong></li>
+                <li>Repeat to test professional transformation consistency</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Update test info
+        function updateTestInfo() {
+            const width = window.innerWidth;
+            const hamburger = document.querySelector('.hamburger-menu');
+            const style = hamburger ? window.getComputedStyle(hamburger) : null;
+            const isActive = hamburger ? hamburger.classList.contains('active') : false;
+            
+            document.getElementById('viewport-width').textContent = width;
+            document.getElementById('hamburger-display').textContent = style ? style.display : 'N/A';
+            document.getElementById('status').textContent = width <= 902 ? 'Should show hamburger' : 'Desktop mode';
+            document.getElementById('hamburger-state').textContent = isActive ? 'X (Close Button)' : 'Hamburger (☰)';
+        }
+
+        // Update on load and resize
+        window.addEventListener('load', updateTestInfo);
+        window.addEventListener('resize', updateTestInfo);
+        
+        // Test click functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger-menu');
+            const sidebar = document.querySelector('.sidebar-container');
+            const overlay = document.querySelector('.overlay');
+            
+            if (hamburger && sidebar && overlay) {
+                hamburger.addEventListener('click', function(e) {
+                    console.log('🔍 TEST: Hamburger clicked!');
+                    e.preventDefault();
+                    
+                    sidebar.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                    
+                    const isActive = hamburger.classList.contains('active');
+                    console.log('🔍 TEST: Classes toggled:', {
+                        sidebar: sidebar.classList.contains('active'),
+                        hamburger: isActive,
+                        overlay: overlay.classList.contains('active'),
+                        state: isActive ? 'X (Close Button)' : 'Hamburger (☰)'
+                    });
+                    
+                    // Update test info display
+                    updateTestInfo();
+                });
+                
+                overlay.addEventListener('click', function() {
+                    console.log('🔍 TEST: Overlay clicked!');
+                    sidebar.classList.remove('active');
+                    hamburger.classList.remove('active');
+                    overlay.classList.remove('active');
+                    updateTestInfo();
+                });
+                
+                console.log('🔍 TEST: Event listeners added successfully');
+            } else {
+                console.error('🔍 TEST: Missing elements:', {
+                    hamburger: !!hamburger,
+                    sidebar: !!sidebar,
+                    overlay: !!overlay
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

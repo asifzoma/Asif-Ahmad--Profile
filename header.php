@@ -13,15 +13,24 @@
 </head>
 <body>  
     <div class="page-wrapper">
-        <!-- Hamburger Menu -->
-        <button class="hamburger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- Hamburger Menu with separate icons -->
+        <button class="hamburger-menu" id="navToggle" aria-label="Toggle navigation">
+            <!-- Hamburger Icon -->
+            <span class="hamburger-icon">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </span>
+            
+            <!-- Close Icon -->
+            <span class="close-icon">
+                <span class="line"></span>
+                <span class="line"></span>
+            </span>
         </button>
 
         <!-- Sidebar Container -->
-        <nav id="navigator"class="sidebar-container">
+        <nav id="navigator" class="sidebar-container">
             <div class="sidebar-header">
                 <h3><a href="#about-accordion">AZA</a></h3>
             </div>

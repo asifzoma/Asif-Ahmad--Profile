@@ -15,36 +15,8 @@
 
 <body>  
     <div class="page-wrapper">
-        <!-- Hamburger Menu -->
-        <button class="hamburger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
         <!-- Overlay for mobile sidebar -->
         <div class="overlay"></div>
-
-        <!-- Sidebar Container -->
-        <nav id="navigator"class="sidebar-container">
-            <div class="sidebar-header">
-                <h3><a href="index.php">AZA</a></h3>
-            </div>
-            <div class="sidebar-menu">
-                <ul>
-                    <li class="nav-tab"><a href="#about-accordion" id="profile-sidebar-about-me-link">About Me</a></li>
-                    <li class="nav-tab"><a href='index.php#portfolio'>My Portfolio</a></li>
-                    <li class="nav-tab"><a href="#code-snippets">Code Snippets</a></li>
-                    <li class="nav-tab"><a href="#scion-scheme-section">SCS Scheme</a></li>
-                    <li class="nav-tab"><a href="#contact">Contact Me</a></li>
-                </ul>
-            </div>
-            <div class="sidebar-social">
-                <a href="https://github.com/asifzoma"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/asifzahmad/"><i class="fab fa-linkedin"></i></a>
-                <a href="https://discord.com/users/AsifZahmad"><i class="fab fa-discord"></i></a>
-            </div>
-        </nav>
 
         <!-- Main Content -->
         <div class="main-container">
