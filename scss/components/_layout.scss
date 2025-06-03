@@ -278,15 +278,62 @@
     justify-content: center;
     position: relative;
     
-    // Initial centered horizontal line positions
+    // Default positioning - will be overridden by JavaScript for orbital animation
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0.8;
+    z-index: 100;
+    
+    // Base animation styles for orbital motion
+    &.orbital-animation {
+        position: fixed;
+        will-change: transform, opacity, top, left;
+        animation-timing-function: linear;
+        transition: none; // Disable transitions during orbital animation
+    }
+    
+    // Transition state for scroll-based positioning
+    &.transition-state {
+        position: fixed;
+        will-change: transform, opacity, top, left;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    // Aligned state when scrolled
+    &.aligned-state {
+        position: fixed;
+        opacity: 1;
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+    
+    // Highlighted state for snippet navigation
+    &.highlighted {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        transform: translate(-50%, -50%) scale(1.2);
+        z-index: 200;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+    }
     
     i {
         font-size: 1.5rem;
         line-height: 1;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        transition: all 0.3s ease;
     }
     
     &:hover {

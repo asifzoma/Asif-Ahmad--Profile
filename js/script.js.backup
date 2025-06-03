@@ -479,17 +479,26 @@ document.addEventListener('DOMContentLoaded', function() {
             let centerX = contentLeft + (contentWidth / 2);
             let centerY = contentTop + (contentHeight / 2);
             
-            // On desktop (>902px), subtract sidebar width from x-axis center for better visual balance
+            // Account for sidebar on desktop sizes (>902px)
             if (window.innerWidth > 902) {
-                const sidebarWidth = window.innerWidth * 0.15; // 15vw sidebar width
-                centerX = centerX - sidebarWidth;
+                // On desktop, the sidebar takes up 15vw on the left
+                const sidebarWidth = window.innerWidth * 0.15;
+                const availableContentWidth = window.innerWidth - sidebarWidth;
                 
-                console.log(`🎯 Desktop sidebar adjustment:
+                // Calculate the visual center of the available content space
+                // This is the center of the space to the right of the sidebar
+                const contentAreaCenterX = sidebarWidth + (availableContentWidth / 2);
+                
+                // Use the visual center for better orbital positioning
+                centerX = contentAreaCenterX;
+                
+                console.log(`🎯 Desktop center adjustment:
                     • Screen width: ${window.innerWidth}px
                     • Sidebar width: ${sidebarWidth}px (15vw)
-                    • Original center X: ${contentLeft + (contentWidth / 2)}px
-                    • Adjusted center X: ${centerX}px
-                    • Adjustment: -${sidebarWidth}px`);
+                    • Available content width: ${availableContentWidth}px
+                    • Container center: ${contentLeft + (contentWidth / 2)}px
+                    • Visual center (adjusted): ${centerX}px
+                    • Adjustment: ${Math.abs(centerX - (contentLeft + (contentWidth / 2))).toFixed(1)}px`);
             }
             
             // Ensure we have valid dimensions
@@ -519,9 +528,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 ...(window.innerWidth > 902 && {
                     desktop: {
                         sidebarWidth: window.innerWidth * 0.15,
-                        originalCenterX: contentLeft + (contentWidth / 2),
-                        adjustedCenterX: centerX,
-                        adjustment: -(window.innerWidth * 0.15)
+                        availableContentWidth: window.innerWidth - (window.innerWidth * 0.15),
+                        visualCenterX: centerX,
+                        containerCenterX: contentLeft + (contentWidth / 2)
                     }
                 })
             };

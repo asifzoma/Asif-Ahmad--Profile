@@ -381,12 +381,55 @@ a:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0.8;
+  z-index: 100;
+}
+
+.floating-tag.orbital-animation {
+  position: fixed;
+  will-change: transform, opacity, top, left;
+  animation-timing-function: linear;
+  transition: none;
+}
+
+.floating-tag.transition-state {
+  position: fixed;
+  will-change: transform, opacity, top, left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-tag.aligned-state {
+  position: fixed;
+  opacity: 1;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.floating-tag.highlighted {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 200;
+}
+
+.floating-tag.highlighted::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  animation: borderGlow 2s ease-in-out infinite;
 }
 
 .floating-tag i {
   font-size: 1.5rem;
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
 }
 
 .floating-tag:hover {

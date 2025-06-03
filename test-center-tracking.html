@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Center Tracking Test</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Test overlays to show different center points */
+        .test-center {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: lime;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
+        }
+        
+        .container-center {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: red;
+            border: 1px solid white;
+            border-radius: 50%;
+            z-index: 9998;
+            pointer-events: none;
+            box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+        }
+        
+        .visual-center {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: blue;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 9997;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(0, 0, 255, 0.8);
+        }
+        
+        .content-outline {
+            position: fixed;
+            border: 2px dashed rgba(0, 255, 0, 0.3);
+            z-index: 9996;
+            pointer-events: none;
+        }
+        
+        .sidebar-outline {
+            position: fixed;
+            border: 2px dashed rgba(255, 0, 0, 0.3);
+            background: rgba(255, 0, 0, 0.1);
+            z-index: 9995;
+            pointer-events: none;
+        }
+        
+        .test-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            z-index: 10000;
+            max-width: 350px;
+        }
+        
+        .test-info h4 {
+            margin: 0 0 10px 0;
+            color: #ff6b6b;
+        }
+        
+        .legend {
+            margin-top: 10px;
+            font-size: 10px;
+        }
+        
+        .legend div {
+            margin: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar-container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-container">
+        <section class="image-container">
+            <div class="floating-languages">
+                <div class="floating-tag html" data-tooltip="HTML5">
+                    <i class="fab fa-html5"></i>
+                </div>
+                <div class="floating-tag css" data-tooltip="CSS3">
+                    <i class="fab fa-css3-alt"></i>
+                </div>
+                <div class="floating-tag javascript" data-tooltip="JavaScript">
+                    <i class="fab fa-js-square"></i>
+                </div>
+                <div class="floating-tag php" data-tooltip="PHP">
+                    <i class="fab fa-php"></i>
+                </div>
+                <div class="floating-tag csharp" data-tooltip="C#">
+                    <i class="fab fa-microsoft"></i>
+                </div>
+                <div class="floating-tag laravel" data-tooltip="Laravel">
+                    <i class="fab fa-laravel"></i>
+                </div>
+            </div>
+            
+            <div class="hero-text">
+                <h1>Asif Ahmed</h1>
+                <p>Web Developer</p>
+            </div>
+        </section>
+        
+        <section style="height: 100vh; background: #f0f0f0; padding: 50px;">
+            <h2>Scroll to test transition</h2>
+            <p>The green dot shows the calculated center of the header image.</p>
+            <p>Icons should orbit around this green dot when not scrolled.</p>
+        </section>
+    </div>
+
+    <!-- Center tracking indicators -->
+    <div class="test-center" id="imageCenter"></div>
+    <div class="container-center" id="containerCenter"></div>
+    <div class="visual-center" id="visualCenter"></div>
+    <div class="content-outline" id="contentOutline"></div>
+    <div class="sidebar-outline" id="sidebarOutline"></div>
+    
+    <!-- Test info -->
+    <div class="test-info" id="testInfo">
+        <h4>Sidebar-Aware Center Tracking Test</h4>
+        <div id="debugInfo"></div>
+        <div class="legend">
+            <div><div class="color-dot" style="background: lime;"></div>Final Center (Green) - Used by orbital</div>
+            <div><div class="color-dot" style="background: blue;"></div>Visual Center (Blue) - Desktop adjusted</div>
+            <div><div class="color-dot" style="background: red;"></div>Container Center (Red) - Basic calculation</div>
+            <div><div style="width: 20px; height: 2px; background: rgba(255, 0, 0, 0.3); border: 1px dashed rgba(255, 0, 0, 0.3);"></div>Sidebar Area (Red outline)</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageContainer = document.querySelector('.image-container');
+            const imageCenter = document.getElementById('imageCenter');
+            const containerCenter = document.getElementById('containerCenter');
+            const visualCenter = document.getElementById('visualCenter');
+            const contentOutline = document.getElementById('contentOutline');
+            const sidebarOutline = document.getElementById('sidebarOutline');
+            const debugInfo = document.getElementById('debugInfo');
+            
+            // Enhanced center calculation (matches the updated script.js)
+            function getImageContentCenter() {
+                if (!imageContainer) return null;
+                
+                const containerRect = imageContainer.getBoundingClientRect();
+                const computedStyle = window.getComputedStyle(imageContainer);
+                
+                // Get padding values
+                const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+                const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
+                const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+                const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
+                
+                // Calculate content area
+                const contentLeft = containerRect.left + paddingLeft;
+                const contentTop = containerRect.top + paddingTop;
+                const contentWidth = containerRect.width - paddingLeft - paddingRight;
+                const contentHeight = containerRect.height - paddingTop - paddingBottom;
+                
+                // Basic content center
+                const basicCenterX = contentLeft + (contentWidth / 2);
+                let adjustedCenterX = basicCenterX;
+                
+                // Desktop adjustment for sidebar
+                let sidebarData = null;
+                if (window.innerWidth > 902) {
+                    const sidebarWidth = window.innerWidth * 0.15;
+                    const availableContentWidth = window.innerWidth - sidebarWidth;
+                    adjustedCenterX = sidebarWidth + (availableContentWidth / 2);
+                    
+                    sidebarData = {
+                        sidebarWidth,
+                        availableContentWidth,
+                        adjustment: Math.abs(adjustedCenterX - basicCenterX)
+                    };
+                }
+                
+                return {
+                    container: {
+                        x: containerRect.left + (containerRect.width / 2),
+                        y: containerRect.top + (containerRect.height / 2),
+                        width: containerRect.width,
+                        height: containerRect.height
+                    },
+                    content: {
+                        x: basicCenterX,
+                        y: contentTop + (contentHeight / 2),
+                        left: contentLeft,
+                        top: contentTop,
+                        width: contentWidth,
+                        height: contentHeight
+                    },
+                    visual: {
+                        x: adjustedCenterX,
+                        y: contentTop + (contentHeight / 2)
+                    },
+                    padding: { top: paddingTop, right: paddingRight, bottom: paddingBottom, left: paddingLeft },
+                    sidebar: sidebarData
+                };
+            }
+            
+            // Update center indicators
+            function updateCenterIndicators() {
+                const centers = getImageContentCenter();
+                if (!centers) return;
+                
+                // Position the final center dot (what orbital uses)
+                imageCenter.style.left = (centers.visual.x - 7) + 'px';
+                imageCenter.style.top = (centers.visual.y - 7) + 'px';
+                
+                // Position the visual center dot (desktop adjustment)
+                visualCenter.style.left = (centers.visual.x - 6) + 'px';
+                visualCenter.style.top = (centers.visual.y - 6) + 'px';
+                
+                // Position the container center dot (basic calculation)
+                containerCenter.style.left = (centers.content.x - 4) + 'px';
+                containerCenter.style.top = (centers.content.y - 4) + 'px';
+                
+                // Show content area outline
+                contentOutline.style.left = centers.content.left + 'px';
+                contentOutline.style.top = centers.content.top + 'px';
+                contentOutline.style.width = centers.content.width + 'px';
+                contentOutline.style.height = centers.content.height + 'px';
+                
+                // Show sidebar area (desktop only)
+                if (centers.sidebar) {
+                    sidebarOutline.style.display = 'block';
+                    sidebarOutline.style.left = '0px';
+                    sidebarOutline.style.top = '0px';
+                    sidebarOutline.style.width = centers.sidebar.sidebarWidth + 'px';
+                    sidebarOutline.style.height = '100vh';
+                } else {
+                    sidebarOutline.style.display = 'none';
+                }
+                
+                // Update debug info
+                const isDesktop = window.innerWidth > 902;
+                
+                debugInfo.innerHTML = `
+                    <strong>Screen:</strong> ${window.innerWidth} x ${window.innerHeight} ${isDesktop ? '(Desktop)' : '(Mobile)'}<br>
+                    <strong>Container Center:</strong> (${Math.round(centers.content.x)}, ${Math.round(centers.content.y)})<br>
+                    <strong>Visual Center:</strong> (${Math.round(centers.visual.x)}, ${Math.round(centers.visual.y)})<br>
+                    ${isDesktop ? `<strong>Sidebar Width:</strong> ${Math.round(centers.sidebar.sidebarWidth)}px (15vw)<br>` : ''}
+                    ${isDesktop ? `<strong>Available Width:</strong> ${Math.round(centers.sidebar.availableContentWidth)}px<br>` : ''}
+                    ${isDesktop ? `<strong>Center Adjustment:</strong> ${centers.sidebar.adjustment.toFixed(1)}px right<br>` : ''}
+                    <strong>Content Size:</strong> ${Math.round(centers.content.width)} x ${Math.round(centers.content.height)}<br>
+                    <strong>Padding:</strong> T:${centers.padding.top} R:${centers.padding.right} B:${centers.padding.bottom} L:${centers.padding.left}
+                `;
+            }
+            
+            // Initial update
+            updateCenterIndicators();
+            
+            // Update on scroll and resize
+            window.addEventListener('scroll', updateCenterIndicators);
+            window.addEventListener('resize', () => {
+                setTimeout(updateCenterIndicators, 100);
+            });
+            
+            // Update continuously for smooth tracking
+            setInterval(updateCenterIndicators, 100);
+        });
+    </script>
+    
+    <!-- Include the main script for orbital animation -->
+    <script src="js/script.js"></script>
+</body>
+</html> 
