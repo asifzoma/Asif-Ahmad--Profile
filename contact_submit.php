@@ -13,16 +13,22 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-file_put_contents(__DIR__ . '/debug.log', "Script hit\n", FILE_APPEND);
-file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true), FILE_APPEND);
-
 // Load Composer's autoloader from the project root
 require_once __DIR__ . '/vendor/autoload.php';
+
+// Import PHPMailer classes
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+file_put_contents(__DIR__ . '/debug.log', "Script hit\n", FILE_APPEND);
+file_put_contents(__DIR__ . '/debug.log', print_r($_POST, true), FILE_APPEND);
 
 // Load .env file from the project root
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+// Database connection settings
 $servername = $_ENV['DB_HOST'];
 $username = $_ENV['DB_USER'];
 $password = $_ENV['DB_PASS'];
@@ -74,6 +80,44 @@ function validateInput($name, $email, $message) {
     return $errors;
 }
 
+// Function to send email notification
+function sendEmailNotification($name, $email, $message) {
+    try {
+        $mail = new PHPMailer(true);
+        
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['GMAIL_USERNAME'];
+        $mail->Password = $_ENV['GMAIL_APP_PASSWORD'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        
+        // Recipients
+        $mail->setFrom($_ENV['GMAIL_USERNAME'], 'Contact Form');
+        $mail->addAddress($_ENV['ADMIN_EMAIL']);
+        $mail->addReplyTo($email, $name);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'New Contact Form Submission';
+        $mail->Body = "
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> {$name}</p>
+            <p><strong>Email:</strong> {$email}</p>
+            <p><strong>Message:</strong></p>
+            <p>" . nl2br(htmlspecialchars($message)) . "</p>
+        ";
+        
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        file_put_contents(__DIR__ . '/debug.log', "Email error: " . $e->getMessage() . "\n", FILE_APPEND);
+        return false;
+    }
+}
+
 try {
     // Create PDO instance
     $pdo = new PDO($conn, $username, $password, $options);
@@ -108,9 +152,13 @@ try {
         $stmt = $pdo->prepare("INSERT INTO contacts (name, email, message, submitted_at) VALUES (?, ?, ?, NOW())");
         
         if ($stmt->execute([$name, $email, $message])) {
+            // Try to send email notification
+            $emailSent = sendEmailNotification($name, $email, $message);
+            
             echo json_encode([
                 'success' => true,
-                'message' => 'Thank you! Your message has been received successfully. I\'ll get back to you soon.'
+                'message' => 'Thank you! Your message has been received successfully. I\'ll get back to you soon.' . 
+                            (!$emailSent ? ' (Note: Email notification could not be sent)' : '')
             ]);
         } else {
             echo json_encode([
