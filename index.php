@@ -34,7 +34,7 @@
                 
                 <header class="header">
                     <div class="hero-text">
-                        <h1>Asif Ahmad</h1>
+                        <h1>;_Asif Ahmad</h1>
                         <span id="typed"></span>
                     </div>
                 </header>

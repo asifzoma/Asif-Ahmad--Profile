@@ -374,6 +374,24 @@ document.addEventListener('DOMContentLoaded', function() {
         let animationId;
         let isSecondScroll = false; // Add tracking for second scroll
         
+        // Initialize positions based on screen size
+        if (isMobile) {
+            // Disable orbital animation for mobile
+            floatingTags.forEach(tag => {
+                tag.style.animation = 'none';
+                // Remove any existing tooltip attributes
+                tag.removeAttribute('title');
+                tag.removeAttribute('data-tooltip');
+            });
+            
+            // Force end position immediately
+            updateLanguagePositions();
+        } else {
+            // Desktop initialization
+            orbitRadius = calculateOptimalRadius();
+            updateOrbitalPositions(Date.now());
+        }
+
         // Function to calculate optimal orbital radius based on image container size
         function calculateOptimalRadius() {
             const imageCenter = getImageContainerCenter();
@@ -566,6 +584,40 @@ document.addEventListener('DOMContentLoaded', function() {
             const scrollY = window.scrollY;
             const imageContainerHeight = imageContainer.offsetHeight;
             
+            // For mobile, always use end position
+            if (window.innerWidth <= 902) {
+                const imageCenter = getImageContainerCenter();
+                const spacing = 80; // Mobile spacing
+                const targetPositions = {
+                    html: -2.5 * spacing,
+                    css: -1.5 * spacing,
+                    javascript: -0.5 * spacing,
+                    php: 0.5 * spacing,
+                    csharp: 1.5 * spacing,
+                    laravel: 2.5 * spacing
+                };
+
+                floatingTags.forEach(tag => {
+                    const langClass = Array.from(tag.classList).find(cls => targetPositions.hasOwnProperty(cls));
+                    if (!langClass) return;
+
+                    // Remove orbital animation class and add aligned state
+                    tag.classList.remove('orbital-animation', 'transition-state');
+                    tag.classList.add('aligned-state');
+
+                    // Position vertically centered, horizontally to the right
+                    const targetTop = imageCenter.y;
+                    tag.style.top = `${targetTop}px`;
+                    tag.style.right = '10%';
+                    tag.style.left = 'auto';
+                    tag.style.transform = 'translate(0, -50%)';
+                    tag.style.position = 'fixed';
+                    tag.style.zIndex = '25';
+                });
+                return;
+            }
+
+            // Original desktop behavior continues below
             // Calculate scroll progress (0 to 1)
             const maxScroll = imageContainerHeight * 0.05; // Complete alignment at 5% scroll
             const scrollProgress = Math.min(scrollY / maxScroll, 1);
@@ -765,17 +817,40 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Debounce resize handling for performance
             resizeTimeout = setTimeout(() => {
-                handleContainerResize();
+                const wasMobile = isMobile;
+                const isMobileNow = window.innerWidth <= 902;
                 
-                // Cancel and restart animation with new dimensions
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
+                // Check if we're crossing the mobile breakpoint
+                if (wasMobile !== isMobileNow) {
+                    // Update mobile state
+                    isMobile = isMobileNow;
+                    
+                    if (isMobileNow) {
+                        // Switching to mobile
+                        if (animationId) {
+                            cancelAnimationFrame(animationId);
+                            animationId = null;
+                        }
+                        // Force end position
+                        updateLanguagePositions();
+                    } else {
+                        // Switching to desktop
+                        orbitRadius = calculateOptimalRadius();
+                        // Restart orbital animation
+                        if (!animationId) {
+                            animationId = requestAnimationFrame(animate);
+                        }
+                    }
+                } else {
+                    // Same mode, just update positions
+                    handleContainerResize();
+                    if (isMobileNow) {
+                        updateLanguagePositions();
+                    } else if (animationId) {
+                        cancelAnimationFrame(animationId);
+                        animationId = requestAnimationFrame(animate);
+                    }
                 }
-                
-                // Restart animation with recalculated center and radius
-                setTimeout(() => {
-                    animationId = requestAnimationFrame(animate);
-                }, 50);
             }, 100);
         }
 
@@ -947,32 +1022,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 .floating-tags-wrapper {
                     position: absolute !important;
                     top: 50% !important;
-                    left: 90% !important;
-                    transform: translate(-50%, -50%) !important;
+                    right: 10% !important;
+                    left: auto !important;
+                    transform: translate(0, -50%) !important;
                     display: flex !important;
                     flex-direction: column !important;
                     gap: 30px !important;
                     align-items: center !important;
                     justify-content: center !important;
-                    background: var(--primary-color) !important;
+                    z-index: 10 !important;
                 }
                 
                 .floating-tag {
                     position: static !important;
-                    transform: scale(2) !important;
-                    background: var(--background-color) !important;
-                    border: 2px solid var(--primary-color) !important;
+                    transform: scale(1.2) !important;
+                    background: rgba(255, 255, 255, 0.15) !important;
+                    backdrop-filter: blur(10px) !important;
+                    border: 2px solid rgba(255, 255, 255, 0.3) !important;
                     padding: 12px !important;
                     cursor: pointer !important;
                     transition: all 0.3s ease !important;
                 }
 
                 .floating-tag:hover {
-                    background: var(--primary-color) !important;
+                    transform: scale(1.3) !important;
+                    background: rgba(255, 255, 255, 0.25) !important;
                 }
 
-                .floating-tag img {
-                    filter: brightness(0) invert(1) !important;
+                .floating-tag i {
+                    filter: none !important;
                     opacity: 1 !important;
                 }
 
