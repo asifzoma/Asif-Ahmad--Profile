@@ -359,30 +359,24 @@ a:focus {
 }
 
 .floating-tag {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  padding: 12px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  pointer-events: auto;
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.8;
+  width: 72px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 2.16rem;
+  cursor: pointer;
   z-index: 100;
+  will-change: transform, left, top, opacity;
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease;
 }
 
 .floating-tag.orbital-animation {
@@ -395,15 +389,48 @@ a:focus {
 .floating-tag.transition-state {
   position: fixed;
   will-change: transform, opacity, top, left;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.floating-tag.aligned-state {
-  position: fixed;
-  opacity: 1;
-  z-index: 100;
+.floating-tag:hover {
+  transform: scale(1.2) !important;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  z-index: 101;
+}
+
+/* Ensure icons stay within viewport on smaller screens */
+@media (max-width: 768px) {
+  .floating-tag {
+    width: 56px;
+    height: 56px;
+    font-size: 1.8rem;
+  }
+  
+  .floating-tag.transition-state {
+    transition: all 0.3s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-tag {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+  }
+}
+
+.floating-tag i {
+  font-size: 1.8rem;
   transition: all 0.3s ease;
 }
+
+.floating-tag.html i { color: #E44D26; }
+.floating-tag.css i { color: #264DE4; }
+.floating-tag.javascript i { color: #F7DF1E; text-shadow: 1px 1px 1px rgba(0,0,0,0.1); }
+.floating-tag.php i { color: #777BB3; }
+.floating-tag.csharp i { color: #239120; }
+.floating-tag.laravel i { color: #FF2D20; }
 
 .floating-tag.highlighted {
   background: rgba(255, 255, 255, 0.3);
@@ -472,13 +499,17 @@ a:focus {
 }
 
 .floating-tag::before {
-  content: '';
+  content: attr(data-tooltip);
   position: absolute;
   bottom: 100%;
   left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  border: 5px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.9);
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -488,7 +519,7 @@ a:focus {
 .floating-tag:hover::before {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
+  bottom: 120%;
 }
 
 .floating-tag.html i {
@@ -531,6 +562,22 @@ a:focus {
 }
 
 @media (max-width: 902px) {
+  .floating-tag {
+    position: static;
+    margin: 10px;
+    transform: scale(0.8);
+  }
+
+  .floating-languages {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
   .floating-tag {
     font-size: 1.0rem;
     padding: 8px;
@@ -1752,7 +1799,7 @@ a:focus {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.5s ease-out;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-success.show {
@@ -1760,7 +1807,26 @@ a:focus {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  animation: slideIn 0.5s ease-out;
+  animation: slideInAndFade 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInAndFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 .form-success:not(.show) {

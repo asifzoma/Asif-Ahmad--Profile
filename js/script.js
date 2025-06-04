@@ -365,36 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- Scroll-Controlled Floating Languages Animation ---
-    const imageContainer = document.querySelector('.image-container');
-    const floatingTags = document.querySelectorAll('.floating-tag');
-    
-    if (imageContainer && floatingTags.length > 0) {
-        const isMobile = window.innerWidth <= 902;
-        let animationId;
-        let isSecondScroll = false; // Add tracking for second scroll
-        
-        // Initialize positions based on screen size
-        if (isMobile) {
-            // Disable orbital animation for mobile
-            floatingTags.forEach(tag => {
-                tag.style.animation = 'none';
-                // Remove any existing tooltip attributes
-                tag.removeAttribute('title');
-                tag.removeAttribute('data-tooltip');
-            });
-            
-            // Force end position immediately
-            updateLanguagePositions();
-        } else {
-            // Desktop initialization
-            orbitRadius = calculateOptimalRadius();
-            updateOrbitalPositions(Date.now());
-        }
-
-        // Function to calculate optimal orbital radius based on image container size
-        function calculateOptimalRadius() {
-            const imageCenter = getImageContainerCenter();
+    // --- Orbital Animation Functions ---
+    function calculateOptimalRadius(imageContainer) {
+        const imageCenter = getImageContainerCenter(imageContainer);
             const containerWidth = imageCenter.width;
             const containerHeight = imageCenter.height;
             const viewportWidth = window.innerWidth;
@@ -447,28 +420,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const maxSafeRadius = Math.min(maxRadiusLeft, maxRadiusRight, maxRadiusTop, maxRadiusBottom);
             
             // Return the smaller of the calculated radius or maximum safe radius
-            const finalRadius = Math.min(baseRadius, Math.max(maxSafeRadius, 40)); // Minimum 40px radius
-            
-            return finalRadius;
-        }
+        return Math.min(baseRadius, Math.max(maxSafeRadius, 40)); // Minimum 40px radius
+    }
 
-        // Orbital parameters - calculate radius based on image container size
-        let orbitRadius = calculateOptimalRadius();
-        
-        // Assign each language an angle position on the circle (evenly spaced)
-        const languages = ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'];
-        const angleStep = (2 * Math.PI) / languages.length; // 60 degrees apart
-        
-        const orbitalData = {};
-        languages.forEach((lang, index) => {
-            orbitalData[lang] = {
-                baseAngle: index * angleStep, // Starting angle
-                currentAngle: index * angleStep
-            };
-        });
-
-        // Function to get the actual image center (background image) - accounts for sidebar on desktop
-        function getImageContainerCenter() {
+    function getImageContainerCenter(imageContainer) {
             if (!imageContainer) {
                 console.warn('Image container not found');
                 return { x: window.innerWidth / 2, y: window.innerHeight / 2, width: 0, height: 0 };
@@ -477,17 +432,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get the container's position and dimensions
             const containerRect = imageContainer.getBoundingClientRect();
             
-            // For background images with background-size: cover and background-position: center,
-            // the visual center is typically the center of the container's content area (excluding padding)
-            const computedStyle = window.getComputedStyle(imageContainer);
-            
             // Get padding values to find the actual content area
+        const computedStyle = window.getComputedStyle(imageContainer);
             const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
             const paddingRight = parseFloat(computedStyle.paddingRight) || 0;
             const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
             const paddingLeft = parseFloat(computedStyle.paddingLeft) || 0;
             
-            // Calculate the content area (where the background image is actually displayed)
+        // Calculate the content area
             const contentLeft = containerRect.left + paddingLeft;
             const contentTop = containerRect.top + paddingTop;
             const contentWidth = containerRect.width - paddingLeft - paddingRight;
@@ -497,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let centerX = contentLeft + (contentWidth / 2);
             let centerY = contentTop + (contentHeight / 2);
             
-            // On desktop (>902px), subtract sidebar width from x-axis center for better visual balance
+        // On desktop (>902px), subtract sidebar width for better visual balance
             if (window.innerWidth > 902) {
                 const sidebarWidth = window.innerWidth * 0.15; // 15vw sidebar width
                 centerX = centerX - sidebarWidth;
@@ -510,605 +462,191 @@ document.addEventListener('DOMContentLoaded', function() {
                     • Adjustment: -${sidebarWidth}px`);
             }
             
-            // Ensure we have valid dimensions
-            if (contentWidth <= 0 || contentHeight <= 0) {
-                console.warn('Image content area has invalid dimensions');
-                return { x: window.innerWidth / 2, y: window.innerHeight / 2, width: 0, height: 0 };
-            }
-            
             return {
                 x: centerX,
                 y: centerY,
-                width: contentWidth,
-                height: contentHeight,
-                contentArea: {
-                    left: contentLeft,
-                    top: contentTop,
                     width: contentWidth,
                     height: contentHeight
-                },
-                padding: {
-                    top: paddingTop,
-                    right: paddingRight,
-                    bottom: paddingBottom,
-                    left: paddingLeft
-                },
-                // Additional debug info for desktop
-                ...(window.innerWidth > 902 && {
-                    desktop: {
-                        sidebarWidth: window.innerWidth * 0.15,
-                        originalCenterX: contentLeft + (contentWidth / 2),
-                        adjustedCenterX: centerX,
-                        adjustment: -(window.innerWidth * 0.15)
-                    }
-                })
-            };
-        }
+        };
+    }
 
-        // Function to update circular orbit positions - tracks image container center
-        function updateOrbitalPositions(time) {
-            // Get the current center of the image container
-            const imageCenter = getImageContainerCenter();
-            
-            floatingTags.forEach(tag => {
+    function updateOrbitalPositions(time, imageContainer, floatingTags, orbitRadius) {
+        const imageCenter = getImageContainerCenter(imageContainer);
+        const languages = ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'];
+        const angleStep = (2 * Math.PI) / languages.length;
+        
+        floatingTags.forEach((tag, index) => {
                 const langClass = Array.from(tag.classList).find(cls => languages.includes(cls));
-                if (!langClass || !orbitalData[langClass]) return;
-                
-                // Add orbital animation class for SCSS styling
-                tag.classList.add('orbital-animation');
-                tag.classList.remove('transition-state', 'aligned-state');
-                
-                // Update angle for continuous rotation (slow orbit)
-                orbitalData[langClass].currentAngle = orbitalData[langClass].baseAngle + (time * 0.0005);
-                
-                // Calculate orbital position around the image container center
-                const angle = orbitalData[langClass].currentAngle;
-                const x = imageCenter.x + Math.cos(angle) * orbitRadius;
-                const y = imageCenter.y + Math.sin(angle) * orbitRadius;
-                
-                // Only set dynamic positioning values - all styling handled by SCSS
+            if (!langClass) return;
+            
+            // Calculate angle for this tag
+            const baseAngle = index * angleStep;
+            const currentAngle = baseAngle + (time * 0.0005);
+            
+            // Calculate orbital position
+            const x = imageCenter.x + Math.cos(currentAngle) * orbitRadius;
+            const y = imageCenter.y + Math.sin(currentAngle) * orbitRadius;
+            
+            // Apply position
+            tag.style.position = 'fixed';
                 tag.style.top = `${y}px`;
                 tag.style.left = `${x}px`;
-                tag.style.transform = `translate(-50%, -50%) rotate(${angle * 180 / Math.PI}deg)`;
-                
-                // Remove any remaining inline styles that should be handled by SCSS
-                tag.style.removeProperty('position');
-                tag.style.removeProperty('opacity');
-                tag.style.removeProperty('z-index');
-                tag.style.removeProperty('transition');
-            });
-        }
+            tag.style.transform = `translate(-50%, -50%) rotate(${currentAngle * 180 / Math.PI}deg)`;
+            tag.style.zIndex = '100';
+        });
+    }
 
-        // Function to update language positions based on scroll progress - tracks image center
-        function updateLanguagePositions() {
-            const scrollY = window.scrollY;
-            const imageContainerHeight = imageContainer.offsetHeight;
+    // Wait for all scripts to load before initializing orbital animation
+    window.addEventListener('load', function() {
+        const imageContainer = document.querySelector('.image-container');
+        const floatingTags = document.querySelectorAll('.floating-tag');
+        
+        if (imageContainer && floatingTags.length > 0) {
+            const isMobile = window.innerWidth <= 902;
+            let animationId;
+            let orbitRadius;
+            let isAligned = false;
             
-            // For mobile, always use end position
-            if (window.innerWidth <= 902) {
-                const imageCenter = getImageContainerCenter();
-                const spacing = 80; // Mobile spacing
-                const targetPositions = {
-                    html: -2.5 * spacing,
-                    css: -1.5 * spacing,
-                    javascript: -0.5 * spacing,
-                    php: 0.5 * spacing,
-                    csharp: 1.5 * spacing,
-                    laravel: 2.5 * spacing
-                };
-
-                floatingTags.forEach(tag => {
-                    const langClass = Array.from(tag.classList).find(cls => targetPositions.hasOwnProperty(cls));
-                    if (!langClass) return;
-
-                    // Remove orbital animation class and add aligned state
-                    tag.classList.remove('orbital-animation', 'transition-state');
-                    tag.classList.add('aligned-state');
-
-                    // Position vertically centered, horizontally to the right
-                    const targetTop = imageCenter.y;
-                    tag.style.top = `${targetTop}px`;
-                    tag.style.right = '10%';
-                    tag.style.left = 'auto';
-                    tag.style.transform = 'translate(0, -50%)';
-                    tag.style.position = 'fixed';
-                    tag.style.zIndex = '25';
-                });
-                return;
-            }
-
-            // Original desktop behavior continues below
-            // Calculate scroll progress (0 to 1)
-            const maxScroll = imageContainerHeight * 0.05; // Complete alignment at 5% scroll
-            const scrollProgress = Math.min(scrollY / maxScroll, 1);
-            
-            // Track second scroll and handle scroll up
-            if (scrollProgress === 0) {
-                // Reset scroll state when back at top
-                isSecondScroll = false;
-                // Return to orbital animation when scrolled back up
-                floatingTags.forEach(tag => {
-                    // Remove alignment classes and reset styles
-                    tag.classList.remove('transition-state', 'aligned-state');
-                    tag.classList.add('orbital-animation');
-                    
-                    // Clear all position-related inline styles
-                    tag.style.removeProperty('top');
-                    tag.style.removeProperty('left');
-                    tag.style.removeProperty('transform');
-                    tag.style.removeProperty('z-index');
-                    tag.style.removeProperty('transition');
-                    
-                    // Reset the orbital data for this tag
-                    const langClass = Array.from(tag.classList).find(cls => orbitalData.hasOwnProperty(cls));
-                    if (langClass && orbitalData[langClass]) {
-                        orbitalData[langClass].currentAngle = orbitalData[langClass].baseAngle;
-                    }
-                });
-                
-                // Force immediate update of orbital positions
-                updateOrbitalPositions(Date.now());
-                return; // Let orbital animation take over
-            } else if (scrollProgress === 1) {
-                // Mark as second scroll when reaching bottom first time
-                isSecondScroll = true;
-            }
-
-            // Easing function for smooth transition
-            const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-            const easedProgress = easeOutCubic(scrollProgress);
-
-            // Get the current center of the image container for consistent tracking
-            const imageCenter = getImageContainerCenter();
-
-            // Target horizontal positions when aligned (side by side)
-            const spacing = isMobile ? 80 : 120; // Reduced spacing for smaller viewports
-            const targetPositions = {
-                html: -2.5 * spacing,
-                css: -1.5 * spacing,
-                javascript: -0.5 * spacing,
-                php: 0.5 * spacing,
-                csharp: 1.5 * spacing,
-                laravel: 2.5 * spacing
-            };
-
-            // Target Y position for horizontal alignment (bottom area of image container)
-            const targetTop = imageCenter.y + (imageCenter.height * (isSecondScroll ? 0.60 : 0.50)); // Move lower on second scroll
-            const centerLeft = imageCenter.x; // Use actual image center X
-
-            // Calculate initial positions and store them for collision detection
-            const iconData = [];
-            const iconSize = isMobile ? 60 : 80; // Approximate icon size including padding
-            const minSpacing = iconSize + 10; // Minimum spacing between icons
-
+            // Initialize all tags with orbital animation class
             floatingTags.forEach(tag => {
-                const langClass = Array.from(tag.classList).find(cls => targetPositions.hasOwnProperty(cls));
-                if (!langClass || !orbitalData[langClass]) return;
+                tag.classList.add('orbital-animation');
                 
-                // Add transition state class for SCSS styling
-                tag.classList.remove('orbital-animation');
-                tag.classList.add('transition-state');
-                
-                // Set higher z-index for orbital elements
-                tag.style.zIndex = '25'; // Ensure this is higher than typed text
-                
-                // Get current orbital position relative to image center (starting point)
-                const currentAngle = orbitalData[langClass].currentAngle;
-                const initialX = imageCenter.x + Math.cos(currentAngle) * orbitRadius;
-                const initialY = imageCenter.y + Math.sin(currentAngle) * orbitRadius;
-                
-                // Calculate target aligned position
-                const finalTop = targetTop;
-                const finalLeft = centerLeft + targetPositions[langClass];
-                
-                // Ensure icons stay within viewport bounds on smaller screens
-                const clampedFinalLeft = Math.max(iconSize / 2 + 25, Math.min(window.innerWidth - iconSize / 2 - 25, finalLeft));
-                
-                // Store icon data for collision detection
-                iconData.push({
-                    tag,
-                    langClass,
-                    initialX,
-                    initialY,
-                    finalTop,
-                    finalLeft: clampedFinalLeft,
-                    targetOrder: Object.keys(targetPositions).indexOf(langClass) // Maintain order
-                });
-            });
-
-            // Sort icons by their target order to maintain consistent spacing
-            iconData.sort((a, b) => a.targetOrder - b.targetOrder);
-
-            // Calculate transition positions with collision prevention
-            const processedPositions = [];
-
-            iconData.forEach((iconInfo, index) => {
-                // Basic interpolation between orbital and target position
-                let currentTop = iconInfo.initialY + (iconInfo.finalTop - iconInfo.initialY) * easedProgress;
-                let currentLeft = iconInfo.initialX + (iconInfo.finalLeft - iconInfo.initialX) * easedProgress;
-
-                // Collision detection and prevention during transition
-                if (easedProgress > 0.1) { // Start collision prevention after initial movement
-                    // Check against previously processed icons
-                    for (let i = 0; i < processedPositions.length; i++) {
-                        const otherPos = processedPositions[i];
-                        const distance = Math.abs(currentLeft - otherPos.left);
-                        
-                        if (distance < minSpacing) {
-                            // Collision detected - adjust position
-                            if (index < processedPositions.length) {
-                                // This icon should be to the left
-                                currentLeft = otherPos.left - minSpacing;
-                            } else {
-                                // This icon should be to the right
-                                currentLeft = otherPos.left + minSpacing;
-                            }
-                            
-                            // Ensure we don't go outside viewport bounds
-                            currentLeft = Math.max(iconSize / 2 + 25, Math.min(window.innerWidth - iconSize / 2 - 25, currentLeft));
-                        }
-                    }
-                }
-
-                // Store processed position
-                processedPositions.push({
-                    left: currentLeft,
-                    top: currentTop,
-                    langClass: iconInfo.langClass
-                });
-
-                // Apply calculated positioning - styling handled by SCSS
-                iconInfo.tag.style.top = `${currentTop}px`;
-                iconInfo.tag.style.left = `${currentLeft}px`;
-                
-                // Animation effects - rotation aligns with scroll
-                const currentAngle = orbitalData[iconInfo.langClass].currentAngle;
-                const orbitalRotation = currentAngle * 180 / Math.PI;
-                const alignedRotation = 0; // No rotation when aligned
-                const currentRotation = orbitalRotation + (alignedRotation - orbitalRotation) * easedProgress;
-                
-                const scale = 0.8 + (easedProgress * 0.4); // Scale up when aligning
-                iconInfo.tag.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
-                
-                // Use classes for state management instead of inline styles
-                if (easedProgress > 0.9) {
-                    iconInfo.tag.classList.add('aligned-state');
-                    iconInfo.tag.classList.remove('transition-state');
-                }
-                
-                // Remove inline styles that should be handled by SCSS
-                iconInfo.tag.style.removeProperty('position');
-                iconInfo.tag.style.removeProperty('opacity');
-            });
-        }
-
-        // Enhanced resize and container monitoring
-        let lastContainerSize = { width: 0, height: 0 };
-        let resizeTimeout;
-
-        // Function to handle container size changes
-        function handleContainerResize() {
-            const currentCenter = getImageContainerCenter();
-            const currentSize = { width: currentCenter.width, height: currentCenter.height };
-            
-            // Check if container size actually changed
-            if (currentSize.width !== lastContainerSize.width || 
-                currentSize.height !== lastContainerSize.height) {
-                
-                // Update orbital radius based on new container size
-                orbitRadius = calculateOptimalRadius();
-                
-                // Store new size
-                lastContainerSize = currentSize;
-                
-                // Force immediate position update
-                updateLanguagePositions();
-                
-                console.log('🔄 Container resized - New radius:', orbitRadius, 'Container size:', currentSize);
-            }
-        }
-
-        // Enhanced window resize handler
-        function handleResize() {
-            // Clear any pending resize handling
-            if (resizeTimeout) {
-                clearTimeout(resizeTimeout);
-            }
-            
-            // Debounce resize handling for performance
-            resizeTimeout = setTimeout(() => {
-                const wasMobile = isMobile;
-                const isMobileNow = window.innerWidth <= 902;
-                
-                // Check if we're crossing the mobile breakpoint
-                if (wasMobile !== isMobileNow) {
-                    // Update mobile state
-                    isMobile = isMobileNow;
+                // Add click handlers for each floating tag
+                tag.addEventListener('click', function() {
+                    const language = Array.from(tag.classList)
+                        .find(cls => ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls));
                     
-                    if (isMobileNow) {
-                        // Switching to mobile
+                    if (language) {
+                        navigateToCodeSnippet(language);
+                    }
+                });
+            });
+
+            // Function to align tags horizontally at bottom
+            function alignTagsHorizontally() {
+                const containerRect = imageContainer.getBoundingClientRect();
+                const tagWidth = floatingTags[0].offsetWidth;
+                
+                // Calculate total width needed for all icons with minimal spacing
+                const minSpacing = 10; // Minimum pixels between icons
+                const totalTags = floatingTags.length;
+                const totalWidth = (tagWidth * totalTags) + (minSpacing * (totalTags - 1));
+                
+                // Calculate scale if needed to fit within container
+                let scale = 1;
+                if (totalWidth > containerRect.width) {
+                    scale = (containerRect.width - minSpacing) / totalWidth;
+                    scale = Math.max(0.5, scale); // Don't scale smaller than 50%
+                }
+                
+                // Calculate spacing between icons to fill container width
+                const scaledTagWidth = tagWidth * scale;
+                const spacing = minSpacing;
+                
+                floatingTags.forEach((tag, index) => {
+                    tag.classList.remove('orbital-animation');
+                    tag.classList.add('transition-state');
+                    
+                    // Position from left edge of container
+                    const xPosition = containerRect.left + (index * (scaledTagWidth + spacing));
+                    
+                    // Ensure y position stays within container bounds
+                    const yPosition = Math.min(
+                        containerRect.bottom - 40, // Default position (40px from bottom)
+                        window.innerHeight - (scaledTagWidth / 2) - 20 // Ensure visibility
+                    );
+                    
+                    tag.style.position = 'fixed';
+                    tag.style.left = `${xPosition}px`;
+                    tag.style.top = `${yPosition}px`;
+                    tag.style.transform = `translate(0, -50%) scale(${scale})`; // Remove horizontal centering
+                    tag.style.width = `${tagWidth}px`; // Maintain original width
+                    tag.style.height = `${tagWidth}px`; // Keep aspect ratio
+                });
+            }
+
+            // Handle scroll events
+            let lastScrollY = window.scrollY;
+            const scrollThreshold = 50; // Amount of scroll before triggering alignment
+
+            window.addEventListener('scroll', () => {
+                const containerRect = imageContainer.getBoundingClientRect();
+                const scrollY = window.scrollY;
+                const isScrollingDown = scrollY > lastScrollY;
+                
+                // Check if container is visible and if we're at the top of the page
+                const isContainerVisible = containerRect.bottom > 0 && containerRect.top < window.innerHeight;
+                const isAtTop = scrollY === 0;
+                
+                if (isContainerVisible) {
+                    if (!isAtTop && !isAligned) {
+                        // Any scroll position except top - align horizontally
                         if (animationId) {
                             cancelAnimationFrame(animationId);
                             animationId = null;
                         }
-                        // Force end position
-                        updateLanguagePositions();
-                    } else {
-                        // Switching to desktop
-                        orbitRadius = calculateOptimalRadius();
+                        isAligned = true;
+                        alignTagsHorizontally();
+                    } else if (isAtTop && isAligned) {
+                        // At top of page - return to orbital
+                        isAligned = false;
+                        floatingTags.forEach(tag => {
+                            tag.classList.remove('transition-state');
+                            tag.classList.add('orbital-animation');
+                            tag.style.transform = 'translate(-50%, -50%)'; // Reset transform to center-based
+                            tag.style.opacity = '1';
+                        });
+                        
                         // Restart orbital animation
-                        if (!animationId) {
+                        orbitRadius = calculateOptimalRadius(imageContainer);
+                        function animate(time) {
+                            updateOrbitalPositions(time, imageContainer, floatingTags, orbitRadius);
                             animationId = requestAnimationFrame(animate);
                         }
+                        animate(Date.now());
                     }
-                } else {
-                    // Same mode, just update positions
-                    handleContainerResize();
-                    if (isMobileNow) {
-                        updateLanguagePositions();
-                    } else if (animationId) {
+                } else if (isAligned) {
+                    // If container is not visible and icons are aligned, hide them
+                    floatingTags.forEach(tag => {
+                        tag.style.opacity = '0';
+                    });
+                }
+                
+                lastScrollY = scrollY;
+            });
+            
+            // Start orbital animation immediately if not mobile
+            if (!isMobile) {
+                // Initial desktop setup
+                orbitRadius = calculateOptimalRadius(imageContainer);
+                
+                // Animation loop
+                function animate(time) {
+                    updateOrbitalPositions(time, imageContainer, floatingTags, orbitRadius);
+                    animationId = requestAnimationFrame(animate);
+                }
+                
+                // Start animation immediately
+                animate(Date.now());
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (isAligned) {
+                        alignTagsHorizontally();
+                    } else {
+                        orbitRadius = calculateOptimalRadius(imageContainer);
+                    }
+                });
+                
+                // Cleanup on page unload
+                window.addEventListener('unload', function() {
+                    if (animationId) {
                         cancelAnimationFrame(animationId);
-                        animationId = requestAnimationFrame(animate);
                     }
-                }
-            }, 100);
-        }
-
-        // Enhanced animation loop with continuous container monitoring
-        function animate(time) {
-            const scrollY = window.scrollY;
-            const maxScroll = imageContainer.offsetHeight * 0.05;
-            const scrollProgress = Math.min(scrollY / maxScroll, 1);
-            
-            // Check for container size changes on each frame (for real-time scalability)
-            handleContainerResize();
-            
-            if (scrollProgress === 0) {
-                // Only do orbital animation when not scrolled
-                updateOrbitalPositions(time);
-            } else {
-                // Handle scroll-based alignment
-                updateLanguagePositions();
-            }
-            
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        // ResizeObserver for monitoring image container specifically
-        if (window.ResizeObserver) {
-            const containerObserver = new ResizeObserver((entries) => {
-                for (const entry of entries) {
-                    // Container size changed - update orbital parameters
-                    handleContainerResize();
-                }
-            });
-            
-            // Start observing the image container
-            containerObserver.observe(imageContainer);
-            
-            // Cleanup observer on page unload
-            window.addEventListener('beforeunload', () => {
-                containerObserver.disconnect();
-            });
-        }
-
-        // Start the animation loop
-        animationId = requestAnimationFrame(animate);
-
-        // Enhanced hover effects for individual tags
-        floatingTags.forEach(tag => {
-            tag.addEventListener('mouseenter', function() {
-                this.style.transform += ' scale(1.2)';
-                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
-                this.style.zIndex = '10';
-                this.style.filter = 'brightness(1.1)';
-            });
-
-            tag.addEventListener('mouseleave', function() {
-                // Reset to scroll-controlled state
-                updateLanguagePositions();
-                this.style.boxShadow = '';
-                this.style.zIndex = '';
-                this.style.filter = '';
-            });
-
-            // Click effect with navigation to code snippets
-            tag.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Get the language from the tag's class
-                const langClass = Array.from(this.classList).find(cls => 
-                    ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls)
-                );
-                
-                if (langClass) {
-                    // Navigate to code snippets section
-                    navigateToCodeSnippet(langClass);
-                }
-                
-                // Create enhanced ripple effect
-                const ripple = document.createElement('div');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 70%, transparent 100%);
-                    transform: scale(0);
-                    animation: scrollRipple 0.8s ease-out;
-                    left: ${e.offsetX - size/2}px;
-                    top: ${e.offsetY - size/2}px;
-                    width: ${size}px;
-                    height: ${size}px;
-                    pointer-events: none;
-                    z-index: 1;
-                `;
-                
-                this.appendChild(ripple);
-                
-                // Add a brief shake effect
-                this.style.animation = 'shake 0.5s ease-in-out';
-                
-                setTimeout(() => {
-                    if (ripple.parentNode) ripple.remove();
-                    this.style.animation = '';
-                }, 800);
-            });
-        });
-
-        // Scroll event listener (simplified since animation loop handles most of it)
-        let ticking = false;
-        function handleScroll() {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    // The animation loop now handles position updates
-                    ticking = false;
                 });
-                ticking = true;
             }
         }
-
-        // Event listeners
-        window.addEventListener('scroll', handleScroll);
-        window.addEventListener('resize', handleResize);
-        
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-        });
-
-        // Initial position update
-        updateLanguagePositions();
-
-        // Add enhanced CSS animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes scrollRipple {
-                to {
-                    transform: scale(2.5);
-                    opacity: 0;
-                }
-            }
-            @keyframes shake {
-                0%, 100% { transform: translate(-50%, -50%) translateX(0); }
-                25% { transform: translate(-50%, -50%) translateX(-5px); }
-                75% { transform: translate(-50%, -50%) translateX(5px); }
-            }
-            .floating-tag {
-                position: absolute;
-                overflow: visible;
-                transition: filter 0.3s ease, box-shadow 0.3s ease;
-                will-change: transform, opacity;
-            }
-            
-            /* Smooth scrolling for the entire page */
-            html {
-                scroll-behavior: smooth;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Add mobile-specific styles
-        const mobileStyle = document.createElement('style');
-        mobileStyle.textContent = `
-            @media (max-width: 902px) {
-                .image-container {
-                    position: relative;
-                }
-                
-                .floating-tags-wrapper {
-                    position: absolute !important;
-                    top: 50% !important;
-                    right: 10% !important;
-                    left: auto !important;
-                    transform: translate(0, -50%) !important;
-                    display: flex !important;
-                    flex-direction: column !important;
-                    gap: 30px !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    z-index: 10 !important;
-                }
-                
-                .floating-tag {
-                    position: static !important;
-                    transform: scale(1.2) !important;
-                    background: rgba(255, 255, 255, 0.15) !important;
-                    backdrop-filter: blur(10px) !important;
-                    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                    padding: 12px !important;
-                    cursor: pointer !important;
-                    transition: all 0.3s ease !important;
-                }
-
-                .floating-tag:hover {
-                    transform: scale(1.3) !important;
-                    background: rgba(255, 255, 255, 0.25) !important;
-                }
-
-                .floating-tag i {
-                    filter: none !important;
-                    opacity: 1 !important;
-                }
-
-                /* Remove any existing tooltip styles */
-                .floating-tag::before,
-                .floating-tag::after {
-                    display: none !important;
-                }
-            }
-        `;
-        document.head.appendChild(mobileStyle);
-
-        // Create wrapper for floating tags on mobile
-        if (window.innerWidth <= 902) {
-            let wrapper = document.querySelector('.floating-tags-wrapper');
-            if (!wrapper) {
-                wrapper = document.createElement('div');
-                wrapper.className = 'floating-tags-wrapper';
-                
-                // Move all floating tags into the wrapper
-                floatingTags.forEach(tag => {
-                    tag.style.animation = 'none';
-                    wrapper.appendChild(tag);
-                });
-                
-                // Add wrapper to image container
-                imageContainer.appendChild(wrapper);
-            }
-        }
-
-        // Disable animations for mobile
-        if (window.innerWidth <= 902) {
-            floatingTags.forEach(tag => {
-                tag.style.animation = 'none';
-            });
-        }
-
-        // Remove any existing tooltips and add single tooltip implementation
-        if (window.innerWidth <= 902) {
-            floatingTags.forEach(tag => {
-                // Remove any existing tooltip attributes
-                tag.removeAttribute('title');
-                tag.removeAttribute('data-tooltip');
-                
-                // Add single tooltip using title attribute
-                const langClass = Array.from(tag.classList).find(cls => 
-                    ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls)
-                );
-                if (langClass) {
-                    let tooltipText = langClass.charAt(0).toUpperCase() + langClass.slice(1);
-                    if (langClass === 'csharp') tooltipText = 'C#';
-                    if (langClass === 'javascript') tooltipText = 'JavaScript';
-                    
-                    tag.setAttribute('title', tooltipText);
-                }
-            });
-        }
-    }
+    });
 
     // --- Function to navigate to specific code snippet ---
     function navigateToCodeSnippet(language) {

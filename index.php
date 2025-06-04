@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="js/script.js" defer></script>
 </head>
 
 <body>  
@@ -34,7 +33,7 @@
                 
                 <header class="header">
                     <div class="hero-text">
-                        <h1>;_Asif Ahmad</h1>
+                        <h1>:_Asif Ahmad:</h1>
                         <span id="typed"></span>
                     </div>
                 </header>
@@ -60,12 +59,14 @@
             </div>
         </div>
     </div>
+    <!-- Third-party libraries -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <!-- jQuery Validation Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    
+    <!-- Custom scripts -->
+    <script src="js/script.js"></script>
     <script src="js/home.js"></script>
     <script src="js/contact-form.js"></script>
-
     </body>
 </html>
