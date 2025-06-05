@@ -1862,6 +1862,63 @@ a:focus {
   }
 }
 
+.footer {
+  padding: 2rem 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.05) 0%, rgba(2, 10, 25, 0.1) 100%);
+}
+
+.footer .footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer p {
+  margin: 0;
+  color: #020a19;
+  font-weight: 500;
+}
+
+.footer .social-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.footer .social-links a {
+  color: #020a19;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.footer .social-links a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.footer .social-links a i {
+  font-size: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .footer .footer-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .footer .social-links {
+    gap: 1rem;
+  }
+  .footer .social-links a i {
+    font-size: 1.1rem;
+  }
+}
+
 #contact, .banner {
   text-align: center;
   padding: 50px;

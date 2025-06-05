@@ -1,7 +1,7 @@
             <!-- Contact Form -->
             <section id="contact" class="contact">
                 <h2>Contact Me</h2>
-                <p class="contact-description">Have a project in mind? Let\'s work together to bring your ideas to life.</p>
+                <p class="contact-description">Have a project in mind? Let's work together to bring your ideas to life.</p>
                 
                 <!-- Consolidated Error Messages Container -->
                 <div class="error-messages-container" id="all-error-messages-container" style="display: none;">
