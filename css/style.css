@@ -618,6 +618,9 @@ a:focus {
   margin: 8px;
   position: relative;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 450px; /* Fixed height for all cards */
 }
 
 .portfolio-container .project-card:hover {
@@ -625,17 +628,111 @@ a:focus {
   background-color: #04122c;
 }
 
-.portfolio-container .project-card img {
+.portfolio-container .project-card .card-image-container {
   width: 100%;
+  height: 180px; /* Fixed height for all images */
+  overflow: hidden;
   border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #000;
+  position: relative;
+}
+
+.portfolio-container .project-card .card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.portfolio-container .project-card .card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  min-height: 150px; /* Minimum height for content area */
 }
 
 .portfolio-container .project-card h3 {
-  margin-top: 10px;
+  margin: 0 0 15px 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: #ffffff;
+  height: 50px; /* Fixed height for titles */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
 }
 
 .portfolio-container .project-card p {
   color: #95252f;
+  margin: 0 0 20px 0;
+  height: 60px; /* Fixed height for descriptions */
+  font-size: 1rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
+}
+
+.portfolio-container .project-card .card-footer {
+  margin-top: auto; /* Push footer to bottom */
+  height: 65px; /* Fixed height for footer */
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 12px; /* Consistent bottom padding */
+}
+
+.portfolio-container .project-card .btn,
+.portfolio-container .project-card .project-status {
+  width: 100%;
+  height: 45px; /* Fixed height for buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #95252f;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  .portfolio-container .project-card {
+    flex: 1 1 calc(33.333% - 20px);
+  }
+}
+
+@media (max-width: 992px) {
+  .portfolio-container .project-card {
+    flex: 1 1 calc(50% - 20px);
+  }
+}
+
+@media (max-width: 576px) {
+  .portfolio-container .project-card {
+    flex: 1 1 100%;
+    margin: 8px 0;
+    min-height: 420px;
+  }
+  
+  .portfolio-container .project-card .card-image-container {
+    height: 160px;
+  }
+  
+  .portfolio-container {
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 15px;
+  }
 }
 
 .portfolio-container .project-card.coming-soon {
@@ -644,33 +741,26 @@ a:focus {
   overflow: hidden;
 }
 
-.portfolio-container .project-card.coming-soon::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  animation: shimmer 3s infinite;
-  z-index: 1;
-}
-
-.portfolio-container .project-card.coming-soon:hover {
-  border-color: rgba(149, 37, 47, 0.6);
-  transform: scale(1.02);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
 .portfolio-container .project-card.coming-soon img {
   opacity: 0.6;
   filter: grayscale(50%) blur(1px);
-  transition: all 0.3s ease;
 }
 
 .portfolio-container .project-card.coming-soon:hover img {
   opacity: 0.8;
   filter: grayscale(30%) blur(0.5px);
+}
+
+.portfolio-container .project-card.coming-soon .coming-soon-badge {
+  background: linear-gradient(135deg, #95252f, #be2f3c);
+  color: #020a19;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(149, 37, 47, 0.3);
 }
 
 .portfolio-container .project-card.coming-soon h3 {
