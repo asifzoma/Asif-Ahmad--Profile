@@ -611,16 +611,16 @@ a:focus {
 .portfolio-container .project-card {
   flex: 1 1 calc(25% - 20px);
   background-color: #020a19;
-  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
   margin: 8px;
   position: relative;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  min-height: 450px;
+  min-height: 400px;
+  padding: 0;
+  overflow: hidden;
 }
 
 .portfolio-container .project-card:hover {
@@ -628,7 +628,7 @@ a:focus {
   background-color: #04122c;
 }
 
-/* Keep the improved image container styles */
+/* Image container styles */
 .portfolio-container .project-card .card-image-container {
   width: 100%;
   height: 180px;
@@ -636,181 +636,99 @@ a:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
-  border-radius: 5px;
-  margin-bottom: 20px;
+  background: #020a19;
 }
 
-.portfolio-container .project-card .card-image-container img {
+.portfolio-container .project-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
   display: block;
 }
 
+/* Content container styles */
 .portfolio-container .project-card .card-content {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
-  min-height: 150px;
+  padding: 24px 24px 12px;
 }
 
 .portfolio-container .project-card h3 {
-  margin: 0 0 15px 0;
-  font-size: 1.2rem;
-  line-height: 1.4;
-  color: #ffffff;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  text-align: center;
+  margin-top: 0;
+  margin-bottom: 12px;
 }
 
 .portfolio-container .project-card p {
   color: #95252f;
-  margin: 0 0 20px 0;
-  height: 60px;
-  font-size: 1rem;
-  line-height: 1.5;
-  /* Modern syntax */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  /* Firefox */
-  display: -moz-box;
-  -moz-line-clamp: 3;
-  -moz-box-orient: vertical;
-  /* Standard syntax */
-  display: box;
-  line-clamp: 3;
-  box-orient: vertical;
-  /* Fallback */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 4.5em; /* line-height * number of lines */
-  text-align: center;
+  margin-bottom: 16px;
 }
 
+/* Footer styles */
 .portfolio-container .project-card .card-footer {
+  padding: 0 24px 12px;
   margin-top: auto;
-  height: 65px;
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: 12px;
 }
 
-.portfolio-container .project-card .btn,
-.portfolio-container .project-card .project-status {
-  width: 100%;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #95252f;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
+/* Coming soon specific styles */
+.portfolio-container .project-card.coming-soon {
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
+  border: 2px dashed rgba(149, 37, 47, 0.3);
 }
 
-/* Responsive styles */
+/* Responsive adjustments */
 @media (max-width: 1200px) {
   .portfolio-container .project-card {
     flex: 1 1 calc(33.333% - 20px);
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 900px) {
   .portfolio-container .project-card {
     flex: 1 1 calc(50% - 20px);
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 600px) {
   .portfolio-container .project-card {
     flex: 1 1 100%;
-    margin: 8px 0;
-    min-height: 420px;
+    min-height: 350px;
   }
   
-  .portfolio-container .project-card .card-image-container {
-    height: 160px;
-  }
-  
-  .portfolio-container {
-    margin-left: 10px;
-    margin-right: 10px;
-    gap: 15px;
+  .portfolio-container .project-card .card-content,
+  .portfolio-container .project-card .card-footer {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
-.project-card.coming-soon {
-  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
-  border: 2px dashed rgba(149, 37, 47, 0.3);
-}
-
-.project-card.coming-soon .card-image-container img {
-  opacity: 0.6;
-  filter: grayscale(50%) blur(1px);
-  transition: all 0.3s ease;
-}
-
-.coming-soon-overlay {
+.portfolio-container .project-card.coming-soon::before {
+  content: '';
   position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shimmer 3s infinite;
+  z-index: 1;
 }
 
-.coming-soon-badge {
-  background: linear-gradient(135deg, #95252f, #be2f3c);
-  color: #ffffff;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(149, 37, 47, 0.3);
+.portfolio-container .project-card.coming-soon:hover {
+  border-color: rgba(149, 37, 47, 0.6);
+  transform: scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.portfolio-container .project-card.coming-soon {
-  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
-  border: 2px dashed rgba(149, 37, 47, 0.3);
-  overflow: hidden;
-}
-
-.portfolio-container .project-card.coming-soon .card-image-container img {
+.portfolio-container .project-card.coming-soon img {
   opacity: 0.6;
   filter: grayscale(50%) blur(1px);
   transition: all 0.3s ease;
 }
 
-.portfolio-container .project-card.coming-soon:hover .card-image-container img {
+.portfolio-container .project-card.coming-soon:hover img {
   opacity: 0.8;
   filter: grayscale(30%) blur(0.5px);
-}
-
-.portfolio-container .project-card.coming-soon .coming-soon-badge {
-  background: linear-gradient(135deg, #95252f, #be2f3c);
-  color: #020a19;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(149, 37, 47, 0.3);
 }
 
 .portfolio-container .project-card.coming-soon h3 {
@@ -1232,7 +1150,7 @@ a:focus {
   gap: 20px;
   flex-wrap: wrap;
   margin-left: 20px;
-    max-width: 100%;
+  max-width: 100%;
   margin-bottom: 20px;
   text-align: center;
   overflow: hidden;
@@ -2604,15 +2522,4 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 #submission-success.active {
   opacity: 1;
   pointer-events: auto;
-}
-
-.portfolio {
-  padding: 20px;
-  text-align: center;
-}
-
-.portfolio h2 {
-  margin-bottom: 30px;
-  color: #020a19;
-  font-size: 2rem;
 }
