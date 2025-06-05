@@ -760,4 +760,48 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Custom smooth scroll function with cubic-bezier
+    function smoothScrollToTop(duration = 1000) {
+        const startPosition = window.pageYOffset;
+        const startTime = performance.now();
+        
+        function easeInOutCubic(t) {
+            return t < 0.5 
+                ? 4 * t * t * t 
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+        
+        function scrollAnimation(currentTime) {
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            
+            const easeProgress = easeInOutCubic(progress);
+            const scrollPosition = startPosition * (1 - easeProgress);
+            
+            window.scrollTo(0, scrollPosition);
+            
+            if (progress < 1) {
+                requestAnimationFrame(scrollAnimation);
+            }
+        }
+        
+        requestAnimationFrame(scrollAnimation);
+    }
+
+    // Add click handler for AZA logo
+    document.addEventListener('DOMContentLoaded', () => {
+        const azaLogo = document.querySelector('.sidebar-header h3 a');
+        if (azaLogo) {
+            azaLogo.addEventListener('click', (e) => {
+                e.preventDefault();
+                smoothScrollToTop();
+                
+                // Update URL without triggering scroll
+                if (history.pushState) {
+                    history.pushState(null, null, azaLogo.getAttribute('href'));
+                }
+            });
+        }
+    });
 }); 

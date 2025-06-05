@@ -30,14 +30,14 @@
                         </div>
                     </div>
 
-                    <!-- Coming Soon Project 1 -->
+                    <!-- Full-Stack Web Application Project -->
                     <div class="project-card coming-soon" data-full-desc="An exciting new full-stack web application project is currently in development. This project will showcase modern development practices using PHP, Laravel, MySQL, and JavaScript. Stay tuned for updates as I continue to build and refine this application with advanced features and responsive design.">
                         <div class="coming-soon-overlay">
                             <i class="fas fa-clock"></i>
                             <span class="coming-soon-badge">Coming Soon</span>
                         </div>
                         <div class="card-image-container">
-                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="Asif Ahmad - Full Stack Developer">
+                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="Full Stack Web Application">
                         </div>
                         <div class="card-content">
                             <h3>Full-Stack Web Application</h3>
@@ -51,14 +51,14 @@
                         </div>
                     </div>
 
-                    <!-- Coming Soon Project 2 -->
+                    <!-- E-Commerce Platform Project -->
                     <div class="project-card coming-soon" data-full-desc="A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.">
                         <div class="coming-soon-overlay">
                             <i class="fas fa-clock"></i>
                             <span class="coming-soon-badge">Coming Soon</span>
                         </div>
                         <div class="card-image-container">
-                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="Asif Ahmad - Full Stack Developer">
+                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="E-commerce Platform">
                         </div>
                         <div class="card-content">
                             <h3>E-Commerce Platform</h3>

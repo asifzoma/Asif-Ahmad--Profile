@@ -598,28 +598,32 @@ a:focus {
   color: #d2d2d0;
 }
 
+/* Portfolio container styles */
 .portfolio-container {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
-  margin-left: 20px;
-  max-width: 100%;
-  margin-bottom: 20px;
-  text-align: center;
+  gap: 24px;
+  padding: 24px;
+  width: 100%;
+  margin: 0;
 }
 
+/* Project card styles */
 .portfolio-container .project-card {
-  flex: 1 1 calc(25% - 20px);
-  background-color: #020a19;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 8px;
-  position: relative;
-  transition: all 0.3s ease;
+  flex: 1 1 calc(33.333% - 16px);
+  min-width: 280px;
+  margin: 0;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   min-height: 400px;
+  background-color: #020a19;
   padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
   overflow: hidden;
 }
 
@@ -636,60 +640,53 @@ a:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #020a19;
+  background: #222;
 }
 
-.portfolio-container .project-card img {
+.portfolio-container .project-card .card-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Content container styles */
+/* Card content styles */
 .portfolio-container .project-card .card-content {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   padding: 24px 24px 12px;
 }
 
-.portfolio-container .project-card h3 {
+.portfolio-container .project-card .card-content h3 {
   margin-top: 0;
   margin-bottom: 12px;
 }
 
-.portfolio-container .project-card p {
-  color: #95252f;
-  margin-bottom: 16px;
+.portfolio-container .project-card .card-content p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-/* Footer styles */
 .portfolio-container .project-card .card-footer {
   padding: 0 24px 12px;
   margin-top: auto;
 }
 
-/* Coming soon specific styles */
-.portfolio-container .project-card.coming-soon {
-  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
-  border: 2px dashed rgba(149, 37, 47, 0.3);
-}
-
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .portfolio-container .project-card {
-    flex: 1 1 calc(33.333% - 20px);
+    flex: 1 1 calc(50% - 12px);
   }
 }
 
-@media (max-width: 900px) {
-  .portfolio-container .project-card {
-    flex: 1 1 calc(50% - 20px);
+@media (max-width: 768px) {
+  .portfolio-container {
+    padding: 16px;
+    gap: 16px;
   }
-}
-
-@media (max-width: 600px) {
+  
   .portfolio-container .project-card {
     flex: 1 1 100%;
     min-height: 350px;
@@ -700,6 +697,51 @@ a:focus {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+@media (max-width: 480px) {
+  .portfolio-container {
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .portfolio-container .project-card {
+    min-height: 320px;
+  }
+  
+  .portfolio-container .project-card .card-image-container {
+    height: 160px;
+  }
+}
+
+/* Coming soon specific styles */
+.portfolio-container .project-card.coming-soon {
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
+  border: 2px dashed rgba(149, 37, 47, 0.3);
+}
+
+.portfolio-container .project-card.coming-soon .card-image-container img {
+  opacity: 0.6;
+  filter: grayscale(50%) blur(1px);
+}
+
+.portfolio-container .project-card img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.portfolio-container .project-card h3 {
+  margin-top: 10px;
+}
+
+.portfolio-container .project-card p {
+  color: #95252f;
+}
+
+.portfolio-container .project-card.coming-soon {
+  background: linear-gradient(135deg, rgba(2, 10, 25, 0.9) 0%, rgba(2, 10, 25, 0.7) 100%);
+  border: 2px dashed rgba(149, 37, 47, 0.3);
+  overflow: hidden;
 }
 
 .portfolio-container .project-card.coming-soon::before {
@@ -2522,4 +2564,29 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 #submission-success.active {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Portfolio section styles */
+.portfolio {
+  margin: 0 -20px; /* Negative margin to offset main container padding */
+  width: calc(100% + 40px); /* Compensate for the negative margins */
+}
+
+@media (max-width: 768px) {
+  .portfolio {
+    margin: 0 -10px;
+    width: calc(100% + 20px);
+  }
+  
+  .portfolio-container {
+    padding: 16px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-container {
+    padding: 12px;
+    gap: 12px;
+  }
 }
