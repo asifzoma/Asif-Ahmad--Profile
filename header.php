@@ -1,4 +1,28 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asif Ahmad - Full Stack Developer</title>
+    
+    <!-- Primary CSS -->
+    <link rel="stylesheet" href="css/style.min.css">
+    <!-- Fallback for minified CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="css/style.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com" as="font" crossorigin>
+    
+    <!-- Ensure CSS loads in older browsers -->
+    <noscript>
+        <link rel="stylesheet" href="css/style.css">
+    </noscript>
+</head>
+<body>
     <div class="page-wrapper">
         <!-- Hamburger Menu with separate icons -->
         <button class="hamburger-menu" id="navToggle" aria-label="Toggle navigation">
@@ -36,3 +60,6 @@
                 <a href="https://discord.com/users/AsifZahmad"><i class="fab fa-discord"></i></a>
             </div>
         </nav> 
+    </div>
+</body>
+</html> 
