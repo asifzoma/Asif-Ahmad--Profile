@@ -1,0 +1,576 @@
+// Contact Form Component
+.contact {
+    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    margin: 2rem auto;
+    color: $light-grey;
+    text-align: center;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+    
+    // Decorative background elements
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    
+    h2 {
+        color: #fff;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 2;
+        
+        &::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, $accent-color, lighten($accent-color, 20%));
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+    }
+    
+    .contact-description {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.6;
+        position: relative;
+        z-index: 2;
+    }
+    
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        position: relative;
+        z-index: 2;
+        
+        .form-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            
+            label {
+                color: rgba(255, 255, 255, 0.9);
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                text-align: left;
+                font-size: 0.95rem;
+                letter-spacing: 0.5px;
+            }
+        }
+        
+        input, textarea {
+            padding: 1rem 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: $primary-color;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            
+            // CSS custom property for dynamic placeholder color
+            --placeholder-color: rgba(0, 0, 0, 0.5);
+            --text-color: #{$primary-color}; // Default dark text
+            
+            // When placeholder is dark (0,0,0), use light text for contrast
+            &[data-dark-placeholder], 
+            &.dark-placeholder {
+                --placeholder-color: rgba(0, 0, 0, 0.5);
+                --text-color: rgba(0, 0, 0, 0.8); // Dark text on light background
+                color: var(--text-color);
+            }
+            
+            // When placeholder is light, use dark text
+            &[data-light-placeholder],
+            &.light-placeholder {
+                --placeholder-color: rgba(255, 255, 255, 0.6);
+                --text-color: #fff; // Light text on dark background
+                color: var(--text-color);
+                background-color: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 255, 255, 0.3);
+            }
+            
+            &::placeholder {
+                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                font-weight: 400;
+            }
+            
+            // Webkit-specific placeholder styling for better browser support
+            &::-webkit-input-placeholder {
+                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                font-weight: 400;
+            }
+            
+            &::-moz-placeholder {
+                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                font-weight: 400;
+                opacity: 1;
+            }
+            
+            &:-ms-input-placeholder {
+                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                font-weight: 400;
+            }
+            
+            &:focus {
+                border-color: $accent-color;
+                background-color: #fff;
+                color: $background-color; // Always dark text on white background when focused
+                --placeholder-color: rgba(0, 0, 0, 0.4);
+                box-shadow: 
+                    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+                    0 0 0 4px rgba($accent-color, 0.2);
+                transform: translateY(-2px);
+                
+                // Override for light placeholder fields
+                &.light-placeholder {
+                    background-color: rgba(0, 0, 0, 0.9);
+                    color: #fff;
+                    --placeholder-color: rgba(255, 255, 255, 0.5);
+                }
+            }
+            
+            &.valid {
+                border-color: #10b981;
+                background-color: rgba(16, 185, 129, 0.03); // Very light green
+                color: $background-color;
+                --placeholder-color: rgba(0, 0, 0, 0.5);
+                
+                &:focus {
+                    background-color: rgba(16, 185, 129, 0.06); // Slightly more green on focus
+                    color: $background-color;
+                    --placeholder-color: rgba(0, 0, 0, 0.4);
+                    box-shadow: 
+                        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+                        0 0 0 4px rgba(16, 185, 129, 0.2);
+                }
+                
+                // Light placeholder version
+                &.light-placeholder {
+                    background-color: rgba(16, 185, 129, 0.2);
+                    color: #fff;
+                    --placeholder-color: rgba(255, 255, 255, 0.6);
+                    
+                    &:focus {
+                        background-color: rgba(16, 185, 129, 0.3);
+                        color: #fff;
+                        --placeholder-color: rgba(255, 255, 255, 0.5);
+                    }
+                }
+            }
+            
+            &.error {
+                border-color: #ef4444;
+                background-color: rgba(239, 68, 68, 0.02); // Very light red - barely noticeable
+                color: $background-color;
+                --placeholder-color: rgba(0, 0, 0, 0.5);
+                animation: shake 0.5s ease-in-out;
+                
+                &:focus {
+                    background-color: rgba(239, 68, 68, 0.04); // Still very light on focus
+                    color: $background-color;
+                    --placeholder-color: rgba(0, 0, 0, 0.4);
+                    box-shadow: 
+                        inset 0 2px 4px rgba(0, 0, 0, 0.1),
+                        0 0 0 4px rgba(239, 68, 68, 0.2);
+                }
+                
+                // Light placeholder version
+                &.light-placeholder {
+                    background-color: rgba(239, 68, 68, 0.2);
+                    color: #fff;
+                    --placeholder-color: rgba(255, 255, 255, 0.6);
+                    
+                    &:focus {
+                        background-color: rgba(239, 68, 68, 0.3);
+                        color: #fff;
+                        --placeholder-color: rgba(255, 255, 255, 0.5);
+                    }
+                }
+            }
+            
+            // High contrast mode support
+            @media (prefers-contrast: high) {
+                border-width: 3px;
+                
+                &:focus {
+                    border-width: 3px;
+                    box-shadow: 
+                        inset 0 2px 4px rgba(0, 0, 0, 0.2),
+                        0 0 0 3px rgba($accent-color, 0.4);
+                }
+                
+                &.valid {
+                    border-color: #0f7054;
+                }
+                
+                &.error {
+                    border-color: #dc2626;
+                }
+                
+                // Ensure high contrast text
+                --placeholder-color: rgba(0, 0, 0, 0.8);
+                color: rgba(0, 0, 0, 0.9);
+                
+                &.light-placeholder {
+                    --placeholder-color: rgba(255, 255, 255, 0.9);
+                    color: rgba(255, 255, 255, 0.95);
+                }
+            }
+        }
+        
+        textarea {
+            min-height: 140px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        
+        button[type="submit"] {
+            background: linear-gradient(135deg, $accent-color 0%, darken($accent-color, 10%) 100%);
+            color: #fff;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba($accent-color, 0.4);
+            position: relative;
+            overflow: hidden;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s ease;
+            }
+            
+            &:hover {
+                background: linear-gradient(135deg, darken($accent-color, 5%) 0%, darken($accent-color, 15%) 100%);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 24px rgba($accent-color, 0.5);
+                
+                &::before {
+                    left: 100%;
+                }
+            }
+            
+            &:active {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba($accent-color, 0.4);
+            }
+            
+            &:disabled {
+                background: #6b7280;
+                cursor: not-allowed;
+                transform: none;
+                
+                &:hover {
+                    background: #6b7280;
+                    transform: none;
+                }
+            }
+            
+            // Loading state
+            &.loading {
+                position: relative;
+                color: transparent;
+                
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 20px;
+                    height: 20px;
+                    margin: -10px 0 0 -10px;
+                    border: 2px solid rgba(255, 255, 255, 0.3);
+                    border-top: 2px solid #fff;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+            }
+        }
+        
+        // Form validation states
+        &.validating {
+            opacity: 0.7;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        &.success {
+            .form-group {
+                opacity: 0.5;
+                transform: scale(0.98);
+                transition: all 0.3s ease;
+            }
+        }
+    }
+}
+
+// Consolidated Error Messages Container Styling
+.error-messages-container {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin: 0 auto 1.5rem auto; // Center the container and add bottom margin
+    max-width: 550px;           // Max width for better readability
+    text-align: left;
+
+    .error-messages-title {
+        color: #ef4444; // Same as individual field error color
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: '⚠'; // Warning icon
+            font-size: 1.3rem;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .error-messages-list {
+        list-style-type: none; // Remove default bullets
+        padding-left: 0; // Remove default padding
+        margin: 0;
+
+        li {
+            color: #dc2626; // Slightly darker red for list items
+            font-size: 0.95rem;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+// Success message styling
+.form-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.5s ease-out;
+    
+    &.show {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        animation: slideIn 0.5s ease-out;
+    }
+    
+    // Ensure it's completely hidden when not shown
+    &:not(.show) {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    
+    .success-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+}
+
+// Animations
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .contact {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        border-radius: 12px;
+        
+        h2 {
+            font-size: 2rem;
+        }
+        
+        form {
+            gap: 1.25rem;
+            
+            input, textarea {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.95rem;
+            }
+            
+            button[type="submit"] {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .contact {
+        padding: 1.5rem 1rem;
+        
+        h2 {
+            font-size: 1.75rem;
+        }
+        
+        .contact-description {
+            font-size: 1rem;
+        }
+        
+        form {
+            gap: 1rem;
+            
+            input, textarea {
+                padding: 0.75rem 1rem;
+                border-radius: 8px;
+            }
+            
+            button[type="submit"] {
+                padding: 0.875rem 1.5rem;
+                border-radius: 8px;
+            }
+        }
+    }
+}
+
+// Footer styling
+.footer {
+    padding: 2rem 1rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0.1) 100%);
+    
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    p {
+        margin: 0;
+        color: $primary-color;
+        font-weight: 500;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        
+        a {
+            color: $primary-color;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            
+            &:hover {
+                opacity: 1;
+                transform: translateY(-2px);
+            }
+            
+            i {
+                font-size: 1.25rem;
+            }
+        }
+    }
+}
+
+// Responsive adjustments for footer
+@media (max-width: 480px) {
+    .footer {
+        .footer-content {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .social-links {
+            gap: 1rem;
+            
+            a i {
+                font-size: 1.1rem;
+            }
+        }
+    }
+}

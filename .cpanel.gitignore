@@ -1,0 +1,46 @@
+# Development files
+node_modules/
+scss/
+*.map
+package.json
+package-lock.json
+composer.json
+composer.lock
+README*.md
+DEPLOYMENT.md
+.gitignore
+.gitattributes
+.git/
+
+# IDE and system files
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Test and documentation
+tests/
+docs/
+phpunit.*
+
+# Build and cache
+bin/
+templates/
+resources/
+public/
+src/
+
+# Logs and environment
+*.log
+debug.log
+.env
+.env.*
+
+# Configuration files that should be created on server
+config/
+
+# Temporary files
+tmp/
+temp/
+cache/ 

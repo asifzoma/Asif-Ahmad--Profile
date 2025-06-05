@@ -1,0 +1,24 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/username/public_html/
+    - /bin/cp -R css $DEPLOYPATH
+    - /bin/cp -R js $DEPLOYPATH
+    - /bin/cp -R img $DEPLOYPATH
+    - /bin/cp -R vendor $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
+    - /bin/cp header.php $DEPLOYPATH
+    - /bin/cp about-section.php $DEPLOYPATH
+    - /bin/cp contact-section.php $DEPLOYPATH
+    - /bin/cp portfolio-section.php $DEPLOYPATH
+    - /bin/cp code-snippets-section.php $DEPLOYPATH
+    - /bin/cp scs-scheme-section.php $DEPLOYPATH
+    - /bin/cp contact_submit.php $DEPLOYPATH
+    # Set proper permissions
+    - /bin/chmod 644 $DEPLOYPATH/*.php
+    - /bin/chmod 644 $DEPLOYPATH/.htaccess
+    - /bin/chmod 755 $DEPLOYPATH/css
+    - /bin/chmod 755 $DEPLOYPATH/js
+    - /bin/chmod 755 $DEPLOYPATH/img
+    - /bin/chmod 755 $DEPLOYPATH/vendor 
