@@ -10,7 +10,7 @@
     <meta name="robots" content="index, follow">
     
     <!-- Critical CSS for above-the-fold content -->
-    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/style.css">
     
     <!-- Preload external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

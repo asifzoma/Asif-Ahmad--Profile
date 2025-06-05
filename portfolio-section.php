@@ -37,7 +37,7 @@
                             <span class="coming-soon-badge">Coming Soon</span>
                         </div>
                         <div class="card-image-container">
-                            <img src="./img/placeholder.jpg" alt="Upcoming Project">
+                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="Asif Ahmad - Full Stack Developer">
                         </div>
                         <div class="card-content">
                             <h3>Full-Stack Web Application</h3>
@@ -58,7 +58,7 @@
                             <span class="coming-soon-badge">Coming Soon</span>
                         </div>
                         <div class="card-image-container">
-                            <img src="img/placeholder.jpg" alt="Upcoming E-commerce Project">
+                            <img src="./img/Asif ahmad Full stack Developer.webp" alt="Asif Ahmad - Full Stack Developer">
                         </div>
                         <div class="card-content">
                             <h3>E-Commerce Platform</h3>
