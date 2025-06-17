@@ -76,11 +76,11 @@
             <!-- Code Snippets Section -->
             <?php include './code-snippets-section.php'; ?>
 
-            <!-- Contact Form -->
-            <?php include './contact-section.php'; ?>
-
             <!-- Scion Scheme Section -->
             <?php include './scs-scheme-section.php'; ?>
+
+            <!-- Contact Form -->
+            <?php include './contact-section.php'; ?>
 
             <!-- Footer with Social Links -->
             <footer class="footer" role="contentinfo">

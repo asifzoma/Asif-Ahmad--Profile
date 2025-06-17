@@ -1123,6 +1123,22 @@ a:focus {
   display: inline-block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  animation: snippetPulse 2s infinite;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.code-snippets h2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+  animation: shimmer 2.5s infinite;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .code-snippets h2:hover {
@@ -1334,10 +1350,10 @@ a:focus {
 
 @keyframes shimmer {
   0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    left: -60%;
   }
   100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
+    left: 120%;
   }
 }
 
