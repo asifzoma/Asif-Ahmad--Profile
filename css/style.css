@@ -2218,6 +2218,19 @@ a:focus {
   display: block;
 }
 
+@media (max-width: 900px) {
+  .portfolio-container,
+  .snippets-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .project-card,
+  .snippet-card {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 #contact, .banner {
   text-align: center;
   padding: 50px;
@@ -2532,7 +2545,8 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   font-weight: 500;
 }
 
-.project-card, .snippet-card {
+.project-card,
+.snippet-card {
   background-color: black;
   border-radius: 8px;
   padding: 1.5rem;
