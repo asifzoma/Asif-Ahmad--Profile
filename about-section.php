@@ -3,7 +3,7 @@
                 <h1>Welcome to My Portfolio</h1>
                 <p>Showcasing my journey into web development</p>
                 <!-- About Me Section -->
-                <section class="about-me">
+                <section class="about-me" id="about-me">
                     <h2 class="about-me-header">About Me</h2>
                     <p>
                         I'm Asif, a Full Stack Web Developer passionate about designing and developing dynamic, user-friendly applications.

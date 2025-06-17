@@ -31,7 +31,7 @@
         </div>
         <div class="sidebar-menu">
             <ul>
-                <li class="nav-tab"><a href="#about-accordion">About Me</a></li>
+                <li class="nav-tab"><a href="#about-me">About Me</a></li>
                 <li class="nav-tab"><a href="index.php#portfolio">My Portfolio</a></li>
                 <li class="nav-tab"><a href="#code-snippets">Code Snippets</a></li>
                 <li class="nav-tab"><a href="#scion-scheme-section">SCS Scheme</a></li>
