@@ -1106,6 +1106,143 @@ a:focus {
   }
 }
 
+.scs-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2.5rem 0;
+}
+
+.scs-card {
+  background: #020a19;
+  color: #d2d2d0;
+  border-radius: 22px;
+  box-shadow: 0 6px 32px 0 rgba(0, 0, 0, 0.13), 0 1.5px 6px 0 rgba(149, 37, 47, 0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  flex: 1 1 320px;
+  min-width: 260px;
+  max-width: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0;
+  border: 2px solid rgba(149, 37, 47, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.scs-card-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: #95252f;
+  color: #020a19;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(149, 37, 47, 0.18);
+  z-index: 2;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #d2d2d0;
+  color: #020a19;
+  animation: badgePulse 2.2s infinite;
+}
+
+.scs-card-badge i {
+  color: #020a19;
+  transition: color 0.3s;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(149, 37, 47, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(149, 37, 47, 0.18), 0 2px 8px rgba(149, 37, 47, 0.18);
+  }
+}
+
+.scs-card-badge.pulse-red i,
+.scs-card-badge.animated i {
+  animation: iconPulseRed 2.2s infinite;
+}
+
+@keyframes iconPulseRed {
+  0%, 100% {
+    color: #020a19;
+  }
+  50% {
+    color: #95252f;
+  }
+}
+
+.scs-card:hover .scs-card-badge {
+  transform: scale(1.12) rotate(-8deg);
+  box-shadow: 0 4px 16px rgba(149, 37, 47, 0.22);
+}
+
+.scs-card h3 {
+  color: #95252f;
+  margin-bottom: 1.1rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.scs-card ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.scs-card li {
+  margin-bottom: 0.5rem;
+  color: #d2d2d0;
+  font-size: 1rem;
+}
+
+.scs-card a {
+  color: #95252f;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.scs-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  box-shadow: 0 2px 16px 0 rgba(149, 37, 47, 0.07) inset;
+}
+
+.scs-card:hover {
+  transform: translateY(-8px) scale(1.025);
+  box-shadow: 0 12px 36px 0 rgba(149, 37, 47, 0.13), 0 2px 8px 0 rgba(2, 10, 25, 0.1);
+  border-color: #95252f;
+  box-shadow: 0 0 0 4px rgba(149, 37, 47, 0.18), 0 12px 36px 0 rgba(149, 37, 47, 0.13), 0 2px 8px 0 rgba(2, 10, 25, 0.1);
+}
+
+@media (max-width: 992px) {
+  .scs-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .scs-card {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 .code-snippets {
   padding: 20px;
   text-align: center;
