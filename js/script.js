@@ -527,8 +527,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const containerRect = imageContainer.getBoundingClientRect();
                 const tagWidth = floatingTags[0].offsetWidth;
                 
-                // Calculate total width needed for all icons with minimal spacing
-                const minSpacing = 10; // Minimum pixels between icons
+                // Increased spacing between icons for better visual separation
+                const minSpacing = 20; // Increased from 10 to 20px for better spacing
                 const totalTags = floatingTags.length;
                 const totalWidth = (tagWidth * totalTags) + (minSpacing * (totalTags - 1));
                 
@@ -536,12 +536,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 let scale = 1;
                 if (totalWidth > containerRect.width) {
                     scale = (containerRect.width - minSpacing) / totalWidth;
-                    scale = Math.max(0.5, scale); // Don't scale smaller than 50%
+                    scale = Math.max(0.6, scale); // Increased minimum scale from 0.5 to 0.6 for better visibility
                 }
                 
                 // Calculate spacing between icons to fill container width
                 const scaledTagWidth = tagWidth * scale;
                 const spacing = minSpacing;
+                
+                // Calculate the total width of all tags with spacing
+                const totalScaledWidth = (scaledTagWidth * totalTags) + (spacing * (totalTags - 1));
+                
+                // Calculate the starting x position to center the tags
+                // Added padding from edges (50px on each side)
+                const edgePadding = 50;
+                const startX = containerRect.left + edgePadding + ((containerRect.width - (totalScaledWidth + (edgePadding * 2))) / 2);
                 
                 floatingTags.forEach((tag, index) => {
                     tag.classList.remove('orbital-animation');
