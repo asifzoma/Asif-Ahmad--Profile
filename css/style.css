@@ -1122,7 +1122,7 @@ a:focus {
   padding: 2.5rem 2rem 2rem 2rem;
   flex: 1 1 320px;
   min-width: 260px;
-  max-width: 370px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1302,7 +1302,7 @@ a:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-left: 20px;
+  margin-left: 0px;
   max-width: 100%;
   margin-bottom: 20px;
   text-align: center;
@@ -1335,7 +1335,7 @@ a:focus {
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin: 8px;
+  margin: 0px;
   position: relative;
   transition: all 0.3s ease;
   border: 2px solid transparent;
@@ -2149,8 +2149,10 @@ a:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px;
-  justify-content: space-between;
+  padding: 20px 20px 20px 0;
+  justify-content: flex-start;
+  max-width: 100%;
+  margin: 0;
 }
 
 .portfolio-container .project-card {
@@ -2166,6 +2168,7 @@ a:focus {
   min-width: 250px;
   max-width: 1fr;
   margin-bottom: 20px;
+  padding-left: 20px;
 }
 
 .portfolio-container .project-card:hover {
@@ -2192,6 +2195,7 @@ a:focus {
 
 .portfolio-container .project-card .card-content {
   padding: 20px;
+  padding-left: 0 !important;
 }
 
 .portfolio-container .project-card .card-content h3 {
@@ -2245,15 +2249,18 @@ a:focus {
 }
 
 @media (max-width: 900px) {
-  .portfolio-container,
-  .snippets-container {
+  .portfolio-container {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    padding: 20px 20px 20px 0;
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
   }
-  .project-card,
-  .snippet-card {
+  .project-card {
     max-width: 100%;
     width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -2540,8 +2547,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   padding: 50px;
 }
 
-.project-card,
-.snippet-card {
+.project-card, .snippet-card {
   background-color: black;
   border-radius: 8px;
   padding: 1.5rem;
