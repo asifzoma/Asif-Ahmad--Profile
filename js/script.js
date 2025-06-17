@@ -451,12 +451,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
         // On desktop (>902px), subtract sidebar width for better visual balance
             if (window.innerWidth > 902) {
-                const sidebarWidth = window.innerWidth * 0.15; // 15vw sidebar width
+                const sidebarWidth = Math.max(250, Math.min(250, 300)); // clamp between 250px and 300px
                 centerX = centerX - sidebarWidth;
                 
                 console.log(`🎯 Desktop sidebar adjustment:
                     • Screen width: ${window.innerWidth}px
-                    • Sidebar width: ${sidebarWidth}px (15vw)
+                    • Sidebar width: ${sidebarWidth}px (clamped 250px-300px)
                     • Original center X: ${contentLeft + (contentWidth / 2)}px
                     • Adjusted center X: ${centerX}px
                     • Adjustment: -${sidebarWidth}px`);

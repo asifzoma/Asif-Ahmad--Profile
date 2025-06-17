@@ -26,7 +26,7 @@ html, body {
 
 // Main Content (Pushes next to sidebar)
 .main-container {
-    margin-left: 15vw;
+    margin-left: $sidebar-width;
     flex: 1;
     padding: 20px;
     background-color: $background-color;
@@ -39,12 +39,15 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 15vw;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1000;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 1;
 }
 
 // Hamburger Menu
@@ -155,7 +158,10 @@ header,
   
   .sidebar-container {
     transform: translateX(-100%);
-    width: 30vw;
+    width: $sidebar-width;
+    min-width: 250px;
+    max-width: 300px;
+    opacity: 0.98;
     
     &.active {
       transform: translateX(0);

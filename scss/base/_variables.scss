@@ -53,7 +53,7 @@ $mobile-breakpoint: 902px;  // Updated to 902px for sidebar functionality
 $tablet-breakpoint: 902px;  // New breakpoint for tablet/small desktop
 
 // Sidebar Width
-$sidebar-width: 15vw;
+$sidebar-width: clamp(250px, 250px, 300px);
 
 // Hamburger Menu
 $hamburger-menu-width: 40px;

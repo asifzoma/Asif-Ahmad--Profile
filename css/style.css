@@ -147,7 +147,9 @@ a:focus {
 }
 
 .sidebar-container {
-  width: 15vw;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
   height: 100vh;
   background-color: #020a19;
   color: #ffffff;
@@ -159,8 +161,9 @@ a:focus {
   flex-direction: column;
   justify-content: space-between;
   z-index: 1000;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   will-change: transform;
+  opacity: 1;
 }
 
 .sidebar-container .sidebar-header h3 a {
@@ -317,7 +320,7 @@ a:focus {
 }
 
 .main-container {
-  margin-left: 15vw;
+  margin-left: clamp(250px, 250px, 300px);
   flex: 1;
   padding: 20px;
   background-color: #d2d2d0;
@@ -546,6 +549,12 @@ a:focus {
   }
   .floating-tag::before {
     border-width: 4px;
+  }
+  .sidebar-container {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+    opacity: 1;
   }
 }
 
@@ -936,8 +945,9 @@ a:focus {
 }
 
 .hamburger-menu.active {
-  left: calc(30vw - 55px);
+  left: calc(250px - 55px);
   top: 20px;
+  animation: pulse 2s infinite;
 }
 
 .hamburger-menu.active .hamburger-icon {
@@ -1008,7 +1018,9 @@ a:focus {
   }
   .sidebar-container {
     transform: translateX(-100%) !important;
-    width: 30vw;
+    width: 250px;
+    min-width: 250px;
+    max-width: 300px;
     display: block !important;
     transition: transform 0.3s ease-out !important;
     will-change: transform;
@@ -1045,6 +1057,17 @@ a:focus {
   .hero-text {
     transition: transform 0.3s ease;
     transform: scale(0.65);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
   }
 }
 
@@ -2030,6 +2053,7 @@ a:focus {
 .sidebar-container {
   background-color: #020a19;
   color: #d2d2d0;
+  width: 250px;
 }
 
 .sidebar-container a {

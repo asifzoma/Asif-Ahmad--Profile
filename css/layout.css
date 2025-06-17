@@ -18,7 +18,7 @@ html, body {
 }
 
 .main-container {
-  margin-left: 15vw;
+  margin-left: clamp(250px, 250px, 300px);
   flex: 1;
   padding: 20px;
   background-color: #d2d2d0;
@@ -30,12 +30,15 @@ html, body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 15vw;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 1000;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  opacity: 1;
 }
 
 .hamburger-menu {
@@ -135,7 +138,10 @@ header,
   }
   .sidebar-container {
     transform: translateX(-100%);
-    width: 30vw;
+    width: clamp(250px, 250px, 300px);
+    min-width: 250px;
+    max-width: 300px;
+    opacity: 0.98;
   }
   .sidebar-container.active {
     transform: translateX(0);

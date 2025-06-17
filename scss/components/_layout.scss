@@ -14,7 +14,9 @@
 
 // Sidebar 
 .sidebar-container {
-    width: 15vw;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
     height: 100vh;
     background-color: $primary-color;
     color: $light-text;
@@ -26,8 +28,9 @@
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
-    transition: transform 0.3s ease-out;
-    will-change: transform; // Optimize for transform animations
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    will-change: transform;
+    opacity: 1;
 
     .sidebar-header {
         h3 {
@@ -437,6 +440,13 @@
         &::before {
             border-width: 4px;
         }
+    }
+
+    .sidebar-container {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+        opacity: 1;
     }
 }
 
@@ -873,8 +883,9 @@
 
 // Active state - hide hamburger, show close
 .hamburger-menu.active {
-    left: calc(30vw - 55px);
+    left: calc(250px - 55px);
     top: 20px;
+    animation: pulse 2s infinite;
     
     .hamburger-icon {
         opacity: 0;
@@ -956,7 +967,9 @@
 
     .sidebar-container {
         transform: translateX(-100%) !important;
-        width: 30vw;
+        width: 250px;
+        min-width: 250px;
+        max-width: 300px;
         display: block !important;
         transition: transform 0.3s ease-out !important;
         will-change: transform;
@@ -999,6 +1012,17 @@
     .hero-text {
         transition: transform 0.3s ease;
         transform: scale(0.65);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
     }
 }
 
