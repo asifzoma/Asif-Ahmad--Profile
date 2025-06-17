@@ -39,9 +39,9 @@
             </ul>
         </div>
         <div class="sidebar-social">
-            <a href="https://github.com/asifzoma"><i class="fab fa-github"></i></a>
-            <a href="https://www.linkedin.com/in/asifzahmad/"><i class="fab fa-linkedin"></i></a>
-            <a href="https://discord.com/users/AsifZahmad"><i class="fab fa-discord"></i></a>
+            <a href="https://github.com/asifzoma" target="_blank" rel="noopener noreferrer" class="social-animated"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/asifzahmad/" target="_blank" rel="noopener noreferrer" class="social-animated"><i class="fab fa-linkedin"></i></a>
+            <a href="https://discord.com/users/AsifZahmad" target="_blank" rel="noopener noreferrer" class="social-animated"><i class="fab fa-discord"></i></a>
         </div>
     </nav>
 </body>

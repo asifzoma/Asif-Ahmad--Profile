@@ -1026,5 +1026,32 @@
     }
 }
 
+.social-animated {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+    50% {
+        box-shadow: 0 0 16px 4px rgba(255,255,255,0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+}
+
     
     
