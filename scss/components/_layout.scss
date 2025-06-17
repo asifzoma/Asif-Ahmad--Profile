@@ -448,6 +448,11 @@
         max-width: 260px;
         opacity: 1;
     }
+
+    .image-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -470,6 +475,11 @@
         &::before {
             border-width: 3px;
         }
+    }
+
+    .image-container {
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 }
 
@@ -999,8 +1009,8 @@
     }
 
     .image-container {
-        width: calc(100% - 40px);
-        margin-left: 0;
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 }
 
