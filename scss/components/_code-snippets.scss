@@ -54,8 +54,8 @@
 
 .snippets-container {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 20px;
     margin-left: 20px;
     max-width: 100%;
     margin-bottom: 20px;
@@ -63,6 +63,7 @@
     overflow: hidden;
     opacity: 1;
     transition: opacity 0.3s ease;
+    justify-content: space-between;
     
     &.hidden {
         display: none;
@@ -76,7 +77,13 @@
 }
 
 .snippet-card {
-    flex: 1 1 calc(25% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 300px;
+    min-width: 250px;
+    max-width: 1fr;
+    margin-bottom: 20px;
     background-color: $background-color;
     padding: 20px;
     border-radius: 12px;
@@ -103,6 +110,14 @@
         color: $primary-color;
         margin-bottom: 15px;
         line-height: 1.5;
+    }
+
+    .card-footer {
+        padding: 20px;
+        border-top: 1px solid rgba($primary-color, 0.1);
+        align-self: stretch;
+        width: 100%;
+        margin-top: auto;
     }
 
     &.coming-soon {

@@ -1300,8 +1300,8 @@ a:focus {
 
 .snippets-container {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
   margin-left: 20px;
   max-width: 100%;
   margin-bottom: 20px;
@@ -1309,6 +1309,7 @@ a:focus {
   overflow: hidden;
   opacity: 1;
   transition: opacity 0.3s ease;
+  justify-content: space-between;
 }
 
 .snippets-container.hidden {
@@ -1322,7 +1323,13 @@ a:focus {
 }
 
 .snippet-card {
-  flex: 1 1 calc(25% - 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 300px;
+  min-width: 250px;
+  max-width: 1fr;
+  margin-bottom: 20px;
   background-color: #d2d2d0;
   padding: 20px;
   border-radius: 12px;
@@ -1350,6 +1357,14 @@ a:focus {
   color: #020a19;
   margin-bottom: 15px;
   line-height: 1.5;
+}
+
+.snippet-card .card-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(2, 10, 25, 0.1);
+  align-self: stretch;
+  width: 100%;
+  margin-top: auto;
 }
 
 .snippet-card.coming-soon {
@@ -2131,18 +2146,26 @@ a:focus {
 }
 
 .portfolio-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
+  justify-content: space-between;
 }
 
 .portfolio-container .project-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #020a19;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  flex: 1 1 300px;
+  min-width: 250px;
+  max-width: 1fr;
+  margin-bottom: 20px;
 }
 
 .portfolio-container .project-card:hover {
@@ -2185,6 +2208,9 @@ a:focus {
 .portfolio-container .project-card .card-footer {
   padding: 20px;
   border-top: 1px solid rgba(210, 210, 208, 0.1);
+  align-self: stretch;
+  width: 100%;
+  margin-top: auto;
 }
 
 .portfolio-container .project-card .card-footer .btn {
