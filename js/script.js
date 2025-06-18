@@ -812,4 +812,21 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // --- Floating Languages X-Axis Shift on Scroll ---
+    window.addEventListener('scroll', function() {
+        const floatingLanguages = document.querySelector('.floating-languages');
+        const floatingTags = document.querySelectorAll('.floating-tag');
+        if (floatingLanguages && floatingTags.length > 0) {
+            const tagWidth = floatingTags[0].offsetWidth;
+            const xOffset = 4 * tagWidth;
+            if (window.scrollY > 0) {
+                floatingLanguages.style.left = `calc(50% + ${xOffset}px)`;
+                floatingLanguages.style.transform = 'translateX(-50%)';
+            } else {
+                floatingLanguages.style.left = '50%';
+                floatingLanguages.style.transform = 'translateX(-50%)';
+            }
+        }
+    });
 }); 

@@ -372,126 +372,49 @@ a:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-  pointer-events: auto;
-  cursor: pointer;
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.8;
-  z-index: 100;
+  transform-origin: center;
+  --angle: 0deg;
+  --radius: 150px;
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
+  animation: revolve 20s linear infinite;
 }
 
-.floating-tag.orbital-animation {
-  position: fixed;
-  will-change: transform, opacity, top, left;
-  animation-timing-function: linear;
-  transition: none;
+.floating-tag.html {
+  --angle: 0deg;
 }
 
-.floating-tag.transition-state {
-  position: fixed;
-  will-change: transform, opacity, top, left;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.floating-tag.css {
+  --angle: 60deg;
 }
 
-.floating-tag.aligned-state {
-  position: fixed;
-  opacity: 1;
-  z-index: 100;
-  transition: all 0.3s ease;
+.floating-tag.javascript {
+  --angle: 120deg;
 }
 
-.floating-tag.highlighted {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  transform: translate(-50%, -50%) scale(1.2);
-  z-index: 200;
+.floating-tag.php {
+  --angle: 180deg;
 }
 
-.floating-tag.highlighted::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  animation: borderGlow 2s ease-in-out infinite;
+.floating-tag.csharp {
+  --angle: 240deg;
 }
 
-.floating-tag i {
-  font-size: 1.5rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  transition: all 0.3s ease;
+.floating-tag.laravel {
+  --angle: 300deg;
 }
 
 .floating-tag:hover {
-  transform: translate(-50%, -50%) scale(1.1);
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.floating-tag:hover i {
-  transform: scale(1.1);
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
-}
-
-.floating-tag:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-10px);
-}
-
-.floating-tag::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(0px);
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 1000;
-  pointer-events: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.floating-tag::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  border: 5px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.9);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-
-.floating-tag:hover::before {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
+  transform: translate(-50%, -50%) rotate(var(--angle)) translateX(calc(var(--radius) * 1.1)) rotate(calc(-1 * var(--angle))) scale(1.1);
 }
 
 .floating-tag.html i {
@@ -518,6 +441,15 @@ a:focus {
   color: #ff2d20;
 }
 
+@keyframes revolve {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
 @media (min-width: 768px) {
   .floating-tag[data-target-top] {
     --target-top: attr(data-target-top);
@@ -539,16 +471,10 @@ a:focus {
     padding: 8px;
     width: 36px;
     height: 36px;
+    --radius: 100px;
   }
   .floating-tag i {
     font-size: 1.0rem;
-  }
-  .floating-tag::after {
-    font-size: 0.7rem;
-    padding: 4px 8px;
-  }
-  .floating-tag::before {
-    border-width: 4px;
   }
   .sidebar-container {
     width: 260px;
@@ -557,8 +483,8 @@ a:focus {
     opacity: 1;
   }
   .image-container {
-    width: 100% !important;
-    margin-left: 0 !important;
+    width: 100%;
+    margin-left: 0;
   }
 }
 
@@ -568,16 +494,10 @@ a:focus {
     padding: 6px;
     width: 32px;
     height: 32px;
+    --radius: 80px;
   }
   .floating-tag i {
     font-size: 0.9rem;
-  }
-  .floating-tag::after {
-    font-size: 0.6rem;
-    padding: 3px 6px;
-  }
-  .floating-tag::before {
-    border-width: 3px;
   }
   .image-container {
     width: 100% !important;
@@ -1241,6 +1161,27 @@ a:focus {
     max-width: 100%;
     width: 100%;
   }
+}
+
+.centered-languages {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.centered-languages .floating-tag {
+  position: static;
+  animation: none;
+  transform: none;
+  --angle: 0deg;
+  --radius: 0;
 }
 
 .code-snippets {

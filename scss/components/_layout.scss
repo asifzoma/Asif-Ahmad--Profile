@@ -262,152 +262,59 @@
 
 .floating-tag {
     position: absolute;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba($white, 0.15);
     color: $light-text;
     padding: 12px;
     border-radius: 50%;
     font-size: 1.5rem;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba($black, 0.2);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    pointer-events: auto;
-    cursor: pointer;
+    border: 2px solid rgba($white, 0.3);
     width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    
-    // Default positioning - will be overridden by JavaScript for orbital animation
+    pointer-events: auto;
+    cursor: pointer;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.8;
-    z-index: 100;
-    
-    // Base animation styles for orbital motion
-    &.orbital-animation {
-        position: fixed;
-        will-change: transform, opacity, top, left;
-        animation-timing-function: linear;
-        transition: none; // Disable transitions during orbital animation
-    }
-    
-    // Transition state for scroll-based positioning
-    &.transition-state {
-        position: fixed;
-        will-change: transform, opacity, top, left;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    // Aligned state when scrolled
-    &.aligned-state {
-        position: fixed;
-        opacity: 1;
-        z-index: 100;
-        transition: all 0.3s ease;
-    }
-    
-    // Highlighted state for snippet navigation
-    &.highlighted {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.7);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        transform: translate(-50%, -50%) scale(1.2);
-        z-index: 200;
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            animation: borderGlow 2s ease-in-out infinite;
-        }
-    }
-    
-    i {
-        font-size: 1.5rem;
-        line-height: 1;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        transition: all 0.3s ease;
-    }
-    
+    transform-origin: center;
+    --angle: 0deg;
+    --radius: 150px;
+    transform: 
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateX(var(--radius))
+        rotate(calc(-1 * var(--angle)));
+    animation: revolve 20s linear infinite;
+    &.html { --angle: 0deg; }
+    &.css { --angle: 60deg; }
+    &.javascript { --angle: 120deg; }
+    &.php { --angle: 180deg; }
+    &.csharp { --angle: 240deg; }
+    &.laravel { --angle: 300deg; }
     &:hover {
-        transform: translate(-50%, -50%) scale(1.1);
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
-        
-        i {
-            transform: scale(1.1);
-            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
-        }
-        
-        // Show custom tooltip on hover
-        &::after {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(-10px);
-        }
+        background: rgba($white, 0.25);
+        transform: 
+            translate(-50%, -50%)
+            rotate(var(--angle))
+            translateX(calc(var(--radius) * 1.1))
+            rotate(calc(-1 * var(--angle)))
+            scale(1.1);
     }
-    
-    // Custom tooltip styling
-    &::after {
-        content: attr(data-tooltip);
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(0px);
-        background: rgba(0, 0, 0, 0.9);
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        white-space: nowrap;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        pointer-events: none;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-    
-    // Tooltip arrow
-    &::before {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(6px);
-        border: 5px solid transparent;
-        border-top-color: rgba(0, 0, 0, 0.9);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        pointer-events: none;
-    }
-    
-    &:hover::before {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(-4px);
-    }
-    
-    // Individual icon colors for better recognition (enhanced with shadows)
-    &.html i { color: #e34f26; } // HTML5 orange
-    &.css i { color: #1572b6; } // CSS3 blue  
-    &.javascript i { color: #f7df1e; } // JavaScript yellow
-    &.php i { color: #777bb4; } // PHP purple
-    &.csharp i { color: #239120; } // Microsoft green
-    &.laravel i { color: #ff2d20; } // Laravel red
+    &.html i { color: #e34f26; }
+    &.css i { color: #1572b6; }
+    &.javascript i { color: #f7df1e; }
+    &.php i { color: #777bb4; }
+    &.csharp i { color: #239120; }
+    &.laravel i { color: #ff2d20; }
+}
+
+@keyframes revolve {
+    from { --angle: 0deg; }
+    to { --angle: 360deg; }
 }
 
 // Target positions for spread-out state (desktop)
@@ -426,19 +333,9 @@
         padding: 8px;
         width: 36px;
         height: 36px;
-        
+        --radius: 100px;
         i {
             font-size: 1.0rem;
-        }
-        
-        // Smaller tooltips for mobile
-        &::after {
-            font-size: 0.7rem;
-            padding: 4px 8px;
-        }
-        
-        &::before {
-            border-width: 4px;
         }
     }
 
@@ -450,8 +347,8 @@
     }
 
     .image-container {
-        width: 100% !important;
-        margin-left: 0 !important;
+        width: 100%;
+        margin-left: 0;
     }
 }
 
@@ -461,19 +358,9 @@
         padding: 6px;
         width: 32px;
         height: 32px;
-        
+        --radius: 80px;
         i {
             font-size: 0.9rem;
-        }
-        
-        // Even smaller tooltips for very small screens
-        &::after {
-            font-size: 0.6rem;
-            padding: 3px 6px;
-        }
-        
-        &::before {
-            border-width: 3px;
         }
     }
 
@@ -1198,6 +1085,28 @@
   .scs-card {
     max-width: 100%;
     width: 100%;
+  }
+}
+
+// Centered languages for scroll state
+.centered-languages {
+  position: absolute;
+  left: 50%;
+  top: 0; // aligns with the top of the image container
+  transform: translateX(-50%);
+  width: auto;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+  pointer-events: none;
+
+  .floating-tag {
+    position: static;
+    animation: none;
+    transform: none;
+    --angle: 0deg;
+    --radius: 0;
   }
 }
 
