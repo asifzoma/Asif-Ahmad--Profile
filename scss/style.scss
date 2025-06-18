@@ -21,7 +21,7 @@
   color: $light-grey;
 }
 
-.about-me, .snippet, .SCS-scheme {
+.snippet, .SCS-scheme {
   text-align: left;
   padding: 50px;
   background-color: $primary-color;
@@ -275,23 +275,42 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
 // Style About Me section header like code snippets header
 .about-me-header {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   text-align: center;
-  margin-bottom: 2rem;
   color: $light-text;
   position: relative;
   padding: 10px 40px 10px 20px;
   transition: all 0.3s ease;
   background-color: $primary-color;
   border-radius: 8px;
-  display: inline-block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   overflow: hidden;
   z-index: 1;
 }
 
+// Style About Me section content like .about-accordion
+.about-me {
+  border: none ;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: $primary-color;
+  border-radius: 8px;
+  margin: 2px;
+  color: $light-grey;
+  padding: 20px 50px 50px 50px;
+  text-align: left;
+}
+
+.about-me p {
+  margin-bottom: 2rem;
+}
+
 // Remove double border from about section
-.about-me, #about-accordion, .about-accordion {
+.about-accordion {
   border: none !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background: $primary-color;
@@ -299,6 +318,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   margin: 2px;
   color: $light-grey;
   padding: 50px;
+  text-align: left;
 }
 
 .project-card, .snippet-card {
@@ -532,6 +552,51 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     opacity: 1;
     pointer-events: auto;
   }
+}
+
+@media (max-width: 600px) {
+  .about-me-content {
+    max-height: 8rem;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .about-me-content::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    background: linear-gradient(to bottom, rgba(2,10,25,0), $primary-color 90%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .about-me-content.expanded {
+    max-height: 1000px;
+  }
+  .about-me-content.expanded::after {
+    display: none;
+  }
+  .read-more-btn {
+    display: block !important;
+    margin: 1rem auto 0 auto;
+    background: $primary-color;
+    color: $light-grey;
+    border: none;
+    border-radius: 4px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+  }
+  .read-more-btn:active {
+    background: darken($primary-color, 10%);
+  }
+  // .about-me-content.expanded + .read-more-btn {
+  //   display: none !important;
+  // }
 }
 
 

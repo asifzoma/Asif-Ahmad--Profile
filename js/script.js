@@ -829,4 +829,36 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    // --- About Me Read More (Mobile Accordion) ---
+    var aboutContent = document.querySelector('.about-me-content');
+    var readMoreBtn = document.querySelector('.read-more-btn');
+    var aboutSection = document.getElementById('about-me');
+    if (aboutContent && readMoreBtn) {
+        // Only show button if content is overflowing (on mobile)
+        function checkOverflow() {
+            if (window.innerWidth <= 600 && aboutContent.scrollHeight > aboutContent.clientHeight + 10) {
+                readMoreBtn.style.display = 'block';
+            } else {
+                readMoreBtn.style.display = 'none';
+                aboutContent.classList.remove('expanded');
+                readMoreBtn.textContent = 'Read More';
+            }
+        }
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow);
+        readMoreBtn.addEventListener('click', function() {
+            if (aboutContent.classList.contains('expanded')) {
+                aboutContent.classList.remove('expanded');
+                readMoreBtn.textContent = 'Read More';
+                // Scroll back to About Me section
+                if (aboutSection) {
+                    aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            } else {
+                aboutContent.classList.add('expanded');
+                readMoreBtn.textContent = 'Show Less';
+            }
+        });
+    }
 }); 

@@ -11,7 +11,7 @@
   color: #ffffff;
 }
 
-.SCS-scheme, .snippet, .about-me {
+.SCS-scheme, .snippet {
   text-align: left;
   padding: 50px;
   background-color: #020a19;
@@ -31,7 +31,7 @@
   color: #ffffff;
 }
 
-.SCS-scheme, .snippet, .about-me {
+.SCS-scheme, .snippet {
   text-align: left;
   padding: 50px;
   background-color: #020a19;
@@ -372,49 +372,126 @@ a:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: auto;
-  cursor: pointer;
+  position: relative;
   top: 50%;
   left: 50%;
-  transform-origin: center;
-  --angle: 0deg;
-  --radius: 150px;
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--radius)) rotate(calc(-1 * var(--angle)));
-  animation: revolve 20s linear infinite;
+  transform: translate(-50%, -50%);
+  opacity: 0.8;
+  z-index: 100;
 }
 
-.floating-tag.html {
-  --angle: 0deg;
+.floating-tag.orbital-animation {
+  position: fixed;
+  will-change: transform, opacity, top, left;
+  animation-timing-function: linear;
+  transition: none;
 }
 
-.floating-tag.css {
-  --angle: 60deg;
+.floating-tag.transition-state {
+  position: fixed;
+  will-change: transform, opacity, top, left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.floating-tag.javascript {
-  --angle: 120deg;
+.floating-tag.aligned-state {
+  position: fixed;
+  opacity: 1;
+  z-index: 100;
+  transition: all 0.3s ease;
 }
 
-.floating-tag.php {
-  --angle: 180deg;
+.floating-tag.highlighted {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 200;
 }
 
-.floating-tag.csharp {
-  --angle: 240deg;
+.floating-tag.highlighted::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  animation: borderGlow 2s ease-in-out infinite;
 }
 
-.floating-tag.laravel {
-  --angle: 300deg;
+.floating-tag i {
+  font-size: 1.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
 }
 
 .floating-tag:hover {
+  transform: translate(-50%, -50%) scale(1.1);
   background: rgba(255, 255, 255, 0.25);
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateX(calc(var(--radius) * 1.1)) rotate(calc(-1 * var(--angle))) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.floating-tag:hover i {
+  transform: scale(1.1);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+.floating-tag:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+.floating-tag::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0px);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.floating-tag::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  border: 5px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.floating-tag:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
 }
 
 .floating-tag.html i {
@@ -441,15 +518,6 @@ a:focus {
   color: #ff2d20;
 }
 
-@keyframes revolve {
-  from {
-    --angle: 0deg;
-  }
-  to {
-    --angle: 360deg;
-  }
-}
-
 @media (min-width: 768px) {
   .floating-tag[data-target-top] {
     --target-top: attr(data-target-top);
@@ -471,10 +539,16 @@ a:focus {
     padding: 8px;
     width: 36px;
     height: 36px;
-    --radius: 100px;
   }
   .floating-tag i {
     font-size: 1.0rem;
+  }
+  .floating-tag::after {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  .floating-tag::before {
+    border-width: 4px;
   }
   .sidebar-container {
     width: 260px;
@@ -483,8 +557,8 @@ a:focus {
     opacity: 1;
   }
   .image-container {
-    width: 100%;
-    margin-left: 0;
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 }
 
@@ -494,10 +568,16 @@ a:focus {
     padding: 6px;
     width: 32px;
     height: 32px;
-    --radius: 80px;
   }
   .floating-tag i {
     font-size: 0.9rem;
+  }
+  .floating-tag::after {
+    font-size: 0.6rem;
+    padding: 3px 6px;
+  }
+  .floating-tag::before {
+    border-width: 3px;
   }
   .image-container {
     width: 100% !important;
@@ -1161,27 +1241,6 @@ a:focus {
     max-width: 100%;
     width: 100%;
   }
-}
-
-.centered-languages {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  width: auto;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.centered-languages .floating-tag {
-  position: static;
-  animation: none;
-  transform: none;
-  --angle: 0deg;
-  --radius: 0;
 }
 
 .code-snippets {
@@ -2215,7 +2274,7 @@ a:focus {
   color: #d2d2d0;
 }
 
-.about-me, .snippet, .SCS-scheme {
+.snippet, .SCS-scheme {
   text-align: left;
   padding: 50px;
   background-color: #020a19;
@@ -2463,22 +2522,40 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 }
 
 .about-me-header {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   text-align: center;
-  margin-bottom: 2rem;
   color: #ffffff;
   position: relative;
   padding: 10px 40px 10px 20px;
   transition: all 0.3s ease;
   background-color: #020a19;
   border-radius: 8px;
-  display: inline-block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   overflow: hidden;
   z-index: 1;
 }
 
-.about-me, #about-accordion, .about-accordion {
+.about-me {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #020a19;
+  border-radius: 8px;
+  margin: 2px;
+  color: #d2d2d0;
+  padding: 20px 50px 50px 50px;
+  text-align: left;
+}
+
+.about-me p {
+  margin-bottom: 2rem;
+}
+
+.about-accordion {
   border: none !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background: #020a19;
@@ -2486,6 +2563,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   margin: 2px;
   color: #d2d2d0;
   padding: 50px;
+  text-align: left;
 }
 
 .project-card, .snippet-card {
@@ -2720,4 +2798,46 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 #submission-success.active {
   opacity: 1;
   pointer-events: auto;
+}
+
+@media (max-width: 600px) {
+  .about-me-content {
+    max-height: 8rem;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .about-me-content::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    background: linear-gradient(to bottom, rgba(2, 10, 25, 0), #020a19 90%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .about-me-content.expanded {
+    max-height: 1000px;
+  }
+  .about-me-content.expanded::after {
+    display: none;
+  }
+  .read-more-btn {
+    display: block !important;
+    margin: 1rem auto 0 auto;
+    background: #020a19;
+    color: #d2d2d0;
+    border: none;
+    border-radius: 4px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s;
+  }
+  .read-more-btn:active {
+    background: black;
+  }
 }
