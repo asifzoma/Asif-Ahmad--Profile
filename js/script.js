@@ -819,7 +819,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const floatingTags = document.querySelectorAll('.floating-tag');
         if (floatingLanguages && floatingTags.length > 0) {
             const tagWidth = floatingTags[0].offsetWidth;
-            const xOffset = 4 * tagWidth;
+            const xOffset = 3 * tagWidth;
             if (window.scrollY > 0) {
                 floatingLanguages.style.left = `calc(50% + ${xOffset}px)`;
                 floatingLanguages.style.transform = 'translateX(-50%)';

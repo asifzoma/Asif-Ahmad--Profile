@@ -2841,3 +2841,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     background: black;
   }
 }
+
+.scs-card {
+  max-height: none !important;
+}
