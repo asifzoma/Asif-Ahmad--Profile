@@ -48,18 +48,33 @@
             <!-- Hero Section -->
             <section id="hero" class="hero-section" aria-label="Introduction">
                 <div class="image-container">
-                    <!-- Floating Programming Languages -->
-                    <div class="floating-languages">
-                        <div class="floating-tag html" title="HTML5" data-tooltip="HTML5"><i class="fab fa-html5"></i></div>
-                        <div class="floating-tag css" title="CSS3" data-tooltip="CSS3"><i class="fab fa-css3-alt"></i></div>
-                        <div class="floating-tag javascript" title="JavaScript" data-tooltip="JavaScript"><i class="fab fa-js"></i></div>
-                        <div class="floating-tag php" title="PHP" data-tooltip="PHP"><i class="fab fa-php"></i></div>
-                        <div class="floating-tag csharp" title="C# / .NET" data-tooltip="C# / .NET"><i class="fab fa-microsoft"></i></div>
-                        <div class="floating-tag laravel" title="Laravel" data-tooltip="Laravel"><i class="fab fa-laravel"></i></div>
+                    <!-- Header Dock Row (appears on scroll) -->
+                    <div class="header-dock" id="headerDock">
+                        <div class="dock-content">
+                            <!-- Floating Programming Languages -->
+                            <div class="floating-languages">
+                                <div class="floating-tag html" title="HTML5" data-tooltip="HTML5"><i class="fab fa-html5"></i></div>
+                                <div class="floating-tag css" title="CSS3" data-tooltip="CSS3"><i class="fab fa-css3-alt"></i></div>
+                                <div class="floating-tag javascript" title="JavaScript" data-tooltip="JavaScript"><i class="fab fa-js"></i></div>
+                                <div class="floating-tag php" title="PHP" data-tooltip="PHP"><i class="fab fa-php"></i></div>
+                                <div class="floating-tag csharp" title="C# / .NET" data-tooltip="C# / .NET"><i class="fab fa-microsoft"></i></div>
+                                <div class="floating-tag laravel" title="Laravel" data-tooltip="Laravel"><i class="fab fa-laravel"></i></div>
+                            </div>
+                            
+                            <!-- Dock Title -->
+                            <h1 class="dock-title">:_Asif Ahmad:</h1>
+                            
+                            <!-- Digital Clock -->
+                            <div class="dock-clock" id="dockClock">
+                                <div class="clock-time" id="clockTime"></div>
+                                <div class="clock-date" id="clockDate"></div>
+                            </div>
+                        </div>
                     </div>
                     
+                    <!-- Original Hero Text (hidden on scroll) -->
                     <header class="header">
-                        <div class="hero-text">
+                        <div class="hero-text" id="heroText">
                             <h1>:_Asif Ahmad:</h1>
                             <span id="typed" aria-live="polite"></span>
                         </div>
@@ -121,6 +136,7 @@
     <!-- Custom scripts -->
     <script src="./js/script.js"></script>
     <script src="./js/home.js"></script>
+    <script src="./js/header-dock.js"></script>
     <script src="./js/contact-form.js"></script>
 </body>
 </html>

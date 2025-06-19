@@ -1,0 +1,262 @@
+// Header Dock Styles
+.header-dock {
+    position: absolute;
+    left: 0;
+    bottom: 2.5rem;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    pointer-events: none;
+    
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+.dock-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    min-height: 70px;
+    position: relative;
+    z-index: 1;
+    gap: 2rem;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    .header-dock.active & {
+        transform: scale(1.04);
+    }
+}
+
+// Responsive row: icons left, title center/right, clock right
+.floating-languages {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.2rem;
+    pointer-events: auto;
+    flex: 1 1 0%; // Take up available space
+    min-width: 0;
+    
+    .floating-tag {
+        width: 54px;
+        height: 54px;
+        font-size: 2rem;
+        background: rgba(255, 255, 255, 0.18); // Clean glassy look, no $primary
+        color: $light-text;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        pointer-events: auto;
+        transition: 
+          transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+          box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2;
+        position: static;
+        
+        &:hover {
+          transform: scale(1.25);
+          box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+          z-index: 3;
+        }
+        
+        // Highlight state
+        &.highlighted {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                border-radius: 50%;
+                border: 2px solid rgba(255, 255, 255, 0.6);
+                animation: borderGlow 2s ease-in-out infinite;
+            }
+        }
+        
+        // Icon styles
+        i {
+            font-size: 2rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+        
+        // Language-specific colors
+        &.html i { color: #e34f26; }
+        &.css i { color: #1572b6; }
+        &.javascript i { color: #f7df1e; }
+        &.php i { color: #777bb4; }
+        &.csharp i { color: #239120; }
+        &.laravel i { color: #ff2d20; }
+        
+        // Tooltip
+        &::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0px);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        &:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    }
+}
+
+.dock-title {
+    font-family: $font-family--primary;
+    font-size: 2rem;
+    font-weight: 700;
+    color: $light-text;
+    margin: 0 2rem;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 0 1 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    
+    .header-dock.active & {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dock-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 0 0 auto;
+    min-width: 80px;
+    
+    .header-dock.active & {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.clock-time {
+    font-family: $font-family--secondary;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $light-text;
+}
+
+.clock-date {
+    font-family: $font-family--secondary;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+// Image container overlay
+.image-container {
+    position: relative;
+    transition: all 0.3s ease;
+    
+    &.scrolled {
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 5;
+        }
+    }
+}
+
+// Hero text fade out
+.hero-text {
+    transition: all 0.3s ease;
+    
+    &.fade-out {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+// Animations
+@keyframes borderGlow {
+    0%, 100% {
+        border-color: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        border-color: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 700px) {
+  .dock-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1rem;
+    width: 98%;
+  }
+  .floating-languages {
+    justify-content: center;
+    gap: 0.7rem;
+  }
+  .dock-title {
+    margin: 0.5rem 0;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+  .dock-clock {
+    align-items: center;
+    min-width: 0;
+  }
+} 
