@@ -15,7 +15,7 @@
                     <div class="scs-card">
                         <span class="scs-card-badge pulse-red"><i class="fas fa-building"></i></span>
                         <h3>About Netmatters</h3>
-                        <ul style="text-align:left; display:inline-block; margin: 0 auto;">
+                        <!-- <ul style="text-align:left; display:inline-block; margin: 0 auto;"> -->
                             <li>Established in 2008</li>
                             <li>Norfolk's leading technology company</li>
                             <li>Winner of the Princess Royal Training Award</li>
