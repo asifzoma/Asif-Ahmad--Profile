@@ -4,7 +4,7 @@
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     margin: 2rem auto;
-    color: $light-grey;
+    color: $background-color;
     text-align: center;
     padding: 3rem 2rem;
     position: relative;
@@ -24,7 +24,7 @@
     }
     
     h2 {
-        color: #fff;
+        color: $background-color;
         font-size: 2.5rem;
         font-weight: 700;
         margin-bottom: 1rem;
@@ -44,7 +44,7 @@
     }
     
     .contact-description {
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba($background-color, 0.9);
         font-size: 1.1rem;
         margin-bottom: 2.5rem;
         max-width: 500px;
@@ -70,7 +70,7 @@
             flex-direction: column;
             
             label {
-                color: rgba(255, 255, 255, 0.9);
+                color: rgba($background-color, 0.9);
                 font-weight: 600;
                 margin-bottom: 0.5rem;
                 text-align: left;
@@ -81,9 +81,9 @@
         
         input, textarea {
             padding: 1rem 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba($background-color, 0.2);
             border-radius: 12px;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba($background-color, 0.95);
             color: $primary-color;
             font-size: 1rem;
             font-weight: 500;
@@ -91,54 +91,54 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
             
             // CSS custom property for dynamic placeholder color
-            --placeholder-color: rgba(0, 0, 0, 0.5);
+            --placeholder-color: rgba($primary-color, 0.5);
             --text-color: #{$primary-color}; // Default dark text
             
             // When placeholder is dark (0,0,0), use light text for contrast
             &[data-dark-placeholder], 
             &.dark-placeholder {
-                --placeholder-color: rgba(0, 0, 0, 0.5);
-                --text-color: rgba(0, 0, 0, 0.8); // Dark text on light background
+                --placeholder-color: rgba($primary-color, 0.5);
+                --text-color: rgba($primary-color, 0.8); // Dark text on light background
                 color: var(--text-color);
             }
             
             // When placeholder is light, use dark text
             &[data-light-placeholder],
             &.light-placeholder {
-                --placeholder-color: rgba(255, 255, 255, 0.6);
-                --text-color: #fff; // Light text on dark background
+                --placeholder-color: rgba($background-color, 0.6);
+                --text-color: #{$background-color}; // Light text on dark background
                 color: var(--text-color);
-                background-color: rgba(0, 0, 0, 0.7);
-                border-color: rgba(255, 255, 255, 0.3);
+                background-color: rgba($primary-color, 0.7);
+                border-color: rgba($background-color, 0.3);
             }
             
             &::placeholder {
-                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                color: var(--placeholder-color, rgba($primary-color, 0.5));
                 font-weight: 400;
             }
             
             // Webkit-specific placeholder styling for better browser support
             &::-webkit-input-placeholder {
-                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                color: var(--placeholder-color, rgba($primary-color, 0.5));
                 font-weight: 400;
             }
             
             &::-moz-placeholder {
-                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                color: var(--placeholder-color, rgba($primary-color, 0.5));
                 font-weight: 400;
                 opacity: 1;
             }
             
             &:-ms-input-placeholder {
-                color: var(--placeholder-color, rgba(0, 0, 0, 0.5));
+                color: var(--placeholder-color, rgba($primary-color, 0.5));
                 font-weight: 400;
             }
             
             &:focus {
                 border-color: $accent-color;
-                background-color: #fff;
-                color: $background-color; // Always dark text on white background when focused
-                --placeholder-color: rgba(0, 0, 0, 0.4);
+                background-color: $background-color;
+                color: $primary-color;
+                --placeholder-color: rgba($primary-color, 0.4);
                 box-shadow: 
                     inset 0 2px 4px rgba(0, 0, 0, 0.1),
                     0 0 0 4px rgba($accent-color, 0.2);
@@ -146,22 +146,20 @@
                 
                 // Override for light placeholder fields
                 &.light-placeholder {
-                    background-color: rgba(0, 0, 0, 0.9);
-                    color: #fff;
-                    --placeholder-color: rgba(255, 255, 255, 0.5);
+                    background-color: rgba($primary-color, 0.9);
+                    color: #{$background-color};
+                    --placeholder-color: rgba($background-color, 0.5);
                 }
             }
             
             &.valid {
                 border-color: #10b981;
-                background-color: rgba(16, 185, 129, 0.03); // Very light green
-                color: $background-color;
-                --placeholder-color: rgba(0, 0, 0, 0.5);
+                background-color: rgba($background-color, 0.95);
+                color: $primary-color;
+                --placeholder-color: rgba($primary-color, 0.5);
                 
                 &:focus {
-                    background-color: rgba(16, 185, 129, 0.06); // Slightly more green on focus
-                    color: $background-color;
-                    --placeholder-color: rgba(0, 0, 0, 0.4);
+                    background-color: $background-color;
                     box-shadow: 
                         inset 0 2px 4px rgba(0, 0, 0, 0.1),
                         0 0 0 4px rgba(16, 185, 129, 0.2);
@@ -170,43 +168,42 @@
                 // Light placeholder version
                 &.light-placeholder {
                     background-color: rgba(16, 185, 129, 0.2);
-                    color: #fff;
-                    --placeholder-color: rgba(255, 255, 255, 0.6);
+                    color: #{$background-color};
+                    --placeholder-color: rgba($background-color, 0.6);
                     
                     &:focus {
                         background-color: rgba(16, 185, 129, 0.3);
-                        color: #fff;
-                        --placeholder-color: rgba(255, 255, 255, 0.5);
+                        color: #{$background-color};
+                        --placeholder-color: rgba($background-color, 0.5);
                     }
                 }
             }
             
             &.error {
-                border-color: #ef4444;
-                background-color: rgba(239, 68, 68, 0.02); // Very light red - barely noticeable
-                color: $background-color;
-                --placeholder-color: rgba(0, 0, 0, 0.5);
+                border-color: $secondary-color;
+                background-color: mix($secondary-color, white, 25%);
+                color: $primary-color;
+                --placeholder-color: rgba($primary-color, 0.5);
                 animation: shake 0.5s ease-in-out;
                 
                 &:focus {
-                    background-color: rgba(239, 68, 68, 0.04); // Still very light on focus
-                    color: $background-color;
-                    --placeholder-color: rgba(0, 0, 0, 0.4);
+                    background-color: mix($secondary-color, white, 25%);
+                    color: $primary-color;
+                    --placeholder-color: rgba($primary-color, 0.4);
                     box-shadow: 
                         inset 0 2px 4px rgba(0, 0, 0, 0.1),
-                        0 0 0 4px rgba(239, 68, 68, 0.2);
+                        0 0 0 4px rgba($secondary-color, 0.2);
                 }
                 
-                // Light placeholder version
                 &.light-placeholder {
-                    background-color: rgba(239, 68, 68, 0.2);
-                    color: #fff;
-                    --placeholder-color: rgba(255, 255, 255, 0.6);
+                    background-color: rgba($secondary-color, 0.2);
+                    color: $background-color;
+                    --placeholder-color: rgba($background-color, 0.6);
                     
                     &:focus {
-                        background-color: rgba(239, 68, 68, 0.3);
-                        color: #fff;
-                        --placeholder-color: rgba(255, 255, 255, 0.5);
+                        background-color: rgba($secondary-color, 0.3);
+                        color: $background-color;
+                        --placeholder-color: rgba($background-color, 0.5);
                     }
                 }
             }
@@ -231,12 +228,12 @@
                 }
                 
                 // Ensure high contrast text
-                --placeholder-color: rgba(0, 0, 0, 0.8);
-                color: rgba(0, 0, 0, 0.9);
+                --placeholder-color: rgba($primary-color, 0.8);
+                color: rgba($primary-color, 0.9);
                 
                 &.light-placeholder {
-                    --placeholder-color: rgba(255, 255, 255, 0.9);
-                    color: rgba(255, 255, 255, 0.95);
+                    --placeholder-color: rgba($background-color, 0.9);
+                    color: rgba($background-color, 0.95);
                 }
             }
         }
@@ -249,8 +246,8 @@
         }
         
         button[type="submit"] {
-            background: linear-gradient(135deg, $accent-color 0%, darken($accent-color, 10%) 100%);
-            color: #fff;
+            background: linear-gradient(135deg, $accent-color 0%, darken($accent-color, 15%) 100%);
+            color: $background-color;
             padding: 1.2rem 2.5rem;
             border: none;
             cursor: pointer;
@@ -271,12 +268,12 @@
                 left: -100%;
                 width: 100%;
                 height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                background: linear-gradient(90deg, transparent, rgba($background-color, 0.2), transparent);
                 transition: left 0.5s ease;
             }
             
             &:hover {
-                background: linear-gradient(135deg, darken($accent-color, 5%) 0%, darken($accent-color, 15%) 100%);
+                background: linear-gradient(135deg, darken($accent-color, 10%) 0%, darken($accent-color, 25%) 100%);
                 transform: translateY(-3px);
                 box-shadow: 0 8px 24px rgba($accent-color, 0.5);
                 
@@ -294,6 +291,7 @@
                 background: #6b7280;
                 cursor: not-allowed;
                 transform: none;
+                color: rgba($background-color, 0.6);
                 
                 &:hover {
                     background: #6b7280;
@@ -314,8 +312,8 @@
                     width: 20px;
                     height: 20px;
                     margin: -10px 0 0 -10px;
-                    border: 2px solid rgba(255, 255, 255, 0.3);
-                    border-top: 2px solid #fff;
+                    border: 2px solid rgba($background-color, 0.3);
+                    border-top: 2px solid #{$background-color};
                     border-radius: 50%;
                     animation: spin 1s linear infinite;
                 }
@@ -339,45 +337,126 @@
     }
 }
 
-// Consolidated Error Messages Container Styling
+// Error Messages Container
 .error-messages-container {
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    display: none;
+    background-color: mix($secondary-color, white, 10%);
+    border: 2px solid $secondary-color;
     border-radius: 12px;
-    padding: 1rem 1.5rem;
-    margin: 0 auto 1.5rem auto; // Center the container and add bottom margin
-    max-width: 550px;           // Max width for better readability
+    padding: 1.2rem 1.5rem;
+    margin: 0 auto 2rem auto;
+    max-width: 600px;
     text-align: left;
-
+    animation: slideDown 0.3s ease-out;
+    
+    &.show {
+        display: block;
+    }
+    
     .error-messages-title {
-        color: #ef4444; // Same as individual field error color
+        color: $secondary-color;
         font-weight: 700;
         font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
-
+        gap: 0.5rem;
+        
         &::before {
-            content: '⚠'; // Warning icon
+            content: '⚠';
             font-size: 1.3rem;
-            margin-right: 0.5rem;
+            color: $secondary-color;
         }
     }
-
+    
     .error-messages-list {
-        list-style-type: none; // Remove default bullets
-        padding-left: 0; // Remove default padding
+        list-style-type: none;
+        padding-left: 0;
         margin: 0;
-
+        
         li {
-            color: #dc2626; // Slightly darker red for list items
+            color: darken($secondary-color, 10%);
             font-size: 0.95rem;
-            padding: 0.25rem 0;
-            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba($secondary-color, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            
             &:last-child {
                 border-bottom: none;
+                padding-bottom: 0;
             }
+            
+            &::before {
+                content: '•';
+                color: $secondary-color;
+                font-size: 1.2em;
+            }
+        }
+    }
+}
+
+// Success Toaster
+.success-toaster {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1000;
+    max-width: 400px;
+    transform: translateX(150%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &.show {
+        transform: translateX(0);
+    }
+    
+    .success-icon {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        
+        &::before {
+            content: '✓';
+            font-size: 1rem;
+            color: white;
+        }
+    }
+    
+    .success-message {
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+    
+    .close-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        padding: 0.25rem;
+        font-size: 1.2rem;
+        line-height: 1;
+        transition: color 0.2s ease;
+        
+        &:hover {
+            color: white;
         }
     }
 }
@@ -385,7 +464,7 @@
 // Success message styling
 .form-success {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: #fff;
+    color: $background-color;
     padding: 1.5rem 2rem;
     border-radius: 12px;
     text-align: center;
@@ -454,6 +533,17 @@
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
