@@ -1112,7 +1112,6 @@ a:focus {
   margin-bottom: 0;
   border: 2px solid rgba(149, 37, 47, 0.15);
   position: relative;
-  overflow: hidden;
 }
 
 .scs-card-badge {
