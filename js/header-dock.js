@@ -9,12 +9,18 @@ class HeaderDock {
         this.clockDate = document.getElementById('clockDate');
         
         this.lastScrollY = 0;
-        this.scrollThreshold = 100;
         this.isDockActive = false;
         this.animationId = null;
         this.orbitRadius = 0;
         
+        // Calculate initial scroll threshold
+        this.updateScrollThreshold();
         this.init();
+    }
+    
+    updateScrollThreshold() {
+        // Set threshold to 1% of viewport height
+        this.scrollThreshold = window.innerHeight * 0.01;
     }
     
     init() {
@@ -27,15 +33,13 @@ class HeaderDock {
         window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
         window.addEventListener('resize', this.handleResize.bind(this), { passive: true });
         
-        // Add click handlers for each floating tag with smooth transitions
+        // Add click handlers for each floating tag without animations
         this.floatingTags.forEach(tag => {
             tag.addEventListener('click', () => {
                 const language = Array.from(tag.classList)
                     .find(cls => ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls));
                 
                 if (language) {
-                    // Add transition class before navigating
-                    tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                     this.navigateToCodeSnippet(language);
                 }
             });
@@ -44,24 +48,12 @@ class HeaderDock {
     
     handleScroll() {
         const scrollY = window.scrollY;
-        const isScrollingDown = scrollY > this.lastScrollY;
         
-        // Check if we should activate dock
+        // Check if we should activate dock based on scroll threshold
         if (scrollY > this.scrollThreshold && !this.isDockActive) {
             this.activateDock();
         } else if (scrollY <= this.scrollThreshold && this.isDockActive) {
             this.deactivateDock();
-        }
-        
-        // Update floating tag backgrounds based on scroll direction
-        if (scrollY > this.scrollThreshold) {
-            this.floatingTags.forEach(tag => {
-                if (isScrollingDown) {
-                    tag.classList.add('scrolled');
-                } else {
-                    tag.classList.remove('scrolled');
-                }
-            });
         }
         
         this.lastScrollY = scrollY;
@@ -128,8 +120,17 @@ class HeaderDock {
     }
     
     handleResize() {
+        // Update scroll threshold when window is resized
+        this.updateScrollThreshold();
         this.orbitRadius = this.calculateOptimalRadius();
-        // No need to update dock layout, flexbox handles it
+        
+        // Check current scroll position against new threshold
+        const scrollY = window.scrollY;
+        if (scrollY > this.scrollThreshold && !this.isDockActive) {
+            this.activateDock();
+        } else if (scrollY <= this.scrollThreshold && this.isDockActive) {
+            this.deactivateDock();
+        }
     }
     
     calculateOptimalRadius() {
