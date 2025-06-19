@@ -373,7 +373,6 @@ a:focus {
   position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   opacity: 0.8;
   z-index: 100;
 }
@@ -395,7 +394,7 @@ a:focus {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  transform: translate(-50%, -50%) scale(1.2);
+  transform: scale(1.2);
   z-index: 200;
 }
 
@@ -419,7 +418,7 @@ a:focus {
 }
 
 .floating-tag:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: scale(1.1);
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
@@ -2345,9 +2344,19 @@ a:focus {
   top: auto !important;
   left: auto !important;
   transform: none !important;
+  transform-origin: center !important;
   z-index: inherit !important;
   opacity: 1 !important;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.header-dock .floating-languages .floating-tag:hover {
+  background: #020a19 !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.header-dock .floating-languages .floating-tag:hover i {
+  animation: spin360 0.5s ease-in-out !important;
 }
 
 .floating-languages {
@@ -2387,6 +2396,14 @@ a:focus {
 .floating-languages .floating-tag:hover {
   transform: scale(1.25);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: #020a19;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.floating-languages .floating-tag:hover i {
+  animation: spin360 0.5s ease-in-out;
+  transform: scale(1.1);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
 }
 
 .floating-languages .floating-tag i {
@@ -2395,6 +2412,7 @@ a:focus {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   transition: all 0.3s ease;
   z-index: inherit;
+  transform-origin: center;
 }
 
 .dock-clock {
@@ -2461,6 +2479,15 @@ a:focus {
   50% {
     border-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes spin360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -3004,7 +3031,6 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   background: #fff;
   color: #222;
   padding: 2em 3em;

@@ -695,7 +695,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentRotation = orbitalRotation + (alignedRotation - orbitalRotation) * easedProgress;
                 
                 const scale = 0.8 + (easedProgress * 0.4); // Scale up when aligning
-                iconInfo.tag.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
+                iconInfo.tag.style.transform = `translate(0%, -50%) rotate(${currentRotation}deg) scale(${scale})`;
                 
                 // Use classes for state management instead of inline styles
                 if (easedProgress > 0.9) {

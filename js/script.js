@@ -435,10 +435,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const xOffset = 3 * tagWidth;
             if (window.scrollY > 0) {
                 floatingLanguages.style.left = `calc(50% + ${xOffset}px)`;
-                floatingLanguages.style.transform = 'translateX(-50%)';
+                // floatingLanguages.style.transform = 'translateX(-50%)';
             } else {
                 floatingLanguages.style.left = '50%';
-                floatingLanguages.style.transform = 'translateX(-50%)';
+                // floatingLanguages.style.transform = 'translateX(-50%)';
             }
         }
     });

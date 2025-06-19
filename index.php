@@ -65,7 +65,7 @@
                             </div>
                             
                             <!-- Dock Title -->
-                            <h1 class="dock-title">:_Asif Ahmad:</h1>
+                            <h1 class="dock-title">Asif Ahmad</h1>
                             
                             <!-- Digital Clock -->
                             <div class="dock-clock" id="dockClock">
@@ -78,7 +78,7 @@
                     <!-- Original Hero Text (hidden on scroll) -->
                     <header class="header">
                         <div class="hero-text" id="heroText">
-                            <h1>:_Asif Ahmad:</h1>
+                            <h1>Asif Ahmad</h1>
                             <span id="typed" aria-live="polite"></span>
                         </div>
                     </header>

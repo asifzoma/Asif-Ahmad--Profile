@@ -99,9 +99,19 @@
     top: auto !important;
     left: auto !important;
     transform: none !important;
+    transform-origin: center !important;
     z-index: inherit !important;
     opacity: 1 !important;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    
+    &:hover {
+        background: $primary-color !important;
+        border-color: rgba(255, 255, 255, 0.5) !important;
+        
+        i {
+            animation: spin360 0.5s ease-in-out !important;
+        }
+    }
 }
 
 .floating-languages {
@@ -139,6 +149,14 @@
         &:hover {
             transform: scale(1.25);
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            background: $primary-color;
+            border-color: rgba(255, 255, 255, 0.5);
+            
+            i {
+                animation: spin360 0.5s ease-in-out;
+                transform: scale(1.1);
+                filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+            }
         }
         
         i {
@@ -147,6 +165,7 @@
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
             transition: all 0.3s ease;
             z-index: inherit;
+            transform-origin: center;
         }
     }
 }
@@ -220,6 +239,15 @@
     50% {
         border-color: rgba(255, 255, 255, 0.9);
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+}
+
+@keyframes spin360 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
     }
 }
 
