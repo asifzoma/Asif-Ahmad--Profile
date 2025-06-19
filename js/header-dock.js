@@ -3,6 +3,7 @@ class HeaderDock {
         this.headerDock = document.getElementById('headerDock');
         this.heroText = document.getElementById('heroText');
         this.imageContainer = document.querySelector('.image-container');
+        this.iconContainer = document.querySelector('.icon-container');
         this.floatingTags = document.querySelectorAll('.floating-tag');
         this.clockTime = document.getElementById('clockTime');
         this.clockDate = document.getElementById('clockDate');
@@ -27,13 +28,15 @@ class HeaderDock {
         window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
         window.addEventListener('resize', this.handleResize.bind(this), { passive: true });
         
-        // Add click handlers for each floating tag
+        // Add click handlers for each floating tag with smooth transitions
         this.floatingTags.forEach(tag => {
             tag.addEventListener('click', () => {
                 const language = Array.from(tag.classList)
                     .find(cls => ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'].includes(cls));
                 
                 if (language) {
+                    // Add transition class before navigating
+                    tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
                     this.navigateToCodeSnippet(language);
                 }
             });
@@ -131,14 +134,14 @@ class HeaderDock {
         this.heroText.classList.add('fade-out');
         this.imageContainer.classList.add('scrolled');
         
-        // Remove orbital animation and inline styles, let flexbox handle layout
+        // Smoothly transition icons into dock
         this.floatingTags.forEach(tag => {
             tag.classList.remove('orbital-animation');
+            tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             tag.style.position = '';
             tag.style.top = '';
             tag.style.left = '';
             tag.style.transform = '';
-            tag.style.transition = '';
         });
     }
     
@@ -148,8 +151,9 @@ class HeaderDock {
         this.heroText.classList.remove('fade-out');
         this.imageContainer.classList.remove('scrolled');
         
-        // Add orbital animation class back
+        // Smoothly transition icons back to orbital animation
         this.floatingTags.forEach(tag => {
+            tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             tag.classList.add('orbital-animation');
         });
     }

@@ -2274,7 +2274,7 @@ a:focus {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
   pointer-events: none;
 }
@@ -2288,7 +2288,7 @@ a:focus {
 .dock-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 90%;
   max-width: 900px;
   background: rgba(255, 255, 255, 0.1);
@@ -2299,22 +2299,64 @@ a:focus {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   min-height: 70px;
   position: relative;
-  z-index: 1;
+  z-index: 15;
   gap: 2rem;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header-dock.active .dock-content {
   transform: scale(1.04);
 }
 
+.dock-title {
+  order: -1;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  padding-right: 2rem;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  z-index: 15;
+  position: relative;
+}
+
+.header-dock.active .dock-title {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  flex: 1;
+  min-width: 0;
+  overflow: visible;
+  pointer-events: auto;
+  position: relative;
+  z-index: 20;
+}
+
 .floating-languages {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   gap: 1.2rem;
+  flex-wrap: nowrap;
   pointer-events: auto;
-  flex: 1 1 0%;
-  min-width: 0;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 25;
+  position: relative;
 }
 
 .floating-languages .floating-tag {
@@ -2328,13 +2370,13 @@ a:focus {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2;
-  position: static;
+  position: relative;
 }
 
 .floating-languages .floating-tag:hover {
@@ -2420,28 +2462,8 @@ a:focus {
   transform: translateX(-50%) translateY(-10px);
 }
 
-.dock-title {
-  font-family: "Noto Sans", sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 2rem;
-  opacity: 0;
-  transform: translateX(30px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  flex: 0 1 auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-
-.header-dock.active .dock-title {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .dock-clock {
+  margin-left: auto;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -2451,6 +2473,8 @@ a:focus {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex: 0 0 auto;
   min-width: 80px;
+  z-index: 15;
+  position: relative;
 }
 
 .header-dock.active .dock-clock {
