@@ -21,6 +21,7 @@
 }
 
 .dock-content {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -33,10 +34,14 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     min-height: 70px;
-    position: relative;
     z-index: 15;
     gap: 2rem;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    // Container for all dock elements
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "title icons clock";
     
     .header-dock.active & {
         transform: scale(1.04);
@@ -44,7 +49,7 @@
 }
 
 .dock-title {
-    order: -1;
+    grid-area: title;
     font-family: $font-family--primary;
     font-size: 2rem;
     font-weight: 700;
@@ -53,15 +58,13 @@
     padding: 0;
     padding-right: 2rem;
     opacity: 0;
-    transform: translateX(30px);
+    transform: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     flex: 0 0 auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
     z-index: 15;
-    position: relative;
     
     .header-dock.active & {
         opacity: 1;
@@ -70,19 +73,37 @@
 }
 
 .icon-container {
+    grid-area: icons;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1.2rem;
-    flex: 1;
-    min-width: 0;
     overflow: visible;
     pointer-events: auto;
-    position: relative;
     z-index: 20;
+    width: 100%;
 }
 
-// Responsive row: icons left, title center/right, clock right
+.header-dock .floating-languages {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: auto !important;
+    height: auto !important;
+    pointer-events: auto !important;
+    z-index: inherit !important;
+}
+
+.header-dock .floating-languages .floating-tag {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: inherit !important;
+    opacity: 1 !important;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
 .floating-languages {
     display: flex;
     align-items: center;
@@ -91,10 +112,12 @@
     flex-wrap: nowrap;
     pointer-events: auto;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 25;
+    z-index: 15;
+    width: 100%;
     position: relative;
     
     .floating-tag {
+        flex: 0 0 auto;
         width: 54px;
         height: 54px;
         font-size: 2rem;
@@ -105,104 +128,44 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
         backdrop-filter: blur(10px);
         display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
         pointer-events: auto;
-        transition: 
-            all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 2;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 15;
         position: relative;
         
         &:hover {
             transform: scale(1.25);
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            z-index: 3;
         }
         
-        // Highlight state
-        &.highlighted {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            z-index: 200;
-            
-            &::before {
-                content: '';
-                position: absolute;
-                top: -5px;
-                left: -5px;
-                right: -5px;
-                bottom: -5px;
-                border-radius: 50%;
-                border: 2px solid rgba(255, 255, 255, 0.6);
-                animation: borderGlow 2s ease-in-out infinite;
-            }
-        }
-        
-        // Icon styles
         i {
             font-size: 2rem;
             line-height: 1;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
             transition: all 0.3s ease;
-        }
-        
-        // Language-specific colors
-        &.html i { color: #e34f26; }
-        &.css i { color: #1572b6; }
-        &.javascript i { color: #f7df1e; }
-        &.php i { color: #777bb4; }
-        &.csharp i { color: #239120; }
-        &.laravel i { color: #ff2d20; }
-        
-        // Tooltip
-        &::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(0px);
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            pointer-events: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        &:hover::after {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(-10px);
+            z-index: inherit;
         }
     }
 }
 
 .dock-clock {
-    margin-left: auto;
+    grid-area: clock;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 0.25rem;
     opacity: 0;
-    transform: translateX(-30px);
+    transform: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    flex: 0 0 auto;
     min-width: 80px;
     z-index: 15;
-    position: relative;
     
     .header-dock.active & {
         opacity: 1;
-        transform: translateX(0);
+        transform: none;
     }
 }
 

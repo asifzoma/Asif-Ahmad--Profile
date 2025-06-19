@@ -250,15 +250,23 @@
 }
 
 // Floating Programming Languages Animation
-.floating-languages {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
+// .floating-languages {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     pointer-events: none;
+//     z-index: 1;
+// }
+
+// .floating-tag {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     z-index: 100;
+// }
 
 .floating-tag {
     position: absolute;
@@ -287,14 +295,6 @@
     transform: translate(-50%, -50%);
     opacity: 0.8;
     z-index: 100;
-    
-    // Base animation styles for orbital motion
-    &.orbital-animation {
-        position: fixed;
-        will-change: transform, opacity, top, left;
-        animation-timing-function: linear;
-        transition: none; // Disable transitions during orbital animation
-    }
     
     // Transition state for scroll-based positioning
     &.transition-state {

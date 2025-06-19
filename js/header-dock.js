@@ -21,7 +21,6 @@ class HeaderDock {
         this.updateClock();
         this.setupEventListeners();
         this.startClockInterval();
-        this.initializeOrbitalAnimation();
     }
     
     setupEventListeners() {
@@ -41,66 +40,6 @@ class HeaderDock {
                 }
             });
         });
-    }
-    
-    initializeOrbitalAnimation() {
-        const isMobile = window.innerWidth <= 902;
-        if (!isMobile) {
-            this.orbitRadius = this.calculateOptimalRadius();
-            this.startOrbitalAnimation();
-        }
-    }
-    
-    calculateOptimalRadius() {
-        const containerRect = this.imageContainer.getBoundingClientRect();
-        const minDimension = Math.min(containerRect.width, containerRect.height);
-        return minDimension * 0.3; // 30% of the container's smallest dimension
-    }
-    
-    getImageContainerCenter() {
-        const rect = this.imageContainer.getBoundingClientRect();
-        return {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2
-        };
-    }
-    
-    updateOrbitalPositions(time) {
-        const imageCenter = this.getImageContainerCenter();
-        const languages = ['html', 'css', 'javascript', 'php', 'csharp', 'laravel'];
-        const angleStep = (2 * Math.PI) / languages.length;
-        
-        this.floatingTags.forEach((tag, index) => {
-            const langClass = Array.from(tag.classList).find(cls => languages.includes(cls));
-            if (!langClass) return;
-            
-            // Calculate angle for this tag
-            const baseAngle = index * angleStep;
-            const currentAngle = baseAngle + (time * 0.0005);
-            
-            // Calculate orbital position
-            const x = imageCenter.x + Math.cos(currentAngle) * this.orbitRadius;
-            const y = imageCenter.y + Math.sin(currentAngle) * this.orbitRadius;
-            
-            // Only apply orbital animation if dock is not active
-            if (!this.isDockActive) {
-                tag.style.position = 'fixed';
-                tag.style.top = `${y}px`;
-                tag.style.left = `${x}px`;
-                tag.style.transform = `translate(-50%, -50%) rotate(${currentAngle * 180 / Math.PI}deg)`;
-                tag.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-            }
-        });
-    }
-    
-    startOrbitalAnimation() {
-        const animate = (time) => {
-            if (!this.isDockActive) {
-                this.updateOrbitalPositions(time);
-            }
-            this.animationId = requestAnimationFrame(animate);
-        };
-        animate(Date.now());
     }
     
     handleScroll() {
@@ -136,7 +75,6 @@ class HeaderDock {
         
         // Smoothly transition icons into dock
         this.floatingTags.forEach(tag => {
-            tag.classList.remove('orbital-animation');
             tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             tag.style.position = '';
             tag.style.top = '';
@@ -151,10 +89,13 @@ class HeaderDock {
         this.heroText.classList.remove('fade-out');
         this.imageContainer.classList.remove('scrolled');
         
-        // Smoothly transition icons back to orbital animation
+        // Smoothly transition icons back to original position
         this.floatingTags.forEach(tag => {
             tag.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            tag.classList.add('orbital-animation');
+            tag.style.position = '';
+            tag.style.top = '';
+            tag.style.left = '';
+            tag.style.transform = '';
         });
     }
     
@@ -189,6 +130,12 @@ class HeaderDock {
     handleResize() {
         this.orbitRadius = this.calculateOptimalRadius();
         // No need to update dock layout, flexbox handles it
+    }
+    
+    calculateOptimalRadius() {
+        const containerRect = this.imageContainer.getBoundingClientRect();
+        const minDimension = Math.min(containerRect.width, containerRect.height);
+        return minDimension * 0.3; // 30% of the container's smallest dimension
     }
     
     navigateToCodeSnippet(language) {
