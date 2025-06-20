@@ -140,6 +140,6 @@
     <script src="./js/script.js"></script>
     <script src="./js/home.js"></script>
     <script src="./js/header-dock.js"></script>
-    <script src="./js/contact-form.js"></script>
+    <script src="./js/contact-form-new.js"></script>
 </body>
 </html>

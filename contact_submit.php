@@ -19,6 +19,22 @@ $debug_log = __DIR__ . '/debug.log';
 file_put_contents($debug_log, "--- Script hit at " . date('Y-m-d H:i:s') . " ---\n", FILE_APPEND);
 file_put_contents($debug_log, "POST data: " . print_r($_POST, true) . "\n", FILE_APPEND);
 
+// Check if Composer autoloader exists
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    $errorMsg = "Error: Composer autoloader not found. Please run 'composer install'.\n";
+    file_put_contents($debug_log, $errorMsg, FILE_APPEND);
+    echo json_encode(['success' => false, 'errors' => ['general' => 'Server configuration error. Please contact the administrator.']]);
+    exit;
+}
+
+// Load Composer's autoloader
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Import PHPMailer classes
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 // Check if .env file exists
 if (!file_exists(__DIR__ . '/.env')) {
     $errorMsg = "Error: .env file not found at " . __DIR__ . "/.env\n";
@@ -27,17 +43,14 @@ if (!file_exists(__DIR__ . '/.env')) {
     exit;
 }
 
-// Load .env file manually (without Composer)
-$env_vars = [];
-$env_file = file_get_contents(__DIR__ . '/.env');
-$lines = explode("\n", $env_file);
-foreach ($lines as $line) {
-    $line = trim($line);
-    if (empty($line) || strpos($line, '#') === 0) continue;
-    if (strpos($line, '=') !== false) {
-        list($key, $value) = explode('=', $line, 2);
-        $env_vars[trim($key)] = trim($value, '"\'');
-    }
+// Load .env file using dotenv
+try {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+} catch (Exception $e) {
+    file_put_contents($debug_log, "Error loading .env: " . $e->getMessage() . "\n", FILE_APPEND);
+    echo json_encode(['success' => false, 'errors' => ['general' => 'Server configuration error. Please contact the administrator.']]);
+    exit;
 }
 
 // Function to validate input and return errors
@@ -52,20 +65,28 @@ function validateInput($name, $email, $message) {
     return $errors;
 }
 
-// Function to send email notification using PHP's built-in mail function
-function sendEmailNotification($name, $email, $message, $log_file, $env_vars) {
+// Function to send email notification using PHPMailer
+function sendEmailNotification($name, $email, $message, $log_file) {
     try {
-        $to = $env_vars['ADMIN_EMAIL'] ?? 'asif.zoma.ahmad@gmail.com';
-        $subject = 'New Contact Form Submission from ' . $name;
+        $mail = new PHPMailer(true);
         
-        $headers = array(
-            'From: ' . ($env_vars['GMAIL_USERNAME'] ?? 'noreply@yourdomain.com'),
-            'Reply-To: ' . $email,
-            'Content-Type: text/html; charset=UTF-8',
-            'X-Mailer: PHP/' . phpversion()
-        );
+        // Server settings for Mailpit
+        $mail->isSMTP();
+        $mail->Host = $_ENV['GMAIL_HOST'] ?? 'localhost';
+        $mail->Port = $_ENV['GMAIL_PORT'] ?? 1025;
+        $mail->SMTPAuth = false; // Mailpit doesn't require authentication
+        $mail->SMTPSecure = false; // No encryption for local Mailpit
+        $mail->SMTPAutoTLS = false;
         
-        $body = "
+        // Recipients
+        $mail->setFrom($_ENV['GMAIL_USERNAME'] ?? 'from@example.com', 'Portfolio Contact Form');
+        $mail->addAddress($_ENV['ADMIN_EMAIL']);
+        $mail->addReplyTo($email, $name);
+        
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'New Contact Form Submission from ' . $name;
+        $mail->Body = "
         <html>
         <body>
             <h2>New Contact Form Submission</h2>
@@ -77,17 +98,11 @@ function sendEmailNotification($name, $email, $message, $log_file, $env_vars) {
         </html>
         ";
         
-        $mail_sent = mail($to, $subject, $body, implode("\r\n", $headers));
-        
-        if ($mail_sent) {
-            file_put_contents($log_file, "Email sent successfully to " . $to . "\n", FILE_APPEND);
-            return true;
-        } else {
-            file_put_contents($log_file, "Email failed to send using PHP mail() function. Check server's mail configuration.\n", FILE_APPEND);
-            return false;
-        }
+        $mail->send();
+        file_put_contents($log_file, "Email sent successfully via PHPMailer to " . $_ENV['ADMIN_EMAIL'] . "\n", FILE_APPEND);
+        return true;
     } catch (Exception $e) {
-        file_put_contents($log_file, "Email error: " . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents($log_file, "PHPMailer error: " . $mail->ErrorInfo . "\n", FILE_APPEND);
         return false;
     }
 }
@@ -114,13 +129,13 @@ $email_success = false;
 
 // 1. Try to save to Database
 try {
-    $dsn = "mysql:host=" . ($env_vars['DB_HOST'] ?? 'localhost') . ";port=" . ($env_vars['DB_PORT'] ?? '3306') . ";dbname=" . ($env_vars['DB_NAME'] ?? 'Asif_db') . ";charset=utf8mb4";
+    $dsn = "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_NAME'] . ";charset=utf8mb4";
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ];
-    $pdo = new PDO($dsn, $env_vars['DB_USER'] ?? 'root', $env_vars['DB_PASS'] ?? '', $options);
+    $pdo = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS'], $options);
     
     $tableCheck = $pdo->query("SHOW TABLES LIKE 'contacts'");
     if ($tableCheck->rowCount() == 0) {
@@ -145,7 +160,7 @@ try {
 }
 
 // 2. Try to send Email
-$email_success = sendEmailNotification($name, $email, $message, $debug_log, $env_vars);
+$email_success = sendEmailNotification($name, $email, $message, $debug_log);
 
 // 3. Determine final response
 if ($db_success || $email_success) {
@@ -158,7 +173,7 @@ if ($db_success || $email_success) {
     }
     echo json_encode(['success' => true, 'message' => $success_message]);
 } else {
-    echo json_encode(['success' => false, 'errors' => ['general' => 'There was an error processing your message. Please try again.']]);
+    echo json_encode(['success' => false, 'errors' => ['general' => 'A critical error occurred. Please contact the administrator.']]);
 }
 
 file_put_contents($debug_log, "--- Script finished at " . date('Y-m-d H:i:s') . " ---\n\n", FILE_APPEND);
