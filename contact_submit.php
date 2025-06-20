@@ -9,180 +9,157 @@
 // Set content type to JSON for AJAX responses
 header('Content-Type: application/json');
 
+// Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Load Composer's autoloader using relative path
-require_once './vendor/autoload.php';
+// Use a more reliable path for the log file
+$debug_log = __DIR__ . '/debug.log';
+file_put_contents($debug_log, "--- Script hit at " . date('Y-m-d H:i:s') . " ---\n", FILE_APPEND);
+file_put_contents($debug_log, "POST data: " . print_r($_POST, true) . "\n", FILE_APPEND);
 
-// Import PHPMailer classes
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+// Check if .env file exists
+if (!file_exists(__DIR__ . '/.env')) {
+    $errorMsg = "Error: .env file not found at " . __DIR__ . "/.env\n";
+    file_put_contents($debug_log, $errorMsg, FILE_APPEND);
+    echo json_encode(['success' => false, 'errors' => ['general' => 'Server configuration error. Please contact the administrator.']]);
+    exit;
+}
 
-// Use relative paths for logging
-$debug_log = './debug.log';
-file_put_contents($debug_log, "Script hit\n", FILE_APPEND);
-file_put_contents($debug_log, print_r($_POST, true), FILE_APPEND);
-
-// Load .env file using relative path
-$dotenv = Dotenv\Dotenv::createImmutable('.');
-$dotenv->load();
-
-// Database connection settings
-$servername = $_ENV['DB_HOST'];
-$username = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
-$dbname = $_ENV['DB_NAME'];
-$port = $_ENV['DB_PORT'];
-
-// Create connection
-$conn = "mysql:host=$servername;port=$port;dbname=$dbname;charset=utf8mb4";
-
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+// Load .env file manually (without Composer)
+$env_vars = [];
+$env_file = file_get_contents(__DIR__ . '/.env');
+$lines = explode("\n", $env_file);
+foreach ($lines as $line) {
+    $line = trim($line);
+    if (empty($line) || strpos($line, '#') === 0) continue;
+    if (strpos($line, '=') !== false) {
+        list($key, $value) = explode('=', $line, 2);
+        $env_vars[trim($key)] = trim($value, '"\'');
+    }
+}
 
 // Function to validate input and return errors
 function validateInput($name, $email, $message) {
     $errors = [];
-    
-    // Validate name
-    if (empty($name)) {
-        $errors['name'] = 'Name is required';
-    } elseif (strlen($name) < 2) {
-        $errors['name'] = 'Name must be at least 2 characters long';
-    } elseif (strlen($name) > 100) {
-        $errors['name'] = 'Name must be less than 100 characters';
-    } elseif (!preg_match('/^[a-zA-Z\s\'-]+$/', $name)) {
-        $errors['name'] = 'Name can only contain letters, spaces, hyphens, and apostrophes';
-    }
-    
-    // Validate email
-    if (empty($email)) {
-        $errors['email'] = 'Email is required';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'Please enter a valid email address';
-    } elseif (strlen($email) > 254) {
-        $errors['email'] = 'Email address is too long';
-    }
-    
-    // Validate message
-    if (empty($message)) {
-        $errors['message'] = 'Message is required';
-    } elseif (strlen($message) < 10) {
-        $errors['message'] = 'Message must be at least 10 characters long';
-    } elseif (strlen($message) > 5000) {
-        $errors['message'] = 'Message must be less than 5000 characters';
-    }
-    
+    if (empty($name)) { $errors['name'] = 'Name is required'; }
+    elseif (strlen($name) < 2) { $errors['name'] = 'Name must be at least 2 characters long'; }
+    if (empty($email)) { $errors['email'] = 'Email is required'; }
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $errors['email'] = 'Please enter a valid email address'; }
+    if (empty($message)) { $errors['message'] = 'Message is required'; }
+    elseif (strlen($message) < 10) { $errors['message'] = 'Message must be at least 10 characters long'; }
     return $errors;
 }
 
-// Function to send email notification
-function sendEmailNotification($name, $email, $message) {
+// Function to send email notification using PHP's built-in mail function
+function sendEmailNotification($name, $email, $message, $log_file, $env_vars) {
     try {
-        $mail = new PHPMailer(true);
+        $to = $env_vars['ADMIN_EMAIL'] ?? 'asif.zoma.ahmad@gmail.com';
+        $subject = 'New Contact Form Submission from ' . $name;
         
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = $_ENV['GMAIL_USERNAME'];
-        $mail->Password = $_ENV['GMAIL_APP_PASSWORD'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $headers = array(
+            'From: ' . ($env_vars['GMAIL_USERNAME'] ?? 'noreply@yourdomain.com'),
+            'Reply-To: ' . $email,
+            'Content-Type: text/html; charset=UTF-8',
+            'X-Mailer: PHP/' . phpversion()
+        );
         
-        // Recipients
-        $mail->setFrom($_ENV['GMAIL_USERNAME'], 'Contact Form');
-        $mail->addAddress($_ENV['ADMIN_EMAIL']);
-        $mail->addReplyTo($email, $name);
-        
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = 'New Contact Form Submission';
-        $mail->Body = "
+        $body = "
+        <html>
+        <body>
             <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> {$name}</p>
-            <p><strong>Email:</strong> {$email}</p>
+            <p><strong>Name:</strong> " . htmlspecialchars($name) . "</p>
+            <p><strong>Email:</strong> " . htmlspecialchars($email) . "</p>
             <p><strong>Message:</strong></p>
             <p>" . nl2br(htmlspecialchars($message)) . "</p>
+        </body>
+        </html>
         ";
         
-        $mail->send();
-        return true;
+        $mail_sent = mail($to, $subject, $body, implode("\r\n", $headers));
+        
+        if ($mail_sent) {
+            file_put_contents($log_file, "Email sent successfully to " . $to . "\n", FILE_APPEND);
+            return true;
+        } else {
+            file_put_contents($log_file, "Email failed to send using PHP mail() function. Check server's mail configuration.\n", FILE_APPEND);
+            return false;
+        }
     } catch (Exception $e) {
-        file_put_contents($debug_log, "Email error: " . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents($log_file, "Email error: " . $e->getMessage() . "\n", FILE_APPEND);
         return false;
     }
 }
 
-try {
-    // Create PDO instance
-    $pdo = new PDO($conn, $username, $password, $options);
-    
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Check if required fields are present
-        if (!isset($_POST['name'], $_POST['email'], $_POST['message'])) {
-            echo json_encode([
-                'success' => false,
-                'errors' => ['general' => 'All fields are required. Please fill out the complete form.']
-            ]);
-            exit;
-        }
-        
-        $name = trim($_POST['name']);
-        $email = trim($_POST['email']);
-        $message = trim($_POST['message']);
-        
-        // Validate all inputs and collect errors
-        $errors = validateInput($name, $email, $message);
-        
-        // If there are validation errors, return them all at once
-        if (!empty($errors)) {
-            echo json_encode([
-                'success' => false,
-                'errors' => $errors
-            ]);
-            exit;
-        }
-        
-        // If validation passes, insert into database
-        $stmt = $pdo->prepare("INSERT INTO contacts (name, email, message, submitted_at) VALUES (?, ?, ?, NOW())");
-        
-        if ($stmt->execute([$name, $email, $message])) {
-            // Try to send email notification
-            $emailSent = sendEmailNotification($name, $email, $message);
-            
-            echo json_encode([
-                'success' => true,
-                'message' => 'Thank you! Your message has been received successfully. I\'ll get back to you soon.' . 
-                            (!$emailSent ? ' (Note: Email notification could not be sent)' : '')
-            ]);
-        } else {
-            echo json_encode([
-                'success' => false,
-                'errors' => ['general' => 'There was an error saving your message. Please try again.']
-            ]);
-        }
-    } else {
-        echo json_encode([
-            'success' => false,
-            'errors' => ['general' => 'Invalid request method. Please submit the form properly.']
-        ]);
-    }
-
-} catch (PDOException $e) {
-    // Handle database errors
-    file_put_contents($debug_log, "Database error: " . $e->getMessage() . "\n", FILE_APPEND);
-    echo json_encode([
-        'success' => false,
-        'errors' => ['general' => 'Database connection error. Please try again later.']
-    ]);
+// --- Main Script Logic ---
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success' => false, 'errors' => ['general' => 'Invalid request method.']]);
+    exit;
 }
 
-file_put_contents($debug_log, "Script completed\n", FILE_APPEND);
+$name = trim($_POST['name'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$message = trim($_POST['message'] ?? '');
+
+$errors = validateInput($name, $email, $message);
+if (!empty($errors)) {
+    echo json_encode(['success' => false, 'errors' => $errors]);
+    exit;
+}
+
+// Database and Email processing
+$db_success = false;
+$email_success = false;
+
+// 1. Try to save to Database
+try {
+    $dsn = "mysql:host=" . ($env_vars['DB_HOST'] ?? 'localhost') . ";port=" . ($env_vars['DB_PORT'] ?? '3306') . ";dbname=" . ($env_vars['DB_NAME'] ?? 'Asif_db') . ";charset=utf8mb4";
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ];
+    $pdo = new PDO($dsn, $env_vars['DB_USER'] ?? 'root', $env_vars['DB_PASS'] ?? '', $options);
+    
+    $tableCheck = $pdo->query("SHOW TABLES LIKE 'contacts'");
+    if ($tableCheck->rowCount() == 0) {
+        $createTable = "CREATE TABLE contacts (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(100) NOT NULL,
+            email VARCHAR(254) NOT NULL,
+            message TEXT NOT NULL,
+            submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )";
+        $pdo->exec($createTable);
+        file_put_contents($debug_log, "Created 'contacts' table.\n", FILE_APPEND);
+    }
+    
+    $stmt = $pdo->prepare("INSERT INTO contacts (name, email, message, submitted_at) VALUES (?, ?, ?, NOW())");
+    $db_success = $stmt->execute([$name, $email, $message]);
+    if($db_success) {
+        file_put_contents($debug_log, "Database insert successful.\n", FILE_APPEND);
+    }
+} catch (PDOException $e) {
+    file_put_contents($debug_log, "Database error: " . $e->getMessage() . "\n", FILE_APPEND);
+}
+
+// 2. Try to send Email
+$email_success = sendEmailNotification($name, $email, $message, $debug_log, $env_vars);
+
+// 3. Determine final response
+if ($db_success || $email_success) {
+    $success_message = "Thank you! Your message has been received.";
+    if (!$email_success && $db_success) {
+        $success_message = "Your message was saved successfully.";
+    }
+    if (!$db_success && $email_success) {
+        $success_message = "Your message was sent successfully by email.";
+    }
+    echo json_encode(['success' => true, 'message' => $success_message]);
+} else {
+    echo json_encode(['success' => false, 'errors' => ['general' => 'There was an error processing your message. Please try again.']]);
+}
+
+file_put_contents($debug_log, "--- Script finished at " . date('Y-m-d H:i:s') . " ---\n\n", FILE_APPEND);
 ?>
