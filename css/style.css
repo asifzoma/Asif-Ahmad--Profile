@@ -2182,7 +2182,7 @@ a:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px 20px 20px 0;
+  padding: 0;
   justify-content: flex-start;
   max-width: 100%;
   margin: 0;
@@ -2285,7 +2285,7 @@ a:focus {
   .portfolio-container {
     flex-direction: column;
     align-items: flex-start;
-    padding: 20px 20px 20px 0;
+    padding: 0 !important;
     width: 100%;
     max-width: 700px;
     box-sizing: border-box;

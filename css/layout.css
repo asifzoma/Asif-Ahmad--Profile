@@ -98,7 +98,7 @@ section {
   flex-wrap: wrap;
   gap: 20px;
   max-width: 100%;
-  padding: 0 20px;
+  padding: 0;
 }
 
 .portfolio-container .project-card {
@@ -153,7 +153,7 @@ header,
   }
   .portfolio-container {
     flex-direction: column;
-    padding: 0 10px;
+    padding: 0 !important;
   }
   .portfolio-container .project-card {
     flex: 1 1 100%;
