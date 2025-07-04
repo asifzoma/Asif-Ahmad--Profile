@@ -1,12 +1,10 @@
 // Contact Form Handler
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const successContainer = document.getElementById('form-success');
-    
-    // Consolidated error message container
-    const allErrorMessagesContainer = document.getElementById('all-error-messages-container');
-    const allErrorMessagesList = document.getElementById('all-error-messages-list');
+    const submitButton = document.getElementById('submit-btn');
+    const errorContainer = document.getElementById('all-error-messages-container');
+    const errorList = document.getElementById('all-error-messages-list');
+    const successToaster = document.getElementById('success-toaster');
     
     // Form fields
     const nameField = document.getElementById('name');
@@ -150,12 +148,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clear all error states
     function clearErrors() {
         // Hide success container when clearing errors
-        successContainer.classList.remove('show');
+        successToaster.classList.remove('show');
         
         // Clear and hide consolidated error messages
-        if (allErrorMessagesContainer) {
-            allErrorMessagesContainer.style.display = 'none';
-            allErrorMessagesList.innerHTML = '';
+        if (errorContainer) {
+            errorContainer.style.display = 'none';
+            errorList.innerHTML = '';
         }
         
         // No longer need to clear individual field errors as they are not being populated by JS
@@ -205,10 +203,10 @@ document.addEventListener('DOMContentLoaded', function() {
             hasErrors = true;
         }
         
-        if (hasErrors && allErrorMessagesContainer) {
-            allErrorMessagesList.innerHTML = errorMessages.map(msg => `<li>${msg}</li>`).join('');
-            allErrorMessagesContainer.style.display = 'block';
-            allErrorMessagesContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (hasErrors && errorContainer) {
+            errorList.innerHTML = errorMessages.map(msg => `<li>${msg}</li>`).join('');
+            errorContainer.style.display = 'block';
+            errorContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else if (hasErrors) {
             // Fallback if main container isn't there, scroll to first individual error
             const firstError = document.querySelector('.field-error.show');
@@ -227,11 +225,11 @@ document.addEventListener('DOMContentLoaded', function() {
         clearErrors();
         
         // Show success message
-        successContainer.classList.add('show');
+        successToaster.classList.add('show');
         form.classList.add('success');
         
         // Scroll to success message
-        successContainer.scrollIntoView({ 
+        successToaster.scrollIntoView({ 
             behavior: 'smooth', 
             block: 'center' 
         });
@@ -240,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             form.reset();
             form.classList.remove('success');
-            successContainer.classList.remove('show');
+            successToaster.classList.remove('show');
             
             // Clear validation states
             document.querySelectorAll('.form-group input, .form-group textarea').forEach(field => {
@@ -254,81 +252,101 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Form submission handler
     form.addEventListener('submit', async function(e) {
-        // Browser validation will now trigger on its own due to `required` attributes
-        // and `event.preventDefault()` being removed from 'invalid' listeners.
-        // However, we still run our custom validation to populate the consolidated error list.
-
-        // Clear previous custom errors (consolidated list and field styles)
-        clearErrors();
+        e.preventDefault();
         
-        // Perform our custom validation to gather all messages for the consolidated list
-        const nameValidation = validateField(nameField, nameError); // errorContainer arg is now unused by the func for display
-        const emailValidation = validateField(emailField, emailError);
-        const messageValidation = validateField(messageField, messageError);
-
-        const clientSideErrorMessages = {};
-        if (!nameValidation.isValid && nameValidation.errorMessage) {
-            clientSideErrorMessages.name = nameValidation.errorMessage;
+        // Reset previous errors
+        errorContainer.classList.remove('show');
+        errorList.innerHTML = '';
+        const errors = [];
+        
+        // Validate name
+        const nameInput = document.getElementById('name');
+        if (!nameInput.value.trim()) {
+            errors.push('Please enter your full name');
+            nameInput.classList.add('error');
+        } else {
+            nameInput.classList.remove('error');
         }
-        if (!emailValidation.isValid && emailValidation.errorMessage) {
-            clientSideErrorMessages.email = emailValidation.errorMessage;
+        
+        // Validate email
+        const emailInput = document.getElementById('email');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value)) {
+            errors.push('Please enter a valid email address');
+            emailInput.classList.add('error');
+        } else {
+            emailInput.classList.remove('error');
         }
-        if (!messageValidation.isValid && messageValidation.errorMessage) {
-            clientSideErrorMessages.message = messageValidation.errorMessage;
+        
+        // Validate message
+        const messageInput = document.getElementById('message');
+        if (!messageInput.value.trim()) {
+            errors.push('Please enter your message');
+            messageInput.classList.add('error');
+        } else {
+            messageInput.classList.remove('error');
         }
-
-        if (Object.keys(clientSideErrorMessages).length > 0) {
-            e.preventDefault(); // Prevent form submission if our custom validation finds errors
-            displayErrors(clientSideErrorMessages); // Show errors in the consolidated list
-            // Browser default popups will also appear for fields failing HTML5 validation (e.g. required, type=email)
+        
+        // Show errors if any
+        if (errors.length > 0) {
+            errorContainer.classList.add('show');
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
             return;
         }
         
-        // If we reach here, our custom validation passed. Now, if browser validation is also happy (which it should be if fields are filled),
-        // we can proceed with AJAX submission.
-        // Note: if a field is empty, the browser will prevent submission before this JS even runs fully, due to `required`.
-        // If a field has bad type (e.g. email), browser will also prevent.
-        // This JS logic for consolidated errors essentially runs *in addition* to browser defaults.
-
-        e.preventDefault(); // ALWAYS prevent default for AJAX submission
-        // Show loading state
-        submitBtn.disabled = true;
-        submitBtn.classList.add('loading');
-        form.classList.add('validating');
+        // If no errors, submit the form
+        submitButton.disabled = true;
+        submitButton.classList.add('loading');
         
         try {
-            // Prepare form data
             const formData = new FormData(form);
-            
-            // Submit form via AJAX
-            const response = await fetch('contact_submit.php', {
+            const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData
             });
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                displaySuccess(result.message);
+            if (response.ok) {
+                // Show success toaster
+                showSuccessToaster();
+                form.reset();
             } else {
-                displayErrors(result.errors);
+                throw new Error('Failed to send message');
             }
-            
         } catch (error) {
-            console.error('Form submission error:', error);
-            displayErrors({
-                general: 'There was an error submitting your message. Please check your internet connection and try again.'
-            });
+            errorContainer.classList.add('show');
+            const li = document.createElement('li');
+            li.textContent = 'Failed to send message. Please try again later.';
+            errorList.appendChild(li);
         } finally {
-            // Reset loading state
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('loading');
-            form.classList.remove('validating');
+            submitButton.disabled = false;
+            submitButton.classList.remove('loading');
         }
+    });
+    
+    // Success toaster functions
+    function showSuccessToaster() {
+        successToaster.classList.add('show');
+        setTimeout(() => {
+            closeToaster();
+        }, 5000); // Auto hide after 5 seconds
+    }
+    
+    window.closeToaster = function() {
+        successToaster.classList.remove('show');
+    };
+    
+    // Clear error styling on input
+    form.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', function() {
+            this.classList.remove('error');
+            if (!errorList.children.length) {
+                errorContainer.classList.remove('show');
+            }
+        });
     });
     
     // Handle form reset

@@ -1,12 +1,17 @@
+@use 'sass:color';
+
 // Import variables
-@import 'base/variables';
+@use 'base/variables' as *;
 
 // Import base
-@import 'base/base';
+@use 'base/base' as *;
 
 // Import components
-@import 'components/layout';
-@import 'components/_code-snippets.scss';
+@use 'components/layout' as *;
+@use 'components/code-snippets' as *;
+@use 'components/contact' as *;
+@use 'components/cards' as *;
+@use 'components/header-dock' as *;
 
 // Global styles using variables
 #contact, .banner {
@@ -19,7 +24,7 @@
   color: $light-grey;
 }
 
-.about-me, .snippet, .SCS-scheme {
+.snippet, .SCS-scheme {
   text-align: left;
   padding: 50px;
   background-color: $primary-color;
@@ -32,6 +37,7 @@
 .sidebar-container {
   background-color: $primary-color;
   color: $light-grey;
+  width: 250px;
 
   a {
     cursor: pointer;
@@ -111,7 +117,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
       cursor: pointer;
 
       &:hover {
-        background-color: darken($accent-color, 10%);
+        background-color: color.adjust($accent-color, $lightness: -10%);
       }
     }
 
@@ -164,12 +170,12 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
     .modal-content {
         background-color: $primary-color;
-        padding: 20px;
+        padding: 0;
         border-radius: 8px;
-        max-width: 800px;
-        width: 90%;
+        max-width: 900px;
+        width: 95%;
         max-height: 90vh;
-        overflow-y: auto;
+        overflow: hidden;
         position: relative;
         color: $light-grey;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -180,65 +186,82 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             transform: scale(1);
         }
 
-        h3 {
-            margin: 0 0 15px 0;
-            color: $light-grey;
-        }
+        .modal-header {
+            padding: 20px 50px 20px 20px;
+            border-bottom: 1px solid rgba($light-grey, 0.2);
+            background-color: color.adjust($primary-color, $lightness: -5%);
 
-        .code-description {
-            margin: 0 0 20px 0;
-            line-height: 1.6;
-            color: $light-grey;
-        }
-
-        .code-explanation {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba($light-grey, 0.2);
-
-            h4 {
-                color: $light-grey;
-                margin: 0 0 15px 0;
-                font-size: 1.2em;
-            }
-
-            p {
-                color: $light-grey;
-                line-height: 1.6;
+            h3 {
                 margin: 0;
-                font-size: 1em;
+                color: $light-grey;
+                font-size: 1.4em;
             }
         }
 
-        pre {
-            background-color: darken($primary-color, 10%);
-            padding: 15px;
-            border-radius: 4px;
-            overflow-x: auto;
-            margin: 0 0 20px 0;
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 100px);
 
-            code {
-                font-family: 'Courier New', Courier, monospace;
-                font-size: 14px;
-                line-height: 1.5;
-                color: $light-grey;
-                white-space: pre;
-                display: block;
+            .code-section {
+                margin-bottom: 30px;
+
+                h4 {
+                    color: $light-grey;
+                    margin: 0 0 15px 0;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                }
+
+                pre {
+                    background-color: color.adjust($primary-color, $lightness: -10%);
+                    padding: 20px;
+                    border-radius: 6px;
+                    overflow-x: auto;
+                    margin: 0;
+                    border: 1px solid rgba($light-grey, 0.1);
+
+                    code {
+                        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+                        font-size: 14px;
+                        line-height: 1.6;
+                        color: $light-grey;
+                        white-space: pre;
+                        display: block;
+                    }
+                }
+            }
+
+            .explanation-section {
+                h4 {
+                    color: $light-grey;
+                    margin: 0 0 15px 0;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                }
+
+                p {
+                    color: $light-grey;
+                    line-height: 1.7;
+                    margin: 0;
+                    font-size: 1.05em;
+                }
             }
         }
 
         .modal-close {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background: none;
             border: none;
             color: $light-grey;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             padding: 5px;
             line-height: 1;
             transition: color 0.3s ease;
+            z-index: 10;
 
             &:hover {
                 color: $accent-color;
@@ -247,71 +270,62 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     }
 }
 
-// Accordion Styles
-#about-accordion {
-    width: 100%;
-    margin: 2rem 0;
-    padding: 0 50px;
+// Remove About Accordion Styles and display About Me section openly
+#about-accordion, .about-accordion, .about-accordion-btn, .about-accordion-content {
+  all: unset;
+  display: revert;
+}
 
-    .accordion-btn {
-        width: 100%;
-        padding: 1.5rem;
-        background-color: $light-grey;
-        color: $primary-color;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        font-size: 1.2rem;
-        transition: all 0.3s ease;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+// Style About Me section header like code snippets header
+.about-me-header {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: $light-text;
+  position: relative;
+  padding: 10px 40px 10px 20px;
+  transition: all 0.3s ease;
+  background-color: $primary-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  overflow: hidden;
+  z-index: 1;
+}
 
-        i {
-            transition: transform 0.3s ease;
-            margin-left: 0.5rem;
-            color: $primary-color;
-        }
+// Style About Me section content like .about-accordion
+.about-me {
+  border: none ;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: $primary-color;
+  border-radius: 8px;
+  margin: 2px;
+  color: $light-grey;
+  padding: 20px 50px 50px 50px;
+  text-align: left;
+}
 
-        &:hover {
-            background-color: darken($light-grey, 10%);
-            color: $primary-color;
-        }
+.about-me p {
+  margin-bottom: 2rem;
+}
 
-        &.active {
-            background-color: darken($light-grey, 5%);
-            
-            i {
-                transform: rotate(180deg);
-            }
-        }
-    }
-
-    .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        background-color: $light-grey;
-        color: $primary-color;
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-        p {
-            padding: 1.5rem;
-            margin: 0;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: $primary-color;
-            font-weight: 500;
-        }
-    }
+// Remove double border from about section
+.about-accordion {
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: $primary-color;
+  border-radius: 8px;
+  margin: 2px;
+  color: $light-grey;
+  padding: 50px;
+  text-align: left;
 }
 
 .project-card, .snippet-card {
-    background-color: darken($primary-color, 15%);
+    background-color: color.adjust($primary-color, $lightness: -15%);
     border-radius: 8px;
     padding: 1.5rem;
     color: $light-grey;
@@ -341,7 +355,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         text-align: center;
 
         &:hover {
-            background-color: darken($light-grey, 10%);
+            background-color: color.adjust($light-grey, $lightness: -10%);
             color: $primary-color;
         }
     }
@@ -357,7 +371,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 
 .banner {
     text-align: center;
-    padding: 50px;
+    padding: 5px;
     background-color: $primary-color;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -379,8 +393,8 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 #code-snippets {
     width: 100%;
     margin: 2rem 0;
-    padding: 0 50px;
-    background-color: $primary-color;
+    padding: 20px 50px;
+    background-color: $secondary-color;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -392,11 +406,11 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     }
 
     .snippets-container {
-        width: 100%;
+        width: 90%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
-        padding: 0 0 2rem 0;
+        padding: 1rem;
     }
 
     .snippet-card {
@@ -424,12 +438,12 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             }
 
             &:hover {
-                background-color: darken($light-grey, 10%);
+                background-color: color.adjust($light-grey, $lightness: -10%);
                 color: $primary-color;
             }
 
             &.active {
-                background-color: darken($light-grey, 5%);
+                background-color: color.adjust($light-grey, $lightness: -5%);
                 
                 i {
                     transform: rotate(180deg);
@@ -437,6 +451,159 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             }
         }
     }
+}
+
+.scion-scheme-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+
+    .scion-card {
+        background-color: $light-grey;
+        color: $primary-color;
+        padding: 50px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        max-width: 10000px;
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+
+        h2 {
+            color: $primary-color;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        h3 {
+            color: $primary-color;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            color: $primary-color;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0 auto 1rem auto;
+        }
+        ul {
+            color: $primary-color;
+            font-size: 1.05rem;
+            margin: 1.5rem auto 0 auto;
+            padding-left: 0;
+            list-style: disc inside;
+            text-align: left;
+            display: inline-block;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+/*
+#contact, .contact {
+    background-color: $primary-color;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    color: $primary-color;
+    text-align: center;
+    padding: 50px;
+
+    h2 {
+        color: #fff;
+    }
+}
+
+.contact form button[type="submit"] {
+    background-color: $background-color;
+    color: $primary-color;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s;
+}
+
+.contact form button[type="submit"]:hover {
+    background-color: darken($background-color, 10%);
+    color: $primary-color;
+}
+*/
+
+#submission-success {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  // transform: translate(-50%, -50%);
+  background: #fff;
+  color: #222;
+  padding: 2em 3em;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  font-size: 1.2em;
+  font-weight: bold;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-me-content {
+    max-height: 8rem;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .about-me-content::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3rem;
+    background: linear-gradient(to bottom, rgba(2,10,25,0), $primary-color 90%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .about-me-content.expanded {
+    max-height: 1000px;
+  }
+  .about-me-content.expanded::after {
+    display: none;
+  }
+  .read-more-btn {
+    display: block !important;
+    margin: 1rem auto 0 auto;
+    background: $primary-color;
+    color: $light-grey;
+    border: none;
+    border-radius: 4px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+  }
+  .read-more-btn:active {
+    background: color.adjust($primary-color, $lightness: -10%);
+  }
+  // .about-me-content.expanded + .read-more-btn {
+  //   display: none !important;
+  // }
+}
+
+.scs-card {
+  max-height: none !important;
 }
 
 

@@ -1,3 +1,6 @@
+@use '../base/variables' as *;
+@use 'sass:color';
+
 // Page Wrapper
 .page-wrapper {
     display: flex;
@@ -14,7 +17,9 @@
 
 // Sidebar 
 .sidebar-container {
-    width: 15vw;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
     height: 100vh;
     background-color: $primary-color;
     color: $light-text;
@@ -26,7 +31,9 @@
     flex-direction: column;
     justify-content: space-between;
     z-index: 1000;
-    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    will-change: transform;
+    opacity: 1;
 
     .sidebar-header {
         h3 {
@@ -52,6 +59,21 @@
                 padding-bottom: 3px;
                 position: relative;
 
+                // Base underline styling for ALL links (not just .active)
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;  // Start from center
+                    width: 100%;
+                    height: 2px;
+                    background-color: $light-text;
+                    transform: translateX(-50%) scaleX(0);  // Start scaled to 0 from center
+                    transform-origin: center;  // Ensure it grows from center
+                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);  // Smooth easing
+                }
+
+                // Active state - keep underline visible
                 &.active {
                     a {
                         color: $accent-color;
@@ -59,28 +81,19 @@
                     }
 
                     &::after {
-                        content: "";
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 2px;
-                        background-color: $light-text;
-                        transform: scaleX(1);
-                        transition: transform 0.3s ease;
+                        transform: translateX(-50%) scaleX(1);  // Show full underline
                     }
                 }
 
-                &::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-color: $light-text;
-                    transform: scaleX(0);
-                    transition: transform 0.3s ease;
+                // Hover state - show underline on hover for ALL links
+                &:hover {
+                    &::after {
+                        transform: translateX(-50%) scaleX(1);  // Show full underline
+                    }
+                    
+                    a {
+                        color: $accent-color;
+                    }
                 }
 
                 a {
@@ -89,11 +102,44 @@
                     font-size: 18px;
                     display: block;
                     transition: color 0.3s ease;
-
-                    &:hover {
-                        color: $accent-color;
-                    }
+                    position: relative;
+                    z-index: 1;
                 }
+            }
+        }
+    }
+
+    // Enhanced nav-tab specific styling for consistency
+    .nav-tab {
+        // Override any existing nav-tab styles to ensure consistency
+        &::after {
+            // Ensure nav-tabs use the same underline animation
+            background-color: $light-text !important;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        
+        // Enhanced hover and focus states
+        &:hover, &:focus-within {
+            &::after {
+                transform: translateX(-50%) scaleX(1) !important;
+            }
+            
+            a {
+                color: $accent-color !important;
+                transform: translateX(2px); // Subtle slide effect
+            }
+        }
+        
+        // Active/current page state
+        &.current, &[aria-current="page"] {
+            a {
+                color: $accent-color;
+                font-weight: bold;
+            }
+            
+            &::after {
+                transform: translateX(-50%) scaleX(1);
+                background-color: $accent-color;
             }
         }
     }
@@ -105,10 +151,20 @@
         a {
             color: $light-text;
             font-size: 20px;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            padding: 8px;
+            border-radius: 4px;
 
-            &:hover {
+            &:hover, &:focus {
                 color: $accent-color;
+                transform: translateY(-2px) scale(1.1);
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            &:focus {
+                outline: 2px solid $accent-color;
+                outline-offset: 2px;
             }
         }
     }
@@ -126,10 +182,12 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none; // Don't block clicks when hidden
     
     &.active {
         opacity: 0.7;
         visibility: visible;
+        pointer-events: auto; // Allow clicks when visible
     }
 }
 
@@ -138,6 +196,8 @@
     padding: 0.3rem;
     text-align: center;
     border-radius: 10px;
+    position: relative;
+    z-index: 2;
 
     h1, p {
         color: $primary-color;
@@ -147,6 +207,7 @@
             -2px  2px 0 $background-color,
              2px  2px 0 $background-color; 
         margin: 0; 
+        font-size: 30px;
     }
 
     h1 {
@@ -171,7 +232,7 @@
 // Hero Image Section
 .image-container {
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     background: url('../img/Web-Dev-Asif-Background2.webp');
     background-size: cover;
     background-position: center;
@@ -186,6 +247,264 @@
     margin-right: 0px;
     max-width: 100%;
     transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    transform: scale(1); // Zoom in by 50%
+    transform-origin: center center;
+}
+
+// Floating Programming Languages Animation
+// .floating-languages {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     pointer-events: none;
+//     z-index: 1;
+// }
+
+// .floating-tag {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     z-index: 100;
+// }
+
+.floating-tag {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    color: $light-text;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+    // Default positioning - will be overridden by JavaScript for orbital animation
+    top: 50%;
+    left: 50%;
+    opacity: 0.8;
+    z-index: 100;
+    
+    // Transition state for scroll-based positioning
+    &.transition-state {
+        position: fixed;
+        will-change: transform, opacity, top, left;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    // Aligned state when scrolled
+    &.aligned-state {
+        position: fixed;
+        opacity: 1;
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+    
+    // Highlighted state for snippet navigation
+    &.highlighted {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        transform: scale(1.2);
+        z-index: 200;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            animation: borderGlow 2s ease-in-out infinite;
+        }
+    }
+    
+    i {
+        font-size: 1.5rem;
+        line-height: 1;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        transition: all 0.3s ease;
+    }
+    
+    &:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        
+        i {
+            transform: scale(1.1);
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
+        }
+        
+        // Show custom tooltip on hover
+        &::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    }
+    
+    // Custom tooltip styling
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(0px);
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        pointer-events: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    // Tooltip arrow
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(6px);
+        border: 5px solid transparent;
+        border-top-color: rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    
+    &:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-4px);
+    }
+    
+    // Individual icon colors for better recognition (enhanced with shadows)
+    &.html i { color: #e34f26; } // HTML5 orange
+    &.css i { color: #1572b6; } // CSS3 blue  
+    &.javascript i { color: #f7df1e; } // JavaScript yellow
+    &.php i { color: #777bb4; } // PHP purple
+    &.csharp i { color: #239120; } // Microsoft green
+    &.laravel i { color: #ff2d20; } // Laravel red
+}
+
+// Target positions for spread-out state (desktop)
+@media (min-width: 768px) {
+    .floating-tag {
+        &[data-target-top] { --target-top: attr(data-target-top); }
+        &[data-target-left] { --target-left: attr(data-target-left); }
+        &[data-target-right] { --target-right: attr(data-target-right); }
+        &[data-target-bottom] { --target-bottom: attr(data-target-bottom); }
+    }
+}
+
+@media (max-width: $mobile-breakpoint) {
+    .floating-tag {
+        font-size: 1.0rem;
+        padding: 8px;
+        width: 36px;
+        height: 36px;
+        
+        i {
+            font-size: 1.0rem;
+        }
+        
+        // Smaller tooltips for mobile
+        &::after {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+        }
+        
+        &::before {
+            border-width: 4px;
+        }
+    }
+
+    .sidebar-container {
+        width: 260px;
+        min-width: 260px;
+        max-width: 260px;
+        opacity: 1;
+    }
+
+    .image-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-tag {
+        font-size: 0.9rem;
+        padding: 6px;
+        width: 32px;
+        height: 32px;
+        
+        i {
+            font-size: 0.9rem;
+        }
+        
+        // Even smaller tooltips for very small screens
+        &::after {
+            font-size: 0.6rem;
+            padding: 3px 6px;
+        }
+        
+        &::before {
+            border-width: 3px;
+        }
+    }
+
+    .image-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+// CSS Animations for Coming Soon Cards
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
 }
 
 // Banner Section
@@ -232,11 +551,12 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         text-align: center;
         margin: 8px;
+        position: relative;
+        transition: all 0.3s ease;
         
         &:hover {
             transform: scale(1.03);
-            transition: transform 0.3s ease;
-            background-color: lighten($primary-color, 4%);
+            background-color: color.adjust($primary-color, $lightness: 4%);
         }
 
         img {
@@ -251,12 +571,172 @@
         p {
             color: $secondary-color;
         }
+        
+        // Coming Soon Project Cards
+        &.coming-soon {
+            background: linear-gradient(135deg, 
+                rgba($primary-color, 0.9) 0%, 
+                rgba($primary-color, 0.7) 100%);
+            border: 2px dashed rgba($accent-color, 0.3);
+            overflow: hidden;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, 
+                    transparent, 
+                    rgba(255, 255, 255, 0.1), 
+                    transparent);
+                animation: shimmer 3s infinite;
+                z-index: 1;
+            }
+            
+            &:hover {
+                border-color: rgba($accent-color, 0.6);
+                transform: scale(1.02);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+            
+            img {
+                opacity: 0.6;
+                filter: grayscale(50%) blur(1px);
+                transition: all 0.3s ease;
+            }
+            
+            &:hover img {
+                opacity: 0.8;
+                filter: grayscale(30%) blur(0.5px);
+            }
+            
+            h3 {
+                color: $accent-color;
+                font-weight: 600;
+                position: relative;
+                z-index: 2;
+            }
+            
+            p {
+                color: rgba($light-text, 0.8);
+                font-style: italic;
+                position: relative;
+                z-index: 2;
+            }
+        }
+        
+        // Coming Soon Overlay
+        .coming-soon-overlay {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            i {
+                color: $accent-color;
+                font-size: 1.2rem;
+                animation: pulse 2s infinite;
+            }
+            
+            .coming-soon-badge {
+                background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: 10%));
+                color: $primary-color;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+            }
+        }
+        
+        // Project Status Indicator
+        .project-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: rgba($accent-color, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba($accent-color, 0.2);
+            position: relative;
+            z-index: 2;
+            
+            i {
+                color: $accent-color;
+                font-size: 0.9rem;
+            }
+            
+            span {
+                color: $accent-color;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+        }
     }
 }
 
-// About Me Section
-.about-me {
-    @extend %box-styling-text-left;
+// // About Me Section
+// .about-me {
+//     @extend %box-styling-text-left;
+// }
+
+.about-accordion {
+  background: $background-color;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin: 24px 0;
+  overflow: hidden;
+}
+
+.accordion-btn {
+  width: 100%;
+  background: $primary-color;
+  color: $light-text;
+  border: none;
+  outline: none;
+  padding: 18px 24px;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion-btn.active, .accordion-btn:hover {
+  background: color.adjust($primary-color, $lightness: -8%);
+}
+
+.accordion-btn i {
+  margin-left: 12px;
+  transition: transform 0.3s;
+}
+
+.accordion-btn.active i {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  background: $light-background;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  padding: 0 24px;
+}
+
+.accordion-btn.active + .accordion-content {
+  padding: 18px 24px;
 }
 
 // Contact Section
@@ -264,6 +744,7 @@
     @extend %box-styling;
 }
 
+/*
 .contact {
     text-align: center;
     padding: 50px;
@@ -312,7 +793,7 @@
         }
     }
 }
-
+*/
 
 // Footer
 .footer {
@@ -322,73 +803,167 @@
     color: $primary-color;
 }
 
-// Hamburger Menu Styling
+// Hamburger Menu Styling - Updated Implementation
 .hamburger-menu {
     position: fixed;
     top: 15px;
     left: 15px;
-    width: 40px;
-    height: 35px;
-    display: none; // Hidden by default
-    flex-direction: column;
-    justify-content: space-between;
+    width: 50px;
+    height: 45px;
+    display: none;
+    justify-content: center;
     align-items: center;
     background: transparent;
     border: none;
-    cursor: pointer;
+    border-radius: 8px;
+    cursor: pointer !important;
     z-index: 1001;
-    padding: 0;
+    padding: 8px;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    transition: all 0.3s ease;
+    
+    &:focus {
+        outline: 2px solid $accent-color;
+        outline-offset: 2px;
+    }
+    
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: scale(1.05);
+    }
+    
+    &:active {
+        transform: scale(0.95);
+    }
 }
 
-/* Hamburger Bars */
-.hamburger-menu span {
-    display: block;
-    width: 35px;
-    height: 4px;
-    background-color: $primary-color;
-    transition: all 0.3s ease-in-out;
-    border-radius: 2px;
+// Hamburger Icon (3 lines)
+.hamburger-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    
+    .line {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -10%));
+        margin: 2px 0;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
 }
 
-/* Active state for hamburger (X shape) */
+// Close Icon (X shape)
+.close-icon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    
+    .line {
+        position: absolute;
+        width: 24px;
+        height: 3px;
+        background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: -10%));
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        
+        &:first-child {
+            transform: rotate(45deg);
+        }
+        
+        &:last-child {
+            transform: rotate(-45deg);
+        }
+    }
+}
+
+// Active state - hide hamburger, show close
 .hamburger-menu.active {
-    left: calc(30vw - 25px);
+    left: calc(250px - 55px);
     top: 20px;
+    animation: pulse 2s infinite;
     
-    span:nth-child(1) {
-        transform: translateY(12px) rotate(45deg);
-    }
-    
-    span:nth-child(2) {
+    .hamburger-icon {
         opacity: 0;
+        visibility: hidden;
+        transform: rotate(180deg);
     }
     
-    span:nth-child(3) {
-        transform: translateY(-12px) rotate(-45deg);
+    .close-icon {
+        opacity: 1;
+        visibility: visible;
+        transform: rotate(0deg);
+    }
+    
+    &:hover {
+        transform: scale(1.1);
+        
+        .close-icon .line {
+            background: linear-gradient(135deg, color.adjust($accent-color, $lightness: -5%), color.adjust($accent-color, $lightness: -15%));
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
     }
 }
 
-/* Hover Effect */
-.hamburger-menu:hover span {
-    background-color: $secondary-color;
+// Hover effects for hamburger icon
+.hamburger-menu:not(.active):hover {
+    .hamburger-icon .line {
+        background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: -10%));
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        transform: scaleY(1.2);
+    }
 }
 
 /* Media Queries */
-@media (max-width: 800px) {
+@media (max-width: $mobile-breakpoint) {
     html, body {
         overflow-x: hidden;
     }
     
     .hamburger-menu {
         display: flex;
-        width: 45px;
-        height: 40px;
+        width: 48px;
+        height: 42px;
         transition: left 0.3s ease-out;
-    }
-
-    .hamburger-menu span {
-        height: 5px;
-        margin: 4px 0;
+        
+        .hamburger-icon {
+            width: 26px;
+            height: 18px;
+            
+            .line {
+                width: 26px;
+                height: 3px;
+                background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -15%));
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
+        }
+        
+        .close-icon {
+            width: 26px;
+            height: 26px;
+            
+            .line {
+                width: 22px;
+                height: 3px;
+            }
+        }
     }
 
     .hero-text {
@@ -397,20 +972,30 @@
     }
 
     .image-container {
-        transform: scale(1.5); // Zoom in by 50%
+        margin-bottom: 20px;
+        transform: scale(1);
         transform-origin: center center;
         overflow: hidden;
     }
 
     .sidebar-container {
-        transform: translateX(-100%);
-        width: 30vw;
+        transform: translateX(-100%) !important;
+        width: 250px;
+        min-width: 250px;
+        max-width: 300px;
         display: block !important;
+        transition: transform 0.3s ease-out !important;
+        will-change: transform;
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
     }
     
     .sidebar-container.active {
-        transform: translateX(0);
-        opacity: 0.7;
+        transform: translateX(0) !important;
+        opacity: 1 !important;
     }
 
     .main-container {
@@ -425,14 +1010,14 @@
     .project-card {
         flex: 1 1 100%;
     }
-    
+
     .image-container {
-        width: calc(100% - 40px);
-        margin-left: 0;
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 }
 
-@media (min-width: 801px) {
+@media (min-width: 903px) {
     .hamburger-menu {
         display: none;
     }
@@ -441,11 +1026,182 @@
         transition: transform 0.3s ease;
         transform: scale(0.65);
     }
-    
-    .sidebar-container {
-        transform: translateX(0);
-        width: 15vw;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
     }
 }
 
+.social-animated {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+    50% {
+        box-shadow: 0 0 16px 4px rgba(255,255,255,0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+}
+
+.scs-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2.5rem 0;
+}
+
+.scs-card {
+  background: $primary-color;
+  color: $light-grey;
+  border-radius: 22px;
+  box-shadow: 0 6px 32px 0 rgba(0,0,0,0.13), 0 1.5px 6px 0 rgba($accent-color, 0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  flex: 1 1 320px;
+  min-width: 260px;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.22s cubic-bezier(0.4,0,0.2,1), box-shadow 0.22s cubic-bezier(0.4,0,0.2,1);
+  margin-bottom: 0;
+  border: 2px solid rgba($accent-color, 0.15);
+  position: relative;
+}
+
+.scs-card-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: $accent-color;
+  color: $primary-color;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba($accent-color, 0.18);
+  z-index: 2;
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+  background: $background-color;
+  color: $primary-color;
+  animation: badgePulse 2.2s infinite;
+}
+
+.scs-card-badge i {
+  color: $primary-color;
+  transition: color 0.3s;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba($accent-color, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba($accent-color, 0.18), 0 2px 8px rgba($accent-color, 0.18);
+  }
+}
+
+.scs-card-badge.pulse-red i,
+.scs-card-badge.animated i {
+  animation: iconPulseRed 2.2s infinite;
+}
+
+@keyframes iconPulseRed {
+  0%, 100% {
+    color: $primary-color;
+  }
+  50% {
+    color: $accent-color;
+  }
+}
+
+.scs-card:hover .scs-card-badge {
+  transform: scale(1.12) rotate(-8deg);
+  box-shadow: 0 4px 16px rgba($accent-color, 0.22);
+}
+
+.scs-card h3 {
+  color: $accent-color;
+  margin-bottom: 1.1rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.scs-card ul {
+  padding-left: 1.2rem;
+  margin: 0;
+}
+
+.scs-card li {
+  margin-bottom: 0.5rem;
+  color: $light-grey;
+  font-size: 1rem;
+}
+
+.scs-card a {
+  color: $accent-color;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.scs-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  border-radius: 22px;
+  box-shadow: 0 2px 16px 0 rgba($accent-color, 0.07) inset;
+}
+
+.scs-card:hover {
+  transform: translateY(-8px) scale(1.025);
+  box-shadow: 0 12px 36px 0 rgba($accent-color, 0.13), 0 2px 8px 0 rgba($primary-color, 0.10);
+  // No text color change
+  border-color: $accent-color;
+  box-shadow:
+    0 0 0 4px rgba($accent-color, 0.18),
+    0 12px 36px 0 rgba($accent-color, 0.13),
+    0 2px 8px 0 rgba($primary-color, 0.10);
+}
+
+@media (max-width: 992px) {
+  .scs-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .scs-card {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+    
     

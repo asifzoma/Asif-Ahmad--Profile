@@ -4,17 +4,18 @@
                 <p class="contact-description">Have a project in mind? Let's work together to bring your ideas to life.</p>
                 
                 <!-- Consolidated Error Messages Container -->
-                <div class="error-messages-container" id="all-error-messages-container" style="display: none;">
+                <div class="error-messages-container" id="all-error-messages-container">
                     <h3 class="error-messages-title">Please fix the following errors:</h3>
                     <ul class="error-messages-list" id="all-error-messages-list">
                         <!-- All error messages will be populated here by JavaScript -->
                     </ul>
                 </div>
                 
-                <!-- Success Message Container -->
-                <div class="form-success" id="form-success">
-                    <span class="success-icon">✓</span>
-                    Thank you! Your message has been received successfully.
+                <!-- Success Toaster -->
+                <div class="success-toaster" id="success-toaster">
+                    <div class="success-icon"></div>
+                    <div class="success-message">Message sent successfully! I'll get back to you soon.</div>
+                    <button class="close-button" onclick="closeToaster()">&times;</button>
                 </div>
                 
                 <form id="contact-form" action="contact_submit.php" method="POST" novalidate>

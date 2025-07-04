@@ -1,5 +1,5 @@
 // #variables
-@import 'variables';
+@use 'variables' as *;
 
 // base
 * {
@@ -15,8 +15,10 @@ html, body {
 body {
     min-height: 100vh;
     font-family: $font-family--primary;
+    background-color: $background-color;
     
-    
+    // Ensure smooth scrolling is inherited
+    scroll-behavior: smooth;
 }
 
 // Typography defaults
@@ -27,12 +29,19 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
     text-decoration: none;
+    transition: all 0.3s ease;
     
+    &:focus {
+        outline: 2px solid $accent-color;
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
 }
 
 ul, ol {
     list-style: none;
 }
+
 // Medium Devices (768px and up)
 @media (min-width: 768px) {
     body {
@@ -45,5 +54,53 @@ ul, ol {
 @media (min-width: 992px) {
     p {
         line-height: 1.6;
+    }
+}
+
+// Enhanced button styling for smooth interactions
+button, .btn, input[type="submit"], input[type="button"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+        transform: translateY(0);
+        transition-duration: 0.1s;
+    }
+    
+    &:focus {
+        outline: 2px solid $accent-color;
+        outline-offset: 2px;
+    }
+}
+
+// Smooth scrolling for any element with scroll functionality
+* {
+    scroll-behavior: smooth;
+}
+
+html {
+    font-family: $font-family--primary;
+    line-height: 1.6;
+    color: $text-color;
+    
+    // Enable smooth scrolling globally for all anchor links and programmatic scrolling
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px; // Add padding for fixed headers
+}
+
+// Enhanced link styling for smooth interactions
+a {
+    transition: all 0.3s ease;
+    text-decoration: none;
+    
+    &:focus {
+        outline: 2px solid $accent-color;
+        outline-offset: 2px;
+        border-radius: 2px;
     }
 }

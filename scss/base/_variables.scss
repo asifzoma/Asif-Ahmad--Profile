@@ -11,6 +11,7 @@ $text-color: #333333;  // Text color for light backgrounds
 $border-color: #e0e0e0;
 $light-grey: #d2d2d0;
 $accent-red: #95252f;
+$light-background: #f9f9f9;
 
 // Box Styling
 %box-styling {
@@ -34,8 +35,8 @@ $accent-red: #95252f;
     color: $light-text;
 }
 
-// Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+// Google Fonts: Move this to your HTML <head> instead
+// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 // Font Family
 $font-family--primary: 'Noto Sans', sans-serif;
@@ -48,10 +49,11 @@ $breakpoint-sm: 576px;
 $breakpoint-md: 768px; 
 $breakpoint-lg: 992px;  
 $breakpoint-xl: 1200px; 
-$mobile-breakpoint: 768px;
+$mobile-breakpoint: 902px;  // Updated to 902px for sidebar functionality
+$tablet-breakpoint: 902px;  // New breakpoint for tablet/small desktop
 
 // Sidebar Width
-$sidebar-width: 15vw;
+$sidebar-width: clamp(250px, 250px, 300px);
 
 // Hamburger Menu
 $hamburger-menu-width: 40px;
