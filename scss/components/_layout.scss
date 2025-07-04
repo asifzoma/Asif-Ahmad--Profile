@@ -456,6 +456,10 @@
         width: 100% !important;
         margin-left: 0 !important;
     }
+
+    .hero-text h1, .hero-text p {
+        font-size: 45px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -483,6 +487,10 @@
     .image-container {
         width: 100% !important;
         margin-left: 0 !important;
+    }
+
+    .hero-text h1, .hero-text p {
+        font-size: 45px;
     }
 }
 
@@ -512,8 +520,9 @@
     @extend %box-styling;
 
     h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin-bottom: 10px;
+        margin-top: 10px;
     }
 
     p {
