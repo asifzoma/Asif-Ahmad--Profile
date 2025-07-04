@@ -1,3 +1,6 @@
+@use '../base/variables' as *;
+@use 'sass:color';
+
 .portfolio-container {
   display: flex;
   flex-wrap: wrap;
@@ -77,7 +80,7 @@
         transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: darken($accent-color, 10%);
+          background-color: color.adjust($accent-color, $lightness: -10%);
         }
       }
     }

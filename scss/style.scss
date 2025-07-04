@@ -1,15 +1,17 @@
+@use 'sass:color';
+
 // Import variables
-@import 'base/variables';
+@use 'base/variables' as *;
 
 // Import base
-@import 'base/base';
+@use 'base/base' as *;
 
 // Import components
-@import 'components/layout';
-@import 'components/_code-snippets.scss';
-@import 'components/contact';
-@import 'components/_cards.scss';
-@import "components/header-dock";
+@use 'components/layout' as *;
+@use 'components/code-snippets' as *;
+@use 'components/contact' as *;
+@use 'components/cards' as *;
+@use 'components/header-dock' as *;
 
 // Global styles using variables
 #contact, .banner {
@@ -115,7 +117,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
       cursor: pointer;
 
       &:hover {
-        background-color: darken($accent-color, 10%);
+        background-color: color.adjust($accent-color, $lightness: -10%);
       }
     }
 
@@ -187,7 +189,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         .modal-header {
             padding: 20px 50px 20px 20px;
             border-bottom: 1px solid rgba($light-grey, 0.2);
-            background-color: darken($primary-color, 5%);
+            background-color: color.adjust($primary-color, $lightness: -5%);
 
             h3 {
                 margin: 0;
@@ -212,7 +214,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
                 }
 
                 pre {
-                    background-color: darken($primary-color, 10%);
+                    background-color: color.adjust($primary-color, $lightness: -10%);
                     padding: 20px;
                     border-radius: 6px;
                     overflow-x: auto;
@@ -323,7 +325,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
 }
 
 .project-card, .snippet-card {
-    background-color: darken($primary-color, 15%);
+    background-color: color.adjust($primary-color, $lightness: -15%);
     border-radius: 8px;
     padding: 1.5rem;
     color: $light-grey;
@@ -353,7 +355,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
         text-align: center;
 
         &:hover {
-            background-color: darken($light-grey, 10%);
+            background-color: color.adjust($light-grey, $lightness: -10%);
             color: $primary-color;
         }
     }
@@ -436,12 +438,12 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
             }
 
             &:hover {
-                background-color: darken($light-grey, 10%);
+                background-color: color.adjust($light-grey, $lightness: -10%);
                 color: $primary-color;
             }
 
             &.active {
-                background-color: darken($light-grey, 5%);
+                background-color: color.adjust($light-grey, $lightness: -5%);
                 
                 i {
                     transform: rotate(180deg);
@@ -593,7 +595,7 @@ a, button, .btn, .view-code-btn, .project-card, .snippet-card,
     transition: background 0.2s;
   }
   .read-more-btn:active {
-    background: darken($primary-color, 10%);
+    background: color.adjust($primary-color, $lightness: -10%);
   }
   // .about-me-content.expanded + .read-more-btn {
   //   display: none !important;

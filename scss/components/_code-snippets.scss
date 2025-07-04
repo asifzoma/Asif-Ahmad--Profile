@@ -1,3 +1,6 @@
+@use '../base/variables' as *;
+@use 'sass:color';
+
 .code-snippets {
     padding: 20px;
     text-align: center;
@@ -84,7 +87,7 @@
     min-width: 250px;
     max-width: 1fr;
     margin-bottom: 20px;
-    background-color: $background-color;
+    background-color: color.adjust($background-color, $lightness: -10%);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -92,12 +95,12 @@
     margin: 0px;
     position: relative;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 2px solid color.adjust($primary-color, $lightness: 40%);
 
     &:hover {
         transform: scale(1.03);
-        background-color: darken($background-color, 5%);
-        border-color: lighten($primary-color, 20%);
+        background-color: color.adjust($background-color, $lightness: -15%);
+        border-color: color.adjust($primary-color, $lightness: 50%);
     }
 
     h3 {
@@ -121,7 +124,7 @@
     }
 
     &.coming-soon {
-        background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
+        background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: -10%) 100%);
         border: 2px dashed rgba($primary-color, 0.3);
         position: relative;
         overflow: hidden;
@@ -294,7 +297,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 10%) 100%);
+    background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: -10%) 100%);
     color: $light-text;
     padding: 12px 20px;
     border-radius: 25px;

@@ -1,6 +1,9 @@
+@use '../base/variables' as *;
+@use 'sass:color';
+
 // Contact Form Component
 .contact {
-    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+    background: linear-gradient(135deg, $primary-color 0%, color.adjust($primary-color, $lightness: -15%) 100%);
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     margin: 2rem auto;
@@ -37,7 +40,7 @@
             display: block;
             width: 60px;
             height: 4px;
-            background: linear-gradient(90deg, $accent-color, lighten($accent-color, 20%));
+            background: linear-gradient(90deg, $accent-color, color.adjust($accent-color, $lightness: 20%));
             margin: 1rem auto;
             border-radius: 2px;
         }
@@ -133,13 +136,13 @@
             
             &.error {
                 border-color: $secondary-color;
-                background-color: mix($secondary-color, white, 25%);
+                background-color: color.mix($secondary-color, #fff, 25%);
                 color: $primary-color;
                 --placeholder-color: rgba($primary-color, 0.5);
                 animation: shake 0.5s ease-in-out;
                 
                 &:focus {
-                    background-color: mix($secondary-color, white, 25%);
+                    background-color: color.mix($secondary-color, #fff, 25%);
                     color: $primary-color;
                     --placeholder-color: rgba($primary-color, 0.4);
                     box-shadow: 
@@ -198,7 +201,7 @@
         }
         
         button[type="submit"] {
-            background: linear-gradient(135deg, $accent-color 0%, darken($accent-color, 15%) 100%);
+            background: linear-gradient(135deg, $accent-color 0%, color.adjust($accent-color, $lightness: -15%) 100%);
             color: $background-color;
             padding: 1.2rem 2.5rem;
             border: none;
@@ -225,7 +228,7 @@
             }
             
             &:hover {
-                background: linear-gradient(135deg, darken($accent-color, 10%) 0%, darken($accent-color, 25%) 100%);
+                background: linear-gradient(135deg, color.adjust($accent-color, $lightness: -10%) 0%, color.adjust($accent-color, $lightness: -25%) 100%);
                 transform: translateY(-3px);
                 box-shadow: 0 8px 24px rgba($accent-color, 0.5);
                 
@@ -292,7 +295,7 @@
 // Error Messages Container
 .error-messages-container {
     display: none;
-    background-color: mix($secondary-color, white, 10%);
+    background-color: color.mix($secondary-color, #fff, 10%);
     border: 2px solid $secondary-color;
     border-radius: 12px;
     padding: 1.2rem 1.5rem;
@@ -327,7 +330,7 @@
         margin: 0;
         
         li {
-            color: darken($secondary-color, 10%);
+            color: color.adjust($secondary-color, $lightness: -10%);
             font-size: 0.95rem;
             padding: 0.5rem 0;
             border-bottom: 1px solid rgba($secondary-color, 0.2);

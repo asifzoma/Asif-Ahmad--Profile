@@ -1,3 +1,6 @@
+@use '../base/variables' as *;
+@use 'sass:color';
+
 // Page Wrapper
 .page-wrapper {
     display: flex;
@@ -204,6 +207,7 @@
             -2px  2px 0 $background-color,
              2px  2px 0 $background-color; 
         margin: 0; 
+        font-size: 30px;
     }
 
     h1 {
@@ -552,7 +556,7 @@
         
         &:hover {
             transform: scale(1.03);
-            background-color: lighten($primary-color, 4%);
+            background-color: color.adjust($primary-color, $lightness: 4%);
         }
 
         img {
@@ -640,7 +644,7 @@
             }
             
             .coming-soon-badge {
-                background: linear-gradient(135deg, $accent-color, lighten($accent-color, 10%));
+                background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: 10%));
                 color: $primary-color;
                 padding: 4px 12px;
                 border-radius: 20px;
@@ -711,7 +715,7 @@
 }
 
 .accordion-btn.active, .accordion-btn:hover {
-  background: darken($primary-color, 8%);
+  background: color.adjust($primary-color, $lightness: -8%);
 }
 
 .accordion-btn i {
@@ -851,7 +855,7 @@
         display: block;
         width: 100%;
         height: 3px;
-        background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+        background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -10%));
         margin: 2px 0;
         transition: all 0.3s ease;
         border-radius: 2px;
@@ -875,7 +879,7 @@
         position: absolute;
         width: 24px;
         height: 3px;
-        background: linear-gradient(135deg, $accent-color, darken($accent-color, 10%));
+        background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: -10%));
         border-radius: 2px;
         transition: all 0.3s ease;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -912,7 +916,7 @@
         transform: scale(1.1);
         
         .close-icon .line {
-            background: linear-gradient(135deg, darken($accent-color, 5%), darken($accent-color, 15%));
+            background: linear-gradient(135deg, color.adjust($accent-color, $lightness: -5%), color.adjust($accent-color, $lightness: -15%));
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
         }
     }
@@ -921,7 +925,7 @@
 // Hover effects for hamburger icon
 .hamburger-menu:not(.active):hover {
     .hamburger-icon .line {
-        background: linear-gradient(135deg, $accent-color, darken($accent-color, 10%));
+        background: linear-gradient(135deg, $accent-color, color.adjust($accent-color, $lightness: -10%));
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
         transform: scaleY(1.2);
     }
@@ -946,7 +950,7 @@
             .line {
                 width: 26px;
                 height: 3px;
-                background: linear-gradient(135deg, $primary-color, darken($primary-color, 15%));
+                background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: -15%));
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             }
         }
