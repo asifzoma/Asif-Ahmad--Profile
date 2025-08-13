@@ -179,14 +179,105 @@ class ContactHandler {
                         <div class="coming-soon-badge">Coming Soon</div>
                     </div>
 
-                    <!-- Laravel Coming Soon -->
-                    <div class="snippet-card coming-soon" data-language="laravel">
+                    <!-- Laravel Code Snippet -->
+                    <div class="snippet-card" data-language="laravel" data-code="&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Company;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\CompanyStoreRequest;
+use App\Http\Requests\CompanyUpdateRequest;
+
+class CompanyController extends Controller
+{
+    /**
+     * Display a listing of the resource with search and pagination
+     */
+    public function index(Request $request)
+    {
+        $query = Company::query();
+
+        // Implement search functionality across multiple fields
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', &quot;%{$search}%&quot;)
+                  -&gt;orWhere('email', 'like', &quot;%{$search}%&quot;);
+            });
+        }
+
+        $companies = $query-&gt;paginate(10)-&gt;withQueryString();
+        return view('companies.index', compact('companies'));
+    }
+
+    /**
+     * Store a newly created company with file upload and activity logging
+     */
+    public function store(CompanyStoreRequest $request)
+    {
+        $validated = $request-&gt;validated();
+        
+        // Handle logo file upload with proper storage
+        if ($request-&gt;hasFile('logo')) {
+            $logoPath = $request-&gt;file('logo')-&gt;store('logos', 'public');
+            $validated['logo'] = $logoPath;
+        }
+        
+        $company = Company::create($validated);
+        
+        // Log activity for audit trail
+        \App\Models\ActivityLog::create([
+            'user_id' =&gt; auth()-&gt;id(),
+            'action' =&gt; 'create',
+            'subject_type' =&gt; 'Company',
+            'subject_id' =&gt; $company-&gt;id,
+            'description' =&gt; 'Created company #' . $company-&gt;id,
+        ]);
+        
+        return redirect()-&gt;route('companies.index')
+            -&gt;with('success', 'Company created successfully!');
+    }
+
+    /**
+     * Update company with file replacement and activity logging
+     */
+    public function update(CompanyUpdateRequest $request, string $id)
+    {
+        $company = Company::findOrFail($id);
+        $validated = $request-&gt;validated();
+        
+        // Handle logo replacement with old file cleanup
+        if ($request-&gt;hasFile('logo')) {
+            if ($company-&gt;logo) {
+                Storage::disk('public')-&gt;delete($company-&gt;logo);
+            }
+            $logoPath = $request-&gt;file('logo')-&gt;store('logos', 'public');
+            $validated['logo'] = $logoPath;
+        }
+        
+        $company-&gt;update($validated);
+        
+        // Log activity for audit trail
+        \App\Models\ActivityLog::create([
+            'user_id' =&gt; auth()-&gt;id(),
+            'action' =&gt; 'update',
+            'subject_type' =&gt; 'Company',
+            'subject_id' =&gt; $company-&gt;id,
+            'description' =&gt; 'Updated company #' . $company-&gt;id,
+        ]);
+        
+        return redirect()-&gt;route('companies.index')
+            -&gt;with('success', 'Company updated successfully!');
+    }
+}" data-explanation="This Laravel controller demonstrates advanced company management with comprehensive features including file uploads, form validation, search functionality, pagination, and activity logging for audit trails. The code showcases Laravel best practices such as using Form Requests for validation, proper file handling with Storage facade, and implementing a complete audit system. Key features include multi-field search with query building, secure file upload management with cleanup, pagination with query string preservation, and comprehensive activity logging for all CRUD operations. This represents enterprise-level Laravel development with attention to security, user experience, and maintainability.">
                         <div class="snippet-header">
                             <i class="fab fa-laravel language-icon"></i>
-                            <h3>Laravel Framework</h3>
+                            <h3>Company Management with File Upload and Activity Logging</h3>
                         </div>
-                        <p>Laravel PHP framework examples with Eloquent ORM and advanced features coming soon...</p>
-                        <div class="coming-soon-badge">Coming Soon</div>
+                        <p>Comprehensive Laravel controller demonstrating advanced features including file uploads, search, pagination, and audit trails.</p>
+                        <button class="view-code-btn">View Code</button>
                     </div>
                 </div>
             </section> 
