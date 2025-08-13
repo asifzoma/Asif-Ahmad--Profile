@@ -44,13 +44,24 @@
                         </div>
                     </div>
 
+                    <!-- Momo Movies Project -->
+                    <div class="project-card" data-full-desc="Momo Movies is a sophisticated full-stack web application that leverages smart algorithms to provide personalized movie recommendations. Built with PHP, JavaScript, and Tailwind CSS, the system analyzes user preferences through three input movies (childhood favorite, recommended film, and most-watched) to create a comprehensive taste profile. The recommendation engine employs multiple strategies including exact genre/director matches, genre-based discovery, and director-based exploration, while smart filtering prevents duplicate suggestions and excludes user input movies. The application features a modern Tinder-style interface with real-time search, responsive design, and social sharing capabilities. Integrated with The Movie Database API using secure environment variables, the system demonstrates advanced algorithmic thinking, API integration, and user experience design, showcasing full-stack development skills in creating engaging, intelligent recommendation systems.">
+                        <div class="image-wrapper">
+                            <img src="./img/MoviePicker Project.jpg" alt="Momo Movies API-Powered Movie Recommendation System">
+                        </div>
+                        <div class="card-content">
+                            <h3>Momo Movies</h3>
+                            <p>API, coupled with a recomednations algorithms and a modern interface...</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="http://movie-picker.asif-ahmad.netmatters-scs.co.uk/" class="btn">View the live site</a>
+                        </div>
+                    </div>
+
                     <!-- Full-Stack Web Application Project -->
                     <div class="project-card coming-soon" data-full-desc="An exciting new full-stack web application project is currently in development. This project will showcase modern development practices using PHP, Laravel, MySQL, and JavaScript. Stay tuned for updates as I continue to build and refine this application with advanced features and responsive design.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline>
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Full Stack Web Application">
                         </div>
                         <div class="card-content">
                             <h3>Full-Stack Web Application</h3>
@@ -68,10 +79,7 @@
                     <!-- E-Commerce Platform Project -->
                     <div class="project-card coming-soon" data-full-desc="A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline poster="./img/Asif ahmad Full stack Developer.webp">
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - E-Commerce Platform">
                         </div>
                         <div class="card-content">
                             <h3>E-Commerce Platform</h3>
@@ -89,10 +97,7 @@
                     <!-- React Application Project -->
                     <div class="project-card coming-soon" data-full-desc="A modern React-based web application showcasing advanced frontend development skills with state management, responsive design, and integration with REST APIs.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline poster="./img/Asif ahmad Full stack Developer.webp">
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - React Application">
                         </div>
                         <div class="card-content">
                             <h3>React Application</h3>
@@ -110,10 +115,7 @@
                     <!-- API Development Project -->
                     <div class="project-card coming-soon" data-full-desc="A comprehensive RESTful API built with modern backend technologies, featuring authentication, data validation, and comprehensive documentation.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline>
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - API Development">
                         </div>
                         <div class="card-content">
                             <h3>API Development</h3>
@@ -131,10 +133,7 @@
                     <!-- Mobile App Development Project -->
                     <div class="project-card coming-soon" data-full-desc="A cross-platform mobile application built with React Native, featuring modern UI/UX design, offline functionality, and seamless integration with backend services.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline>
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Mobile App Development">
                         </div>
                         <div class="card-content">
                             <h3>Mobile App Development</h3>
@@ -152,10 +151,7 @@
                     <!-- DevOps & CI/CD Project -->
                     <div class="project-card coming-soon" data-full-desc="A comprehensive DevOps solution featuring automated deployment pipelines, containerization with Docker, and cloud infrastructure management with monitoring and logging systems.">
                         <div class="image-wrapper">
-                            <video autoplay muted loop playsinline>
-                                <source src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - DevOps & CI/CD">
                         </div>
                         <div class="card-content">
                             <h3>DevOps & CI/CD</h3>
