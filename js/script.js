@@ -474,4 +474,55 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // --- Coming Soon Accordion ---
+    // Make toggleComingSoon function globally available
+    window.toggleComingSoon = function() {
+        const accordionBtn = document.querySelector('.coming-soon-accordion .accordion-btn');
+        const accordionContent = document.getElementById('coming-soon-content');
+        
+        console.log('toggleComingSoon called'); // Debug log
+        console.log('Accordion button found:', !!accordionBtn); // Debug log
+        console.log('Accordion content found:', !!accordionContent); // Debug log
+        
+        if (accordionBtn && accordionContent) {
+            console.log('Elements found, toggling...'); // Debug log
+            accordionBtn.classList.toggle('active');
+            accordionContent.classList.toggle('active');
+            
+            // Update max-height for smooth animation
+            if (accordionContent.classList.contains('active')) {
+                const contentHeight = accordionContent.scrollHeight;
+                accordionContent.style.maxHeight = contentHeight + 'px';
+                console.log('Opening accordion, height:', contentHeight); // Debug log
+            } else {
+                accordionContent.style.maxHeight = '0px';
+                console.log('Closing accordion'); // Debug log
+            }
+        } else {
+            console.log('Elements not found:', { accordionBtn, accordionContent }); // Debug log
+        }
+    };
+
+    // Also add event listener as backup
+    const accordionBtn = document.querySelector('.coming-soon-accordion .accordion-btn');
+    if (accordionBtn) {
+        accordionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Accordion button clicked via event listener'); // Debug log
+            window.toggleComingSoon();
+        });
+        console.log('Event listener added to accordion button'); // Debug log
+    } else {
+        console.log('Accordion button not found for event listener'); // Debug log
+    }
+
+    // Initialize accordion state
+    const accordionContent = document.getElementById('coming-soon-content');
+    if (accordionContent) {
+        accordionContent.style.maxHeight = '0px';
+        console.log('Accordion initialized'); // Debug log
+    } else {
+        console.log('Accordion content not found for initialization'); // Debug log
+    }
 }); 

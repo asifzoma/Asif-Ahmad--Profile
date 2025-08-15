@@ -1,6 +1,8 @@
             <!-- Portfolio Section -->
             <section class="portfolio">
                 <h2 id="portfolio">My Portfolio</h2>
+                
+                <!-- Live Projects -->
                 <div class="portfolio-container">
                     <!-- Netmatters Clone Project -->
                     <div class="project-card" data-full-desc="Cloning Netmatters website to assess and improve my HTML, CSS and JavaScript skills. As part of the project I refactored the website from HTML to PHP, added a SQL database and a working contact form, which is connected to the database. Capturing the data from the form and storing it in the database. I have also ensured that the news cards and data on the Website can be updated by the admin.">
@@ -57,113 +59,124 @@
                             <a href="http://movie-picker.asif-ahmad.netmatters-scs.co.uk/" class="btn">View the live site</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Full-Stack Web Application Project -->
-                    <div class="project-card coming-soon" data-full-desc="An exciting new full-stack web application project is currently in development. This project will showcase modern development practices using PHP, Laravel, MySQL, and JavaScript. Stay tuned for updates as I continue to build and refine this application with advanced features and responsive design.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Full Stack Web Application">
-                        </div>
-                        <div class="card-content">
-                            <h3>Full-Stack Web Application</h3>
-                            <p>A web application which is currently in development...</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-code"></i>
-                                <span>In Development</span>
+                <!-- Coming Soon Projects Accordion -->
+                <div class="coming-soon-accordion">
+                    <button class="accordion-btn">
+                        <span>Coming Soon Projects</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="accordion-content" id="coming-soon-content">
+                        <div class="portfolio-container coming-soon-container">
+                            <!-- Full-Stack Web Application Project -->
+                            <div class="project-card coming-soon" data-full-desc="An exciting new full-stack web application project is currently in development. This project will showcase modern development practices using PHP, Laravel, MySQL, and JavaScript. Stay tuned for updates as I continue to build and refine this application with advanced features and responsive design.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Full Stack Web Application">
+                                </div>
+                                <div class="card-content">
+                                    <h3>Full-Stack Web Application</h3>
+                                    <p>A web application which is currently in development...</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-code"></i>
+                                        <span>In Development</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+
+                            <!-- E-Commerce Platform Project -->
+                            <div class="project-card coming-soon" data-full-desc="A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - E-Commerce Platform">
+                                </div>
+                                <div class="card-content">
+                                    <h3>E-Commerce Platform</h3>
+                                    <p>A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-tools"></i>
+                                        <span>Planning Phase</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+
+                            <!-- React Application Project -->
+                            <div class="project-card coming-soon" data-full-desc="A modern React-based web application showcasing advanced frontend development skills with state management, responsive design, and integration with REST APIs.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - React Application">
+                                </div>
+                                <div class="card-content">
+                                    <h3>React Application</h3>
+                                    <p>A modern React-based web application with advanced frontend development features.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-code"></i>
+                                        <span>In Development</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+
+                            <!-- API Development Project -->
+                            <div class="project-card coming-soon" data-full-desc="A comprehensive RESTful API built with modern backend technologies, featuring authentication, data validation, and comprehensive documentation.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - API Development">
+                                </div>
+                                <div class="card-content">
+                                    <h3>API Development</h3>
+                                    <p>A comprehensive RESTful API with modern backend technologies and documentation.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-server"></i>
+                                        <span>Planning Phase</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+
+                            <!-- Mobile App Development Project -->
+                            <div class="project-card coming-soon" data-full-desc="A cross-platform mobile application built with React Native, featuring modern UI/UX design, offline functionality, and seamless integration with backend services.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Mobile App Development">
+                                </div>
+                                <div class="card-content">
+                                    <h3>Mobile App Development</h3>
+                                    <p>A cross-platform mobile application with modern UI/UX and offline functionality.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-mobile-alt"></i>
+                                        <span>Planning Phase</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
+                            </div>
+
+                            <!-- DevOps & CI/CD Project -->
+                            <div class="project-card coming-soon" data-full-desc="A comprehensive DevOps solution featuring automated deployment pipelines, containerization with Docker, and cloud infrastructure management with monitoring and logging systems.">
+                                <div class="image-wrapper">
+                                    <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - DevOps & CI/CD">
+                                </div>
+                                <div class="card-content">
+                                    <h3>DevOps & CI/CD</h3>
+                                    <p>Automated deployment pipelines with Docker containerization and cloud infrastructure.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="project-status">
+                                        <i class="fas fa-cloud"></i>
+                                        <span>Planning Phase</span>
+                                    </div>
+                                </div>
+                                <div class="coming-soon-badge">Coming Soon</div>
                             </div>
                         </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
-                    </div>
-
-                    <!-- E-Commerce Platform Project -->
-                    <div class="project-card coming-soon" data-full-desc="A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - E-Commerce Platform">
-                        </div>
-                        <div class="card-content">
-                            <h3>E-Commerce Platform</h3>
-                            <p>A web application in PHP Laravel framework, MySQL database design, and modern frontend technologies.</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-tools"></i>
-                                <span>Planning Phase</span>
-                            </div>
-                        </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
-                    </div>
-
-                    <!-- React Application Project -->
-                    <div class="project-card coming-soon" data-full-desc="A modern React-based web application showcasing advanced frontend development skills with state management, responsive design, and integration with REST APIs.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - React Application">
-                        </div>
-                        <div class="card-content">
-                            <h3>React Application</h3>
-                            <p>A modern React-based web application with advanced frontend development features.</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-code"></i>
-                                <span>In Development</span>
-                            </div>
-                        </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
-                    </div>
-
-                    <!-- API Development Project -->
-                    <div class="project-card coming-soon" data-full-desc="A comprehensive RESTful API built with modern backend technologies, featuring authentication, data validation, and comprehensive documentation.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - API Development">
-                        </div>
-                        <div class="card-content">
-                            <h3>API Development</h3>
-                            <p>A comprehensive RESTful API with modern backend technologies and documentation.</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-server"></i>
-                                <span>Planning Phase</span>
-                            </div>
-                        </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
-                    </div>
-
-                    <!-- Mobile App Development Project -->
-                    <div class="project-card coming-soon" data-full-desc="A cross-platform mobile application built with React Native, featuring modern UI/UX design, offline functionality, and seamless integration with backend services.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - Mobile App Development">
-                        </div>
-                        <div class="card-content">
-                            <h3>Mobile App Development</h3>
-                            <p>A cross-platform mobile application with modern UI/UX and offline functionality.</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-mobile-alt"></i>
-                                <span>Planning Phase</span>
-                            </div>
-                        </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
-                    </div>
-
-                    <!-- DevOps & CI/CD Project -->
-                    <div class="project-card coming-soon" data-full-desc="A comprehensive DevOps solution featuring automated deployment pipelines, containerization with Docker, and cloud infrastructure management with monitoring and logging systems.">
-                        <div class="image-wrapper">
-                            <img src="./public/assets/vids/Asif Ahmad Full Stack Developer More to come video.gif" alt="Coming Soon - DevOps & CI/CD">
-                        </div>
-                        <div class="card-content">
-                            <h3>DevOps & CI/CD</h3>
-                            <p>Automated deployment pipelines with Docker containerization and cloud infrastructure.</p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="project-status">
-                                <i class="fas fa-cloud"></i>
-                                <span>Planning Phase</span>
-                            </div>
-                        </div>
-                        <div class="coming-soon-badge">Coming Soon</div>
                     </div>
                 </div>
             </section> 
